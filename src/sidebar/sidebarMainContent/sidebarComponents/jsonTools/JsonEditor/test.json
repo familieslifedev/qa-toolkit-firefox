@@ -1,0 +1,121 @@
+{
+  "lock": {
+    "type": "OPEN",
+    "perms": {
+      "READ": true,
+      "WRITE": true
+    },
+    "campaignPhaseId": 243,
+    "campaignPhaseHandle": "Phase 6"
+  },
+  "plan": {
+    "roomId": 6,
+    "roomType": "BEDROOM_2022",
+    "features": [
+      "confirmable-measurements"
+    ],
+    "leadId": "678910",
+    "email": "Goose@wrenkitchens.com",
+    "branch": "Nowhere",
+    "shouldUseNewWorktopIndexing": true,
+    "shouldUsePUNPriorityIndexing": true,
+    "step": "roomprofile",
+    "title": "MooseyPlan",
+    "rangesByScope": {
+      "defaultRange": {
+        "frontal": "infinity plus-Shaker Classic Ermine Sage Green Matt (Pebble) Bedroom",
+        "carcase": "Infinity Plus Bedroom Linen",
+        "drawerbox": "Infinity Plus Bedroom Drawer Box (Lava)"
+      }
+    },
+    "profileColoursByScope": {
+      "baseRange": null,
+      "wallRange": null,
+      "towerRange": null,
+      "islandRange": null,
+      "defaultRange": null
+    },
+    "handles": {
+      "notRequired": false,
+      "door": {
+        "productId": 85161,
+        "productCode": "HA.721.035.MOL.PW",
+        "productName": "27Lx27d Molly Knob Handle Pewter"
+      },
+      "globalSku": "HA.721.035.MOL.PW"
+    },
+    "basket": {
+      "extras": {
+        "85161": 13
+      },
+      "products": {},
+      "productsOnPlan": {
+        "1338168": 4,
+        "1338492": 2,
+        "1341327": 1,
+        "1341349": 2
+      },
+      "configured": {},
+      "widgetProducts": {},
+      "manual": {},
+      "relatedProducts": {},
+      "productCustomizations": {},
+      "extrasCustomizations": {}
+    },
+    "groups": [],
+    "globalPlinth": null,
+    "corniceStyle": "modern",
+    "decorEndStyle": "modern",
+    "plinthStyle": {
+      "defaultRange": "none"
+    },
+    "corniceRequired": true,
+    "pelmetRequired": true,
+    "plinthRequired": false,
+    "waterSystemParameters": {},
+    "roomDecorOptions": {
+      "Floor": "",
+      "Walls": "#EEE8D7"
+    },
+    "worktopChoice": {
+      "material": "Luxury Laminate"
+    },
+    "worktopTabChoice": {
+      "material": "Luxury Laminate"
+    },
+    "worktopAutoUpstandsChoices": {},
+    "specialistIslandChoice": {},
+    "specialistIslandEndChoice": {},
+    "callReminderTimeScaleHandle": null,
+    "deliveryInformationSurveyResult": null,
+    "surveyDurationId": null,
+    "remeasureRequirement": null,
+    "rtpnumberVisible": false,
+    "isPriceWithInstallerCharges": false,
+    "flooringCoverageRule": "WALL_TO_WALL",
+    "selectionGroups": [],
+    "kitchenStyle": "",
+    "collection": "INFINITY_PLUS_BEDROOM",
+    "featureUnitsCarcase": "Feature White Matt",
+    "chestTopColour": "Sage Green",
+    "chestTopFinish": "Matt",
+    "corniceMitreFinish": "MITRED",
+    "pelmetMitreFinish": "BUTTED",
+    "unsuitableBelfastSinkProducts": [],
+    "removedRetiredProducts": [],
+    "designerNotes": [],
+    "surveyorNotes": [],
+    "alerts": [],
+    "specialistWorktopNotes": [],
+    "supplementaryWorksNotes": [],
+    "hiddenNotes": [],
+    "planNotes": [],
+    "isBoilerTabSelected": false,
+    "preFitChangeRequests": [],
+    "isPreFitRequestedChanges": false,
+    "basketNotices": []
+  },
+  "username": "Chris.Scarratt",
+  "isPlanAutoSaveEnabled": false,
+  "shouldUseNewWorktopIndexing": true
+}
