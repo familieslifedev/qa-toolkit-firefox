@@ -25,11 +25,85 @@ export default function ComplianceTools() {
 
 
   function handleAcceptAnnotation() {
-    document.querySelectorAll('.tabs-menu-item > a').forEach((t) => {
-      // @ts-ignore
-      t.click(), document.querySelectorAll(".check-notes-table input[type=\"checkbox\"]").forEach(({ checked, click }) => !checked ? click() : null);
-    });
+    const annotationPopup = document.querySelector('.check-notes-popup-wrapper')
+    if (annotationPopup) {
+      // annotation popup already open just accept and save
+      acceptAnnotations();
+      return;
+    }
+    const annotationTab = document.querySelector('#file-menu-notes');
+    if (annotationTab) {
+      if (annotationTab.classList.contains('toggled')) {
+        // we are on the annotations tab so can progress to open the popup
+        openAnnotationPopup();
+      } else {
+        // Not on the annotation tab so lets get there.
+        (annotationTab as HTMLElement).click();
+        const observer = new MutationObserver((mutations) => {
+          for (const mutation of mutations) {
+            if (mutation.type === 'childList') {
+              const checkNotes = document.querySelector('.check-notes');
+              if (checkNotes) {
+                // we are now on the annotations tab lets open the popup and proceed
+                openAnnotationPopup();
+                observer.disconnect();
+                break;
+              }
+            }
+          }
+        });
+        observer.observe(document, {
+          childList: true,
+          subtree: true,
+        });
+      }
+    }
+    function openAnnotationPopup() {
+      const annotationPopupBtn = document.querySelector('.check-notes');
+      if (annotationPopupBtn) {
+        (annotationPopupBtn as HTMLElement).click();
+        const observer = new MutationObserver((mutations) => {
+          for (const mutation of mutations) {
+            if (mutation.type === 'childList') {
+              const checkPopup = document.querySelector('.check-notes-popup-wrapper');
+              if (checkPopup) {
+                // we are now on the annotations tab lets open the popup and proceed
+                acceptAnnotations();
+                observer.disconnect();
+                break;
+              }
+            }
+          }
+        });
+        observer.observe(document, {
+          childList: true,
+          subtree: true,
+        });
+      }
+    }
+    function acceptAnnotations() {
+      const tabMenuItems = document.querySelectorAll('.tabs-menu-item > a');
+      tabMenuItems.forEach((t) => {
+        if (t) {
+          (t as HTMLElement).click();
+        }
+        const checkboxes = document.querySelectorAll('.check-notes-table input[type="checkbox"]');
+        checkboxes.forEach((i) => {
+          if (!(i as HTMLInputElement).checked) {
+            (i as HTMLElement).click();
+          }
+        });
+      });
+
+      const saveButton = document.querySelector('.save')
+      if (saveButton) {
+        (saveButton as HTMLElement).click();
+      }
+    };
   }
+
+
+
 
   return (
     <div className="complianceContainer">
