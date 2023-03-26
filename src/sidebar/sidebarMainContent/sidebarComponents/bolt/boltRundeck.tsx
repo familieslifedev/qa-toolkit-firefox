@@ -1,12 +1,18 @@
 import { useStorage } from "@plasmohq/storage/dist/hook";
-import {regionArray, environmentArray} from "../componentArrays";
+import { regionArray, environmentArray } from "../componentArrays";
 import { useContext } from "react";
 import { FeedbackContext } from "~Utils/sidebarContext";
-import {rundeckJobsArray} from "./rundeckJobs";
+import { rundeckJobsArray } from "./rundeckJobs";
+
 export default function BoltRundeck() {
   const { setFeedbackText } = useContext(FeedbackContext);
-  const [rundeckJob, setRundeckJob] = useStorage("frontendEnvironment");
-  const [region, setRegion] = useStorage("rundeckRegion");
+  const [rundeckJob, setRundeckJob] = useStorage("rundeckJob", rundeckJobsArray[0].Job);
+  const [region, setRegion] = useStorage("rundeckRegion", regionArray[0].Code);
+
+  const regionCodeToKey = {
+    com: "UK",
+    us: "US",
+  };
 
   function handleEnvChange(event) {
     setRundeckJob(event.target.value);
@@ -16,9 +22,11 @@ export default function BoltRundeck() {
     setRegion(event.target.value);
   }
 
-  async function rundeckHandleNavigate(newTab: boolean) {
+  async function rundeckHandleNavigate(newTab) {
+    const regionKey = regionCodeToKey[region];
     const job = rundeckJobsArray.find((j) => j.Job === rundeckJob);
-    const url = job[region];
+    const url = job[regionKey];
+    console.log(url);
     if (newTab) {
       let response = await chrome.runtime.sendMessage({ type: "openInNewTab", url: url });
       if (response) {
@@ -29,7 +37,6 @@ export default function BoltRundeck() {
       if (response) {
         setFeedbackText(response);
       }
-
     }
   }
 
@@ -53,7 +60,7 @@ export default function BoltRundeck() {
         </label>
         <select onChange={handleRegionChange} value={region} className="select select-primary select-xs select-bordered">
           {regionArray.map(region => (
-            <option key={region.Name} value={region.Name}>
+            <option key={region.Code} value={region.Code}>
               {region.Name}
             </option>
           ))}
@@ -64,5 +71,5 @@ export default function BoltRundeck() {
         <button className="btn btn-xs grp-btn btn-primary" onClick={() => rundeckHandleNavigate(false)}>Current Tab</button>
       </div>
     </div>
-)
+  );
 }
