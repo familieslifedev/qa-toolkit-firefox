@@ -17,7 +17,7 @@ export const jenkinsJobsArray = [
 ];
 
 export const environmentArray = [
-  {Code: "", Name: "Live", Jenkins: "master"},
+  {Code: " ", Name: "Live", Jenkins: "master"},
   {Code: "project1.", Name: "Project 1", Jenkins: "project1"},
   {Code: "project2.", Name: "Project 2", Jenkins: "project2"},
   {Code: "project3.", Name: "Project 3", Jenkins: "project3"},

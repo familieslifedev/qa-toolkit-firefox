@@ -4,6 +4,7 @@ import JsonEditorModal from "~sidebar/sidebarMainContent/sidebarComponents/jsonT
 import { useContext, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import Draggable from "react-draggable";
+import { openInNewTab } from "~Utils/backgroundMessageHandler";
 
 export default function JsonTools() {
   const { setFeedbackText } = useContext(FeedbackContext);
@@ -55,7 +56,7 @@ export default function JsonTools() {
       const orderNumber = orderNumberSplit[0]; // should output clean order number
       const feederPlanImageUrl = `https://${domain}/plan/image/get?planId=${orderNumber}&imageType=PREVIEW_IMAGE&debug=true`;
       console.log(`https://${domain}/plan/image/get?planId=${orderNumber}&imageType=PREVIEW_IMAGE&debug=true`);
-      await openURL(`https://${domain}/plan/image/get?planId=${orderNumber}&imageType=PREVIEW_IMAGE&debug=true`,"", true);
+      await chrome.runtime.sendMessage({ type: "openInNewTab", url: feederPlanImageUrl });
 
     }
     else {
@@ -105,12 +106,12 @@ export default function JsonTools() {
 
     <div className="jsonContainer">
 
-      <button className="btn btn-sm btn-wide btn-primary" onClick={handleLoadJson}>Load Plan Json</button>
-      <button className="btn btn-sm btn-wide btn-primary" onClick={handleGet2DJson}>Get 2D Json</button>
-      <button className="btn btn-sm btn-wide btn-primary" onClick={handleGet3DJson}>Get 3D Json</button>
-      <button className="btn btn-sm btn-wide btn-primary" onClick={handleGetPlanImages}>Get Plan Images</button>
-      <button className="btn btn-sm btn-wide btn-primary" onClick={handleTestFetch}>Test Fetch</button>
-      <button className="btn btn-sm btn-wide btn-primary" onClick={handleJsonEditorPanel}>Open Json Edit</button>
+      <button className="btn btn-sm btn-wide btn-primary" title={"Loads 2d Plan from feeder link or Json in clipboard"} onClick={handleLoadJson}>Load Plan Json</button>
+      <button className="btn btn-sm btn-wide btn-primary" title={"Gets the current plan 2d Json and write to clipboard"} onClick={handleGet2DJson}>Get 2D Json</button>
+      <button className="btn btn-sm btn-wide btn-primary" title={"Gets the current plan 3d Json and write to clipboard"} onClick={handleGet3DJson}>Get 3D Json</button>
+      <button className="btn btn-sm btn-wide btn-primary" title={"Preview Image from Feeder URL"} onClick={handleGetPlanImages}>Get Plan Images</button>
+      <button className="btn btn-sm btn-wide btn-primary" title={"Test For now"} onClick={handleTestFetch}>Test Fetch</button>
+      <button className="btn btn-sm btn-wide btn-primary" title={"Open Json Viewer/Editor"} onClick={handleJsonEditorPanel}>Open Json Edit</button>
       <div>
           <JsonEditorModal hidden={!isJsonEditorVisible} onHiddenChange={handleJsonEditorPanel}/>
       </div>
