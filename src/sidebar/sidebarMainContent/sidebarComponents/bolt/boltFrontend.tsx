@@ -1,11 +1,12 @@
 import { useStorage } from "@plasmohq/storage/dist/hook";
-import {regionArray, environmentArray} from "../componentArrays";
+import { regionArray, environmentArray } from "../componentArrays";
 import { useContext } from "react";
 import { FeedbackContext } from "~Utils/sidebarContext";
+
 export default function BoltFrontendTab() {
   const { setFeedbackText } = useContext(FeedbackContext);
-  const [environment, setEnvironment] = useStorage("frontendEnvironment");
-  const [region, setRegion] = useStorage("frontendRegion");
+  const [environment, setEnvironment] = useStorage("frontendEnvironment", environmentArray[0].Code);
+  const [region, setRegion] = useStorage("frontendRegion", regionArray[0].Code);
 
   function handleEnvChange(event) {
     setEnvironment(event.target.value);
@@ -16,21 +17,19 @@ export default function BoltFrontendTab() {
   }
 
   async function frontendHandleNavigate(newTab: boolean) {
-    let currentUrl = `https://frontend.${environment}wrenkitchens.${region}`;
+    let currentUrl = `https://frontend.${environment.trim()}wrenkitchens.${region.trim()}`;
     console.log(currentUrl);
     if (newTab == true) {
       let response = await chrome.runtime.sendMessage({ type: "openInNewTab", url: currentUrl });
-      if(response){
+      if (response) {
         setFeedbackText(response);
       }
-    }
-    else {
+    } else {
       let response = await chrome.runtime.sendMessage({ type: "openInCurrentTab", url: currentUrl });
-      if(response){
+      if (response) {
         setFeedbackText(response);
       }
     }
-
   }
 
   return (
@@ -40,7 +39,7 @@ export default function BoltFrontendTab() {
           <span className="label-text">Environment:</span>
         </label>
         <select onChange={handleEnvChange} value={environment} className="select select-primary select-xs select-bordered">
-          {environmentArray().map(environmentArray => (
+          {environmentArray.map(environmentArray => (
             <option key={environmentArray.Name} value={environmentArray.Code}>
               {environmentArray.Name}
             </option>
@@ -64,5 +63,5 @@ export default function BoltFrontendTab() {
         <button className="btn btn-xs grp-btn btn-primary" onClick={() => frontendHandleNavigate(false)}>Current Tab</button>
       </div>
     </div>
-)
+  );
 }
