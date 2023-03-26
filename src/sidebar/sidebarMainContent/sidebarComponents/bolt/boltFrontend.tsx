@@ -38,7 +38,7 @@ export default function BoltFrontendTab() {
         <label className="label">
           <span className="label-text">Environment:</span>
         </label>
-        <select onChange={handleEnvChange}  className="select select-primary select-xs select-bordered">
+        <select onChange={handleEnvChange} value={environment}  className="select select-primary select-xs select-bordered">
           {environmentArray.map(environmentArray => (
             <option key={environmentArray.Name} value={environmentArray.Code}>
               {environmentArray.Name}
@@ -50,7 +50,7 @@ export default function BoltFrontendTab() {
         <label className="label">
           <span className="label-text">Region:</span>
         </label>
-        <select onChange={handleRegionChange}  className="select select-primary select-xs select-bordered">
+        <select onChange={handleRegionChange} value={region}  className="select select-primary select-xs select-bordered">
           {regionArray.map(region => (
             <option key={region.Name} value={region.Code}>
               {region.Name}
