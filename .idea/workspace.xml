@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="3cabfc8e-ae3e-480f-a13b-33c71447f36d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/src/sidebar/sidebarMainContent/sidebarComponents/bolt/boltFrontend.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/sidebar/sidebarMainContent/sidebarComponents/bolt/boltFrontend.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sidebar/sidebarMainContent/sidebarComponents/componentArrays.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sidebar/sidebarMainContent/sidebarComponents/componentArrays.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sidebar/sidebarMainContent/sidebarComponents/jsonTools/jsonTools.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/sidebar/sidebarMainContent/sidebarComponents/jsonTools/jsonTools.tsx" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2NVg0heVzPJALYpWnWGrdEBJwrQ" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;pnpm&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;D:\\Repositories\\QaToolkitChrome\\node_modules\\prettier&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.nodejs&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\Repositories\\qa-toolkit\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3cabfc8e-ae3e-480f-a13b-33c71447f36d" name="Changes" comment="" />
+      <created>1679754445123</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1679754445123</updated>
+      <workItem from="1679754455193" duration="838000" />
+      <workItem from="1679755337922" duration="130000" />
+      <workItem from="1679755483010" duration="27000" />
+      <workItem from="1679769731801" duration="17000" />
+      <workItem from="1679769757899" duration="304000" />
+      <workItem from="1679770856950" duration="10439000" />
+      <workItem from="1679827065166" duration="6193000" />
+      <workItem from="1679834754797" duration="5136000" />
+      <workItem from="1679861234679" duration="2788000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
