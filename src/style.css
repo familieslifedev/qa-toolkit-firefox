@@ -525,3 +525,20 @@ pre[contenteditable] {
 
 
 /*</editor-fold>*/
+
+/*<editor-fold desc="Options Account Management">*/
+.accountManagementSection{
+
+}
+.accountManagementTable{
+    width: 90%;
+}
+.addAccountModal{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.input-group-sm{
+    padding: 5px;
+}
+/*</editor-fold>*/

@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3cabfc8e-ae3e-480f-a13b-33c71447f36d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/sidebar/sidebarMainContent/sidebarComponents/bolt/boltFrontend.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/sidebar/sidebarMainContent/sidebarComponents/bolt/boltFrontend.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sidebar/sidebarMainContent/sidebarComponents/componentArrays.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sidebar/sidebarMainContent/sidebarComponents/componentArrays.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sidebar/sidebarMainContent/sidebarComponents/jsonTools/jsonTools.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/sidebar/sidebarMainContent/sidebarComponents/jsonTools/jsonTools.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/options/AccountManagmentOptions.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/options/AddAccountModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/options.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/options.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/style.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,6 +20,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JavaScript File" />
+        <option value="TypeScript JSX File" />
       </list>
     </option>
   </component>
@@ -43,7 +46,7 @@
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;pnpm&quot;,
     &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;D:\\Repositories\\QaToolkitChrome\\node_modules\\prettier&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;settings.nodejs&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;ts.external.directory.path&quot;: &quot;D:\\Repositories\\qa-toolkit\\node_modules\\typescript\\lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -65,6 +68,8 @@
       <workItem from="1679827065166" duration="6193000" />
       <workItem from="1679834754797" duration="5136000" />
       <workItem from="1679861234679" duration="2788000" />
+      <workItem from="1679945112290" duration="3737000" />
+      <workItem from="1679948917447" duration="4068000" />
     </task>
     <servers />
   </component>
