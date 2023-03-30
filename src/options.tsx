@@ -2,7 +2,7 @@ import { useState } from "react"
 import "./style.css"
 import { useStorage } from "@plasmohq/storage/dist/hook";
 import { themes } from "~options/themes";
-import AccountManagmentOptions from "~options/AccountManagmentOptions";
+import AccountManagementOptions from "~options/AccountManagmentOptions";
 function OptionsIndex() {
   const [theme, setTheme] = useStorage("theme", "emerald");
   const [triggerKey, setTriggerKey] = useStorage("triggerKey", "Q");
@@ -64,7 +64,7 @@ function OptionsIndex() {
         </input>
       </div>
       <div className="divider"></div>
-      <AccountManagmentOptions/>
+      <AccountManagementOptions/>
     </div>
   )
 }
