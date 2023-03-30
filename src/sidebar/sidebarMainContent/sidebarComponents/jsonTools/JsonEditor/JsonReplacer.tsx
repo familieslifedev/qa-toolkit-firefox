@@ -2,29 +2,32 @@ import React, { useState, ReactElement } from 'react';
 import { copyFromClipboard, get2DJson, load2DJson, prettyPrintJson, writeToClipboard } from "~Utils/Utils";
 
 const JsonReplacer = (): ReactElement => {
-  const [leftJson, setLeftJson] = useState(null);
-  const [rightJson, setRightJson] = useState(null);
-  const [updatedLeftJson, setUpdatedLeftJson] = useState( null);
-  const [updatedRightJson, setUpdatedRightJson] = useState( null);
+  const [leftJson, setLeftJson] = useState<any>(null);
+  const [rightJson, setRightJson] = useState<any>(null);
+  const [updatedLeftJson, setUpdatedLeftJson] = useState<any>( null);
+  const [updatedRightJson, setUpdatedRightJson] = useState<any>( null);
 
   const handleFromClipboard = async (isLeft: Boolean): Promise<void> => {
     try {
-      let res = await copyFromClipboard();
-      if (!res) return;
+      const rawJson = await copyFromClipboard();
+      if (!rawJson) return;
       
-      let parsed = JSON.parse(res);
+      let parsedJson = JSON.parse(rawJson);
 
       if (isLeft) {
-        setLeftJson(parsed);
+        setLeftJson(parsedJson);
         setUpdatedLeftJson(null);
         return;
       }
 
-      setRightJson(parsed);
+      setRightJson(parsedJson);
       setUpdatedRightJson(null);
 
-    } catch (error) {
-      isLeft ? setLeftJson("Invalid JSON") : setRightJson("Invalid JSON");
+    } catch (err) {
+      console.error(err);
+
+      const message: String = "Invalid JSON";
+      isLeft ? setLeftJson(message) : setRightJson(message);
     }
   }
 
