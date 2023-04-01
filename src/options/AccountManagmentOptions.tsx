@@ -10,9 +10,7 @@ function AccountManagement() {
   };
 
   const handleAddAccount = (newAccount) => {
-    const newRowId = accountData.length + 1;
-    const newRow = { id: newRowId, ...newAccount };
-    setAccountData((prevTableData) => [...prevTableData, newRow]);
+    setAccountData((prevTableData) => [...prevTableData, newAccount]);
   };
 
   const handleDeleteAccount = (accountId) => {
@@ -28,6 +26,7 @@ function AccountManagement() {
         <table className="table table-compact accountManagementTable">
           <thead>
           <tr>
+            <th>ID</th>
             <th>Title</th>
             <th>First Name</th>
             <th>Surname</th>
@@ -45,6 +44,7 @@ function AccountManagement() {
           <tbody>
           {accountData.map((account) => (
             <tr key={account.id}>
+              <td>{account.id}</td>
               <td>{account.title}</td>
               <td>{account.firstName}</td>
               <td>{account.surname}</td>

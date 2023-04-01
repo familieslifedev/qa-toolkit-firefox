@@ -1,4 +1,5 @@
 import { Storage } from "@plasmohq/storage";
+import type { FrontendAccount } from "~Utils/UtilInterfaces";
 
 
 const frontendAccountStorage = new Storage();
@@ -22,7 +23,7 @@ async function PopulateAccountContextMenu() {
   accounts.forEach((account) => {
     console.log(account);
     chrome.contextMenus.create({
-      id: 'accountContextMenu-' + account.id.toString(),
+      id: account.id.toString(),
       title: account.emailAddress,
       contexts: ['all'],
       parentId: 'accountContextMenu',
@@ -31,17 +32,24 @@ async function PopulateAccountContextMenu() {
 }
 
 
-chrome.contextMenus.onClicked.addListener((info, tab) => {
+chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId === 'parentContextMenu') {
     return;
   }
 
   // Check if the clicked item has the parent of accountContextMenu
   const parentId = 'accountContextMenu';
-  if ((info.menuItemId as string).startsWith(parentId + '-')) {
+  if ((info.parentMenuItemId as string) == 'accountContextMenu') {
     console.log('clicked on account context menu item');
+
+    // Retrieve account data
+    let allAccounts:FrontendAccount[] = await frontendAccountStorage.get('frontendAccounts');
+    let selectedAccount = allAccounts.find((account) => account.id.toString() === info.menuItemId);
+
+    // Send the entire account data
     chrome.tabs.sendMessage(tab.id, {
       type: 'Content_inputFrontendAccount',
+      account: selectedAccount,
     });
   }
 });

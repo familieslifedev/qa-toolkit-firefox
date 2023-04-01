@@ -5,14 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3cabfc8e-ae3e-480f-a13b-33c71447f36d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Utils/contentMessageHandler.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/contextMenu/contextMenuController.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/contextMenu/contextNewAccountAutoInput.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Utils/UtilInterfaces.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Utils/UtilsDomManipulation.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/background.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/background.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/content.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/content.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/options.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/options.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Utils/contentMessageHandler.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utils/contentMessageHandler.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/contextMenu/contextNewAccountAutoInput.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/contextMenu/contextNewAccountAutoInput.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/options/AccountManagmentOptions.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/options/AccountManagmentOptions.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/options/AddAccountModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/options/AddAccountModal.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,7 +77,10 @@
       <workItem from="1680031403158" duration="136000" />
       <workItem from="1680031630836" duration="4237000" />
       <workItem from="1680183875581" duration="992000" />
-      <workItem from="1680201776410" duration="8089000" />
+      <workItem from="1680201776410" duration="8512000" />
+      <workItem from="1680254756458" duration="1760000" />
+      <workItem from="1680353498398" duration="391000" />
+      <workItem from="1680353919368" duration="10798000" />
     </task>
     <servers />
   </component>
