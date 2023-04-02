@@ -15,13 +15,10 @@ export function createAccountContextMenu() {
 }
 
 async function PopulateAccountContextMenu() {
-  console.log('Updating account context menu item');
   let accounts: any = await frontendAccountStorage.get('frontendAccounts');
-  console.log(accounts);
 
   // Iterate over the accounts array
   accounts.forEach((account) => {
-    console.log(account);
     chrome.contextMenus.create({
       id: account.id.toString(),
       title: account.emailAddress,
@@ -40,8 +37,6 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   // Check if the clicked item has the parent of accountContextMenu
   const parentId = 'accountContextMenu';
   if ((info.parentMenuItemId as string) == 'accountContextMenu') {
-    console.log('clicked on account context menu item');
-
     // Retrieve account data
     let allAccounts:FrontendAccount[] = await frontendAccountStorage.get('frontendAccounts');
     let selectedAccount = allAccounts.find((account) => account.id.toString() === info.menuItemId);

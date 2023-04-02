@@ -51,4 +51,47 @@ export async function autofillUkFrontendAccount(account) {
   bestTimeToContactInputElement.checked = true; // This is a checkbox
   const changeBestTimeToContactEvent = new Event('change');
   bestTimeToContactInputElement.dispatchEvent(changeBestTimeToContactEvent);
+
+  // Set house name number
+  const houseNameNumberInputElement = <HTMLInputElement>document.getElementById('formCustomerRequirement_Address_Property');
+  houseNameNumberInputElement.value = account.houseNameNumber;
+  const changeHouseNameNumberEvent = new Event('change');
+  houseNameNumberInputElement.dispatchEvent(changeHouseNameNumberEvent);
+
+  // Set postcode
+  const postcodeInputElement = <HTMLInputElement>document.getElementById('formCustomerRequirement_Address_Postcode');
+  postcodeInputElement.value = account.postcode;
+  const changePostcodeEvent = new Event('change');
+  postcodeInputElement.dispatchEvent(changePostcodeEvent);
+
+  // Set county
+  const countyInputElement = <HTMLInputElement>document.getElementById('formCustomerRequirement_Address_County');
+  countyInputElement.value = account.county;
+  const changeCountyEvent = new Event('change');
+  countyInputElement.dispatchEvent(changeCountyEvent);
+
+  // Set address line 1
+  const addressLine1InputElement = <HTMLInputElement>document.getElementById('formCustomerRequirement_Address_AddressLine1');
+  addressLine1InputElement.value = account.addressLine1;
+  const changeAddressLine1Event = new Event('change');
+  addressLine1InputElement.dispatchEvent(changeAddressLine1Event);
+
+  // Set address line 2
+  const addressLine2InputElement = <HTMLInputElement>document.getElementById('formCustomerRequirement_Address_AddressLine2');
+  addressLine2InputElement.value = account.addressLine2;
+  const changeAddressLine2Event = new Event('change');
+  addressLine2InputElement.dispatchEvent(changeAddressLine2Event);
+
+  // Set town city
+  const townCityInputElement = <HTMLInputElement>document.getElementById('formCustomerRequirement_Address_Town');
+  townCityInputElement.value = account.townCity;
+  const changeTownCityEvent = new Event('change');
+  townCityInputElement.dispatchEvent(changeTownCityEvent);
+
+  //Set customer investment
+  const customerInvestmentInputElement = <HTMLInputElement>document.getElementById('formCustomerRequirement_Lead_EstimatedBudgetPence');
+  customerInvestmentInputElement.value = '1000';
+  const changeCustomerInvestmentEvent = new Event('change');
+  customerInvestmentInputElement.dispatchEvent(changeCustomerInvestmentEvent);
+
 }
