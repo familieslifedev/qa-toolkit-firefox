@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import AddAccountModal from "~options/AddAccountModal";
+import AddAccountModal from "~options/AccountManagement/AddAccountModal";
 import { useStorage } from "@plasmohq/storage/dist/hook";
 
 function AccountManagement() {

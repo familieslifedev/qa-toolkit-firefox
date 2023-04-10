@@ -18,7 +18,6 @@ export default function BoltFrontendTab() {
 
   async function frontendHandleNavigate(newTab: boolean) {
     let currentUrl = `https://frontend.${environment.trim()}wrenkitchens.${region.trim()}`;
-    console.log(currentUrl);
     if (newTab == true) {
       let response = await chrome.runtime.sendMessage({ type: "openInNewTab", url: currentUrl });
       if (response) {

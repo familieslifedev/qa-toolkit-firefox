@@ -2,7 +2,7 @@ import { useState } from "react"
 import "./style.css"
 import { useStorage } from "@plasmohq/storage/dist/hook";
 import { themes } from "~options/themes";
-import AccountManagementOptions from "~options/AccountManagmentOptions";
+import AccountManagementOptions from "~options/AccountManagement/AccountManagmentOptions";
 function OptionsIndex() {
   const [theme, setTheme] = useStorage("theme", "emerald");
   const [triggerKey, setTriggerKey] = useStorage("triggerKey", "Q");
@@ -14,10 +14,8 @@ function OptionsIndex() {
   }
   function saveModKey(event) {
     setModifierKey(event.target.value).then(r => console.log("Mod Key Assigned" + event.target.value));
-    console.log("Set Modifier key to " + event.target.key)
   }
   function saveTriggerKey(event) {
-    console.log("Set trigger key to " + event.target.value)
     setTriggerKey(event.target.value);
   }
 

@@ -20,7 +20,7 @@
     border-radius: var(--rounded-btn, 0.5rem);
 }
 *::-webkit-scrollbar-corner {
-    background-color: hsla(0 0 0 0);
+    background-color: hsla(0, 0%, 0%, 0);
 }
 
 * {
@@ -540,5 +540,13 @@ pre[contenteditable] {
 }
 .input-group-sm{
     padding: 5px;
+}
+.newAccountEntryInput{
+    flex: 1;
+}
+.newAccountEntrySpan{
+    flex-wrap: nowrap;
+    width: 130px;
+    justify-content: right;
 }
 /*</editor-fold>*/

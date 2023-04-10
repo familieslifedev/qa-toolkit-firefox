@@ -24,18 +24,15 @@ export function generateStreetName():string{
 	return `${randomStreenPrefix} ${randomStreenSuffix}`;
 }
 
-export function generateAddressLine2():string{
-	const randomVilllage = ukVillages[Math.floor(Math.random() * ukVillages.length)];
-	return randomVilllage;
+export function generateRandomVillage():string{
+	const randomVillage = ukVillages[Math.floor(Math.random() * ukVillages.length)];
+	return randomVillage;
 }
 
 export function generateTown():string{
 	const randomTown = ukTowns[Math.floor(Math.random() * ukTowns.length)];
 	return randomTown;
 }
-
-
-//Arrays
 
 const ukCounties:string[] = [
 	"Aberdeenshire",

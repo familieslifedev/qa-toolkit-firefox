@@ -1,11 +1,9 @@
 
 
 export function generateRandomEmail(firstName: string | null, surname: string | null) {
-	console.log(firstName + surname);
 	const randomDomain = domains[Math.floor(Math.random() * domains.length)];
 	let randomNumber = Math.floor(Math.random() * 1000);
 	if (firstName && surname) {
-		console.log(firstName + surname);
 		return (`${firstName}.${surname}${randomNumber}${randomDomain}`);
 	}
 	else {
