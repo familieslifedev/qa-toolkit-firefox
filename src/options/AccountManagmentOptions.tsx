@@ -3,10 +3,10 @@ import AddAccountModal from "~options/AddAccountModal";
 import { useStorage } from "@plasmohq/storage/dist/hook";
 
 function AccountManagement() {
-  const [showNewAccountModal, setNewAccountModal] = useState(false);
+  const [showNewAccountModal, setShowNewAccountModal] = useState(false);
   const [accountData, setAccountData] = useStorage("frontendAccounts",[]);
   const handleNewAccountButton = () => {
-    setNewAccountModal(true);
+    setShowNewAccountModal(true);
   };
 
   const handleAddAccount = (newAccount) => {
@@ -90,7 +90,7 @@ function AccountManagement() {
       </div>
       {showNewAccountModal && (
         <AddAccountModal
-          onClose={() => setNewAccountModal(false)}
+          onClose={() => setShowNewAccountModal(false)}
           onAddAccount={handleAddAccount}
           checked={showNewAccountModal}
         />
