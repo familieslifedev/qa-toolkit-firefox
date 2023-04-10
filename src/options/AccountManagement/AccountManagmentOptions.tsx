@@ -9,12 +9,12 @@ function AccountManagement() {
     setShowNewAccountModal(true);
   };
 
-  const handleAddAccount = (newAccount) => {
-    setAccountData((prevTableData) => [...prevTableData, newAccount]);
+  const handleAddAccount = async (newAccount) => {
+    await setAccountData((prevTableData) => [...prevTableData, newAccount]);
   };
 
-  const handleDeleteAccount = (accountId) => {
-    setAccountData((prevTableData) => prevTableData.filter((account) => account.id !== accountId));
+  const handleDeleteAccount = async (accountId) => {
+    await setAccountData((prevTableData) => prevTableData.filter((account) => account.id !== accountId));
   };
 
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import type { FrontendAccount } from "~Utils/UtilInterfaces";
 import {Storage} from "@plasmohq/storage";
 import { generateRandomFirstName, generateRandomSurname } from "~Utils/RandomGenerators/nameGenerator";
@@ -14,15 +14,18 @@ import {
 import AddNewEntryInputComponent from "~options/AccountManagement/Components/AddNewEntryInputComponent";
 
 
-const generateUniqueId = async (isUK: boolean) => {
-  const accountStorage = new Storage;
-  let currentAccounts: FrontendAccount[] = await accountStorage.get("frontendAccounts")
+const generateUniqueId = async (): Promise<number> => {
+  const accountStorage = new Storage();
+  const currentAccounts: FrontendAccount[] = await accountStorage.get("frontendAccounts");
+  if(!currentAccounts){
+    await accountStorage.set("frontendAccounts", []);
+  }
   const maxId = currentAccounts.length > 0 ? Math.max(...currentAccounts.map((account) => account.id)) : 0;
   return maxId + 1;
-}
+};
+
 
 function AddAccountModal({ onClose, onAddAccount, checked }) {
-  const [isEmailRandomDisabled, setIsEmailRandomDisabled] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -30,7 +33,7 @@ function AddAccountModal({ onClose, onAddAccount, checked }) {
     const formElements = event.currentTarget.elements;
 
     const newAccount:FrontendAccount = {
-      id: await generateUniqueId(true),
+      id: await generateUniqueId(),
       title: formElements.title.value,
       firstName: formElements.firstName.value,
       surname: formElements.surname.value,
