@@ -1,6 +1,6 @@
 
 
-export function generateRandomEmail(firstName: string | null, surname: string | null) {
+export function generateRandomEmail(firstName: string | null, surname: string | null) :string {
 	const randomDomain = domains[Math.floor(Math.random() * domains.length)];
 	let randomNumber = Math.floor(Math.random() * 1000);
 	if (firstName && surname) {
@@ -39,7 +39,7 @@ const domains: string[] = [
 	"@rocketmail.com",
 ];
 
-const emailAddresses = [
+const emailAddresses: string[] = [
 	"fireball88", "dragonqueen97", "sneaky_ninja", "dark_knight42", "cyber_punk",
 	"daring_adventurer", "king_of_the_world", "space_cadet", "game_over_9000", "rocketman88",
 	"the_real_slim_shady", "silent_killer", "mystic_mage", "rampaging_rhino", "thunderbolt_99",

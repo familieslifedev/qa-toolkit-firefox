@@ -1,7 +1,4 @@
-
-type Gender = string;
-type ReturnName = string;
-export function generateRandomFirstName(gender: Gender): ReturnName {
+export function generateRandomFirstName(gender: string): string {
 	let names: string[];
 
 	switch (gender){
@@ -11,7 +8,7 @@ export function generateRandomFirstName(gender: Gender): ReturnName {
 		case 'female':
 			names= femaleFirstNames;
 			break;
-			case 'any':
+		case 'any':
 		default:
 			names=maleFirstNames.concat(femaleFirstNames);
 			break;
@@ -20,23 +17,13 @@ export function generateRandomFirstName(gender: Gender): ReturnName {
 	return names[randomIndex];
 }
 
-export function generateRandomSurname():ReturnName {
+export function generateRandomSurname():string {
 	const randomIndex: number = Math.floor(Math.random() * surnames.length);
 	return surnames[randomIndex];
 }
 
 
-
-
-
-
-
-
-//Arrays
-
-//Female first names
-
-const femaleFirstNames = [
+const femaleFirstNames:string[] = [
 	"Sophie", "Emily", "Amelia", "Olivia", "Jessica", "Lucy", "Chloe", "Emma", "Mia", "Charlotte",
 	"Grace", "Lily", "Ella", "Holly", "Eleanor", "Harriet", "Molly", "Rosie", "Georgia", "Eva",
 	"Isla", "Hannah", "Alice", "Abigail", "Freya", "Phoebe", "Poppy", "Isabelle", "Daisy", "Layla",
@@ -56,7 +43,7 @@ const femaleFirstNames = [
 	"Samara", "Esther", "Aurelia", "Zoey", "Astrid", "Thalia", "Miriam", "Iona", "Darcie", "Margo"
 ];
 
-const maleFirstNames = [
+const maleFirstNames:string[] = [
 	"Jack", "Oliver", "Harry", "George", "Noah", "Charlie", "Jacob", "William", "Thomas", "Joshua",
 	"James", "Ethan", "Daniel", "Samuel", "Benjamin", "Joseph", "Henry", "Alexander", "Mason", "Leo",
 	"Max", "Logan", "Lucas", "Oscar", "Matthew", "Adam", "David", "Ryan", "Isaac", "Dylan",
@@ -74,7 +61,7 @@ const maleFirstNames = [
 	"Eduardo", "Gustavo", "Sebastián", "Cristian", "Ariel", "Lionel", "Hector", "Jose", "Julio", "Maximiliano"
 ];
 
-const surnames = [
+const surnames:string[] = [
 	"Smith", "Jones", "Taylor", "Brown", "Williams", "Wilson", "Johnson", "Davies", "Robinson", "Wright",
 	"Thompson", "White", "Walker", "Hall", "Green", "Lewis", "Harris", "Clarke", "Cooper", "Jackson",
 	"Hill", "Morgan", "Hughes", "Edwards", "Turner", "Parker", "Collins", "Baker", "King", "Carter",

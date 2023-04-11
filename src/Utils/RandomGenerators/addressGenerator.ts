@@ -121,7 +121,7 @@ const ukCounties:string[] = [
 	"Yorkshire"
 ];
 
-const ukStreetSuffixes:string[] = [
+const ukStreetSuffixes: string[] = [
 	"Avenue",
 	"Boulevard",
 	"Close",
@@ -215,7 +215,7 @@ const ukStreetSuffixes:string[] = [
 	"Woods"
 ];
 
-const ukStreetPrefixes:string[] = [
+const ukStreetPrefixes: string[] = [
 	"High",
 	"Baker",
 	"King",
@@ -309,7 +309,7 @@ const ukStreetPrefixes:string[] = [
 	"Elegance"
 ]
 
-const ukTowns:string[] = [
+const ukTowns: string[] = [
 	"Aberdeen",
 	"Armagh",
 	"Bangor",
@@ -438,7 +438,7 @@ const ukTowns:string[] = [
 	"York",
 	]
 
-const ukVillages = [
+const ukVillages: string[] = [
 	"Aberlady",
 	"Aldbourne",
 	"Alfriston",
