@@ -15,7 +15,7 @@ import AddNewEntryInputComponent from "~options/AccountManagement/Components/Add
 
 
 const generateUniqueId = async (): Promise<number> => {
-  const accountStorage = new Storage();
+  const accountStorage: Storage = new Storage();
   const currentAccounts: FrontendAccount[] = await accountStorage.get("frontendAccounts");
   if(!currentAccounts){
     await accountStorage.set("frontendAccounts", []);
@@ -25,13 +25,12 @@ const generateUniqueId = async (): Promise<number> => {
 };
 
 
-function AddAccountModal({ onClose, onAddAccount, checked }) {
 
+function AddAccountModal({ onClose, onAddAccount, checked }) {
+  const [userFeedback, setUserFeedback ] = React.useState("");
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     const formElements = event.currentTarget.elements;
-
     const newAccount:FrontendAccount = {
       id: await generateUniqueId(),
       title: formElements.title.value,
@@ -46,12 +45,22 @@ function AddAccountModal({ onClose, onAddAccount, checked }) {
       addressLine2: formElements.addressLine2.value,
       townCity: formElements.townCity.value,
     };
-
-    onAddAccount(newAccount);
-    onClose();
+    if(formElements.title.value && formElements.firstName.value && formElements.surname.value && formElements.emailAddress.value && formElements.contactNumber.value && formElements.houseNameNumber.value && formElements.postcode.value && formElements.county.value && formElements.addressLine1.value && formElements.townCity.value) {
+      setUserFeedback("")
+      onAddAccount(newAccount);
+      onClose();
+    }
+    else{
+      setUserFeedback("Please fill in all required fields");
+    }
   };
 
 
+  function randomTitle(){
+    const titleInput = document.querySelector("select[name='title']") as HTMLSelectElement;
+    const titles = ["Mr", "Mrs", "Miss", "Ms", "Sir", "Dr"];
+    titleInput.value = titles[Math.floor(Math.random() * titles.length)];
+  }
   function randomFirstName() {
     const titleInput = document.querySelector("select[name='title']") as HTMLSelectElement;
     const firstNameInput = document.querySelector("input[name='firstName']") as HTMLInputElement;
@@ -114,6 +123,20 @@ function AddAccountModal({ onClose, onAddAccount, checked }) {
     addressLine2Input.value = generateRandomVillage();
   }
 
+  function randomAll(){
+    setUserFeedback("");
+    randomTitle();
+    randomFirstName();
+    randomSurname();
+    randomEmail();
+    randomContactNumber();
+    randomHouseNumber();
+    randomPostcode();
+    randomCounty();
+    randomAddressLine1();
+    randomTownCity();
+  }
+
   return (
       <>
         <input type="checkbox" id="addAccountModal" className="modal-toggle" checked={checked} readOnly />
@@ -125,7 +148,6 @@ function AddAccountModal({ onClose, onAddAccount, checked }) {
                 <label className="input-group input-group-sm">
                   <span>Title</span>
                   <select className="select select-sm select-bordered" name="title">
-                    <option disabled selected>Select</option>
                     <option>Mr</option>
                     <option>Mrs</option>
                     <option>Miss</option>
@@ -133,6 +155,13 @@ function AddAccountModal({ onClose, onAddAccount, checked }) {
                     <option>Sir</option>
                     <option>Dr</option>
                   </select>
+                  <button className="btn btn-sm btn-primary" type="button" onClick={randomTitle}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
+                         stroke="currentColor" className="w-6 h-6">
+                      <path strokeLinecap="round" strokeLinejoin="round"
+                            d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                    </svg>
+                  </button>
                 </label>
                 <AddNewEntryInputComponent onClickFunction={randomFirstName} prettyName={'First Name'} inputName={'firstName'}></AddNewEntryInputComponent>
                 <AddNewEntryInputComponent onClickFunction={randomSurname} prettyName={'Surname'} inputName={'surname'}></AddNewEntryInputComponent>
@@ -140,17 +169,26 @@ function AddAccountModal({ onClose, onAddAccount, checked }) {
                 <AddNewEntryInputComponent onClickFunction={randomContactNumber} prettyName={'Phone Number'} inputName={'contactNumber'}></AddNewEntryInputComponent>
                 <AddNewEntryInputComponent onClickFunction={randomPostcode} prettyName={'Postcode'} inputName={'postcode'}></AddNewEntryInputComponent>
                 <AddNewEntryInputComponent onClickFunction={randomHouseNumber} prettyName={'House Number'} inputName={'houseNameNumber'}></AddNewEntryInputComponent>
-                <AddNewEntryInputComponent prettyName={'Address Line 1'} inputName={'addressLine1'} onClickFunction={randomAddressLine1}></AddNewEntryInputComponent>
-                <AddNewEntryInputComponent prettyName={'Address Line 2'} inputName={'addressLine2'} onClickFunction={randomAddressLine2}></AddNewEntryInputComponent>
-                <AddNewEntryInputComponent prettyName={'County'} inputName={'county'} onClickFunction={randomCounty}></AddNewEntryInputComponent>
-                <AddNewEntryInputComponent prettyName={'Town/City'} inputName={'townCity'} onClickFunction={randomTownCity}></AddNewEntryInputComponent>
+                <AddNewEntryInputComponent onClickFunction={randomAddressLine1} prettyName={'Address Line 1'} inputName={'addressLine1'} ></AddNewEntryInputComponent>
+                <AddNewEntryInputComponent onClickFunction={randomAddressLine2} prettyName={'Address Line 2'} inputName={'addressLine2'} placeholder={'Optional'} ></AddNewEntryInputComponent>
+                <AddNewEntryInputComponent onClickFunction={randomCounty} prettyName={'County'} inputName={'county'} ></AddNewEntryInputComponent>
+                <AddNewEntryInputComponent onClickFunction={randomTownCity} prettyName={'Town/City'} inputName={'townCity'} ></AddNewEntryInputComponent>
               </div>
               <div className="modal-action">
+                <p className="text text-error">{userFeedback}</p>
+                <button className="btn btn-primary" type="button" onClick={randomAll}>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
+                       stroke="currentColor" className="w-6 h-6">
+                    <path strokeLinecap="round" strokeLinejoin="round"
+                          d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                  </svg>
+                </button>
                 <button className="btn btn-primary" type="submit">
                   Add
                 </button>
 
                 <button className="btn btn-secondary" onClick={onClose}>Cancel</button>
+
               </div>
             </form>
           </div>
