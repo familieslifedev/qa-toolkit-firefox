@@ -1,29 +1,11 @@
-import * as backgroundMessageHandler from "./Utils/backgroundMessageHandler"
-export {}
+import * as backgroundMessageHandler from "./Utils/backgroundMessageHandler";
+import * as contextMenuController from "./contextMenu/contextMenuController"
+import { initialiseContextMenu } from "./contextMenu/contextMenuController";
+export {};
+console.log('background script loaded');
 
-console.log('background loaded');
 
-// chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-//   if (request.type === "checkURL") {
-//     fetch(request.url)
-//       .then(response => {
-//         if (response.status === 200) {
-//           sendResponse({ success: true });
-//           chrome.tabs.create({
-//             url: request.url,
-//           })
-//         } else {
-//           sendResponse({ success: false });
-//         }
-//       })
-//       .catch(error => {
-//         console.error(error);
-//         sendResponse({ success: false });
-//       });
-//     return true;
-//   }
-// });
-
+// initialize Background Message Handler
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   const handler = backgroundMessageHandler[request.type];
   if (handler) {
@@ -32,3 +14,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     console.error("Unknown message type:", request.type);
   }
 });
+
+
+//initialize Context Menu Controller
+chrome.runtime.onInstalled.addListener(() => {initialiseContextMenu()});
