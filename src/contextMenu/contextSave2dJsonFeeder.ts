@@ -1,6 +1,6 @@
 import { BG_savePlanJson } from "~Utils/backgroundMessageHandler";
 
-export function create2dJsonToFeeder() {
+export async function create2dJsonToFeeder() {
 	chrome.contextMenus.create({
 		id: 'save2dJsonFeeder',
 		title: 'Save 2D JSON As Feeder',
