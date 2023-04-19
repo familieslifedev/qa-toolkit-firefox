@@ -1,46 +1,37 @@
 import React, { useState } from "react";
 import { copyFromClipboard, get2DJson, get3DJson, load2DJson, prettyPrintJson, writeToClipboard } from "~Utils/Utils";
 
+const JsonViewer = ({ edit }): JSX.Element => {
+  const [jsonData, setJsonData] = useState<string | object>(null);
+  const [updatedJson, setUpdatedJson] = useState<string | object>(null);
 
+  const handleGet2dJson = async (): Promise<void> => await handleGetJson(get2DJson);
+  const handleGet3dJson = async (): Promise<void> => await handleGetJson(get3DJson);
+  const handleFromClipboard = async (): Promise<void> => await handleGetJson(copyFromClipboard, true);
 
-
-const JsonViewer = ({ edit }) => {
-  const [jsonData, setJsonData] = useState(null);
-  const [updatedJson, setUpdatedJson] = useState(null);
-
-
-  const handleGet2dJson = async () => {
-    let res = await get2DJson()
-    if (res) {
-      setJsonData(res);
-      setUpdatedJson(null);
-    }
-  }
-  const handleGet3dJson = async () => {
-    let res = await get3DJson()
-    if(res){
-      setJsonData(res);
-      setUpdatedJson(null);
-    }
-  }
-  const handleFromClipboard = async () => {
+  const handleGetJson = async (jsonFunc: Function, parseResult: boolean = false): Promise<void> => {
     try {
-      const res = await copyFromClipboard()
-      if (res) {
-        setJsonData(JSON.parse(res));
-        setUpdatedJson(null);
-      }
-    } catch (error) {
-      setJsonData("Invalid Json");
+      let result: string | object = await jsonFunc();
+      result = parseResult ? JSON.parse(result as string) : result;
+
+      if (!result) return;
+
+      setJsonData(result);
+      setUpdatedJson(null);
+
+    } catch (err) {
+      setJsonData("Invalid JSON");
     }
   }
 
-  function handleJsonValidate() {
-    let jsonToValidate = updatedJson !== null ? updatedJson : jsonData;
+  const handleJsonValidate = (): void => {
+    const jsonToValidate: string | object = updatedJson ?? jsonData;
 
     try {
       if (jsonToValidate) {
-        let parsedJson = JSON.parse(typeof jsonToValidate === 'string' ? jsonToValidate : JSON.stringify(jsonToValidate));
+        // where should this be used?
+        const parsedJson = JSON.parse(typeof jsonToValidate === 'string' ? jsonToValidate : JSON.stringify(jsonToValidate));
+
         alert('JSON is valid!');
       } else {
         alert('Please enter some JSON first');
@@ -50,27 +41,21 @@ const JsonViewer = ({ edit }) => {
     }
   }
 
+  const handleEditJson = (e: any): void => {
+    const element = e.target as HTMLPreElement;
 
-
-  const handleEditJson = (e) => {
-    const newJsonData = e.target.innerText;
+    const newJsonData = element.innerText;
     setUpdatedJson(newJsonData);
   }
 
-  async function handleToClipboard() {
-    if(updatedJson) {
-      await writeToClipboard(updatedJson);
-    } else {
-      await writeToClipboard(JSON.stringify(jsonData,null,2));
-    }
+  const handleToClipboard = async (): Promise<void> => {
+    const clipboardData = updatedJson ? updatedJson : JSON.stringify(jsonData, null, 2);
+    await writeToClipboard(clipboardData);
   }
 
-  async function handleLoadPlan() {
-    if (updatedJson) {
-      await load2DJson(updatedJson);
-    } else {
-      await load2DJson(JSON.stringify(jsonData));
-    }
+  const handleLoadPlan = async (): Promise<void> => {
+    const jsonToLoad = updatedJson ?? JSON.stringify(jsonData);
+    await load2DJson(jsonToLoad);
   }
 
   return (
