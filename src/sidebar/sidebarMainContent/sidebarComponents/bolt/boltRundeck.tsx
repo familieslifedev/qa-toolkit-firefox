@@ -26,7 +26,6 @@ export default function BoltRundeck() {
     const regionKey = regionCodeToKey[region];
     const job = rundeckJobsArray.find((j) => j.Job === rundeckJob);
     const url = job[regionKey];
-    console.log(url);
     if (newTab) {
       let response = await chrome.runtime.sendMessage({ type: "openInNewTab", url: url });
       if (response) {

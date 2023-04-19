@@ -2,8 +2,6 @@ import { copyFromClipboard, get2DJson, get3DJson, load2DJson, openURL, writeToCl
 import {FeedbackContext} from "~Utils/sidebarContext";
 import JsonEditorModal from "~sidebar/sidebarMainContent/sidebarComponents/jsonTools/JsonEditor/JsonEditorModal";
 import { useContext, useEffect, useState } from "react";
-import ReactDOM from "react-dom";
-import Draggable from "react-draggable";
 import { openInNewTab } from "~Utils/backgroundMessageHandler";
 
 export default function JsonTools() {
@@ -45,7 +43,6 @@ export default function JsonTools() {
     try{
     let clipText = await copyFromClipboard();
     if (!clipText) {
-      console.log("failed to get clipboard");
       return;
     }
     if(clipText.startsWith("https://feeder")) {
@@ -55,7 +52,6 @@ export default function JsonTools() {
       const orderNumberSplit = orderNumberPart.split("-");
       const orderNumber = orderNumberSplit[0]; // should output clean order number
       const feederPlanImageUrl = `https://${domain}/plan/image/get?planId=${orderNumber}&imageType=PREVIEW_IMAGE&debug=true`;
-      console.log(`https://${domain}/plan/image/get?planId=${orderNumber}&imageType=PREVIEW_IMAGE&debug=true`);
       await chrome.runtime.sendMessage({ type: "openInNewTab", url: feederPlanImageUrl });
 
     }
@@ -83,14 +79,14 @@ export default function JsonTools() {
   }
 
 
-  async function handleTestFetch() {
+  async function handleGet2dJsonFeeder() {
     let command = "get2DJson"
     let response = await chrome.runtime.sendMessage({
       type: "BG_savePlanJson",
       functionName: command,
     })
     if (response){
-      console.log(response)
+      await writeToClipboard(response);
     }
 
   }
@@ -107,10 +103,10 @@ export default function JsonTools() {
     <div className="jsonContainer">
 
       <button className="btn btn-sm btn-wide btn-primary" title={"Loads 2d Plan from feeder link or Json in clipboard"} onClick={handleLoadJson}>Load Plan Json</button>
+      <button className="btn btn-sm btn-wide btn-primary" title={"Stores current 2d Json in s3 and writes link to clipboard"} onClick={handleGet2dJsonFeeder}>Get 2d Json Feeder link</button>
       <button className="btn btn-sm btn-wide btn-primary" title={"Gets the current plan 2d Json and write to clipboard"} onClick={handleGet2DJson}>Get 2D Json</button>
       <button className="btn btn-sm btn-wide btn-primary" title={"Gets the current plan 3d Json and write to clipboard"} onClick={handleGet3DJson}>Get 3D Json</button>
       <button className="btn btn-sm btn-wide btn-primary" title={"Preview Image from Feeder URL"} onClick={handleGetPlanImages}>Get Plan Images</button>
-      <button className="btn btn-sm btn-wide btn-primary" title={"Test For now"} onClick={handleTestFetch}>Test Fetch</button>
       <button className="btn btn-sm btn-wide btn-primary" title={"Open Json Viewer/Editor"} onClick={handleJsonEditorPanel}>Open Json Edit</button>
       <div>
           <JsonEditorModal hidden={!isJsonEditorVisible} onHiddenChange={handleJsonEditorPanel}/>

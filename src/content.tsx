@@ -6,12 +6,30 @@ import { useEffect, useState } from "react";
 import FeedbackPanel from "~sidebar/feedbackPanel";
 import {FeedbackContext} from "~Utils/sidebarContext";
 import JsonEditorModal from "~sidebar/sidebarMainContent/sidebarComponents/jsonTools/JsonEditor/JsonEditorModal";
+import * as contentMessageHandler from "~Utils/contentMessageHandler";
 export const getStyle = () => {
   const style = document.createElement("style")
   style.textContent = cssText
   return style
 }
 
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  try {
+    const handler = contentMessageHandler[request.type];
+
+    if (handler) {
+      handler(request, sender, sendResponse);
+    } else {
+      console.error("Unknown message type:", request.type);
+      sendResponse({ error: 'Unknown message type' });
+    }
+  } catch (error) {
+    console.error("Error processing message:", error);
+    sendResponse({ error: 'Error processing message' });
+  }
+    // Asynchronous response, keep the channel open
+    return true;
+});
 const Sidebar = () => {
   const [isHidden, setIsHidden] = useState( true);
   const [theme, setTheme] = useStorage("theme", "emerald");
@@ -20,6 +38,7 @@ const Sidebar = () => {
   const [modifierKey] = useStorage("modifierKey", "Control");
   const [feedbackText, setFeedbackText] = useState('');
   const [feedbackProgress, setFeedbackProgress] = useState(0);
+
 
   const handleHideClick = () => {
     setIsHidden(!isHidden);
