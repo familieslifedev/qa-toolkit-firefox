@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import BoltFrontendTab from "~sidebar/sidebarMainContent/sidebarComponents/bolt/boltFrontend";
 import BoltRundeck from "~sidebar/sidebarMainContent/sidebarComponents/bolt/boltRundeck";
 export default function Bolt() {
-  const [selectedTab, setSelectedTab] = useState("tab1");
+  const [selectedTab, setSelectedTab] = useState("frontendTab");
 
   return (
     <div className="boltContainer">
