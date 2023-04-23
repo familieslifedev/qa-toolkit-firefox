@@ -1,17 +1,25 @@
 
 import React from "react";
+import { injectDebugCommand } from "~Utils/Utils";
 
 interface DebugSingleButtonProps {
 	prettyName?: string;
 	commandName?: string;
 	hoverTip?: string;
-	onClickFunction?: () => void;
+	onClickFunction?: string;
 	placeholder?: string | undefined;
 }
 
-const DebugSingleButton: React.FC<DebugSingleButtonProps> = ({ prettyName,commandName, hoverTip ,onClickFunction,placeholder }) => {
+async function sendDebugCommand(command?, argsArray?) {
+	console.log('sendDebugCommand() called');
+	await injectDebugCommand(command, argsArray);
+}
+
+
+
+const DebugSingleButton: React.FC<DebugSingleButtonProps>  = ({ prettyName,commandName, hoverTip ,onClickFunction,placeholder }) => {
 	return (
-		<button className="btn btn-sm btn-primary debugSingleButton" title={hoverTip} type="button" onClick={onClickFunction}>{prettyName}</button>
+		<button className="btn btn-xs btn-primary debugSingleButton" title={hoverTip} onClick={() => sendDebugCommand(onClickFunction)} >{prettyName}</button>
 
 	);
 }
