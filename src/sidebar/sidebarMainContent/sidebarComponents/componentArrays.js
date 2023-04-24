@@ -31,6 +31,7 @@ export const environmentArray = [
 ]
 
 export const rundeckJobsArray = [
+	{Job: "singleIndex", Name: "Single Index", UK:"https://rundeck.project.wrenkitchens.com/project/it-development/job/show/0bf80455-4f7c-480f-8692-2bd58a77f4f9", US:"https://rundeck.project.wrenkitchens.us/project/it-development/job/show/bccc98ba-5abb-431e-8961-0648613b4e7e"},
 	{Job: "clearRedis", Name: "Clear Redis", UK:"https://rundeck.project.wrenkitchens.com/project/it-development/job/show/681c8511-98d1-483e-a763-1a4350c8e02f", US:"https://rundeck.project.wrenkitchens.us/project/it-development/job/show/4903331f-02aa-4272-930e-6a3ba3495b87"},
 	{Job: "wwhCacheClear",Name: "Wwh Cache Clear", UK:"https://rundeck.project.wrenkitchens.com/project/it-development/job/show/f043b6c7-fe91-48c9-93fe-76d9fefbf32e", US:"https://rundeck.project.wrenkitchens.com/project/it-development/job/show/f043b6c7-fe91-48c9-93fe-76d9fefbf32e"},
 	{Job: "wwhCombi",Name: "Wwh Combi Clear", UK:"https://rundeck.project.wrenkitchens.com/project/it-development/job/show/c55bdf92-17fc-4fa5-ae97-f6d1d1972ff4", US:"https://rundeck.project.wrenkitchens.com/project/it-development/job/show/c55bdf92-17fc-4fa5-ae97-f6d1d1972ff4"},
