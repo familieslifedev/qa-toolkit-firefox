@@ -6,31 +6,37 @@ import DebugSingleButton
 	from "~sidebar/sidebarMainContent/sidebarComponents/DebugCommands/DebugComponents/DebugSingleButtonComp";
 import DebugRoom from "~sidebar/sidebarMainContent/sidebarComponents/DebugCommands/DebugRoom";
 export default function DebugCommands() {
-	const [selectedTab, setSelectedTab] = useState("generalTab");
+	enum Tabs {
+		generalTab,
+		cppTab,
+		roomTab,
+		toursTab
+
+	}
+	const [selectedTab, setSelectedTab] = useState(Tabs.generalTab);
 
 	return (
 		<>
 		<div className="debugCommandsContainer">
 			<div className="tabs debugCommandsTabList">
-				<a className={`tab debugCommandsTabItem tab-bordered ${selectedTab === "generalTab" ? "debugCommandsTabActive" : ""}`} onClick={() => setSelectedTab("generalTab")}>General</a>
-				<a className={`tab debugCommandsTabItem tab-bordered ${selectedTab === "cppTab" ? "debugCommandsTabActive" : ""}`} onClick={() => setSelectedTab("cppTab")}>CPP</a>
-				<a className={`tab debugCommandsTabItem tab-bordered ${selectedTab === "roomTab" ? "debugCommandsTabActive" : ""}`} onClick={() => setSelectedTab("roomTab")}>Room</a>
-				<a className={`tab debugCommandsTabItem tab-bordered ${selectedTab === "3dToursTab" ? "debugCommandsTabActive" : ""}`} onClick={() => setSelectedTab("3dToursTab")}>3DTours</a>
+				<a className={`tab debugCommandsTabItem tab-bordered ${selectedTab === Tabs.generalTab ? "debugCommandsTabActive" : ""}`} onClick={() => setSelectedTab(Tabs.generalTab)}>General</a>
+				<a className={`tab debugCommandsTabItem tab-bordered ${selectedTab === Tabs.cppTab ? "debugCommandsTabActive" : ""}`} onClick={() => setSelectedTab(Tabs.cppTab)}>CPP</a>
+				<a className={`tab debugCommandsTabItem tab-bordered ${selectedTab === Tabs.roomTab ? "debugCommandsTabActive" : ""}`} onClick={() => setSelectedTab(Tabs.roomTab)}>Room</a>
+				<a className={`tab debugCommandsTabItem tab-bordered ${selectedTab === Tabs.toursTab ? "debugCommandsTabActive" : ""}`} onClick={() => setSelectedTab(Tabs.toursTab)}>3DTours</a>
 			</div>
 			<div className="debugCommandsContentPanel">
-				{selectedTab === "generalTab" && <div className="generalContentContainer">
+				{selectedTab === Tabs.generalTab && <div className="generalContentContainer">
 					<DebugGeneral/>
 				</div>}
-				{selectedTab === "3dToursTab" && <div>
-					<Debug3dTours/>
-				</div>}
-				{selectedTab === "cppTab" && <div>
+				{selectedTab === Tabs.cppTab && <div>
 					<DebugCPP/>
 				</div>}
-				{selectedTab === "roomTab" && <div>
+				{selectedTab === Tabs.roomTab && <div>
 					<DebugRoom/>
 				</div>}
-
+				{selectedTab === Tabs.toursTab && <div>
+					<Debug3dTours/>
+				</div>}
 			</div>
 
 		</div>
