@@ -4,33 +4,33 @@ import BoltRundeck from "~sidebar/sidebarMainContent/sidebarComponents/bolt/bolt
 import BoltEmissaryTab from "~sidebar/sidebarMainContent/sidebarComponents/bolt/boltEmissary";
 import BoltJenkinsTab from "~sidebar/sidebarMainContent/sidebarComponents/bolt/boltJenkins";
 export default function Bolt() {
-		enum Tabs {
+		enum BoltTabs {
 		frontendTab,
 		runDeckTab,
 		emissaryTab,
 		jenkinsTab
 	}
-	const [selectedTab, setSelectedTab] = useState(Tabs.frontendTab);
+	const [selectedTab, setSelectedTab] = useState(BoltTabs.frontendTab);
 
 	return (
 		<div className="boltContainer">
 			<div className="tabs boltTabList">
-				<a className={`tab boltTabItem tab-bordered ${selectedTab === Tabs.frontendTab ? "boltTabActive" : ""}`} onClick={() => setSelectedTab(Tabs.frontendTab)}>Frontend</a>
-				<a className={`tab boltTabItem tab-bordered ${selectedTab === Tabs.runDeckTab ? "boltTabActive" : ""}`} onClick={() => setSelectedTab(Tabs.runDeckTab)}>Rundeck</a>
-				<a className={`tab boltTabItem tab-bordered ${selectedTab === Tabs.emissaryTab ? "boltTabActive" : ""}`} onClick={() => setSelectedTab(Tabs.emissaryTab)}>Emissary</a>
-				<a className={`tab boltTabItem tab-bordered ${selectedTab === Tabs.jenkinsTab ? "boltTabActive" : ""}`} onClick={() => setSelectedTab(Tabs.jenkinsTab)}>Jenkins</a>
+				<a className={`tab boltTabItem tab-bordered ${selectedTab === BoltTabs.frontendTab ? "boltTabActive" : ""}`} onClick={() => setSelectedTab(BoltTabs.frontendTab)}>Frontend</a>
+				<a className={`tab boltTabItem tab-bordered ${selectedTab === BoltTabs.runDeckTab ? "boltTabActive" : ""}`} onClick={() => setSelectedTab(BoltTabs.runDeckTab)}>Rundeck</a>
+				<a className={`tab boltTabItem tab-bordered ${selectedTab === BoltTabs.emissaryTab ? "boltTabActive" : ""}`} onClick={() => setSelectedTab(BoltTabs.emissaryTab)}>Emissary</a>
+				<a className={`tab boltTabItem tab-bordered ${selectedTab === BoltTabs.jenkinsTab ? "boltTabActive" : ""}`} onClick={() => setSelectedTab(BoltTabs.jenkinsTab)}>Jenkins</a>
 			</div>
 			<div className="boltContentPanel">
-				{selectedTab === Tabs.frontendTab && <div className="frontendContentContainer">
+				{selectedTab === BoltTabs.frontendTab && <div className="frontendContentContainer">
 					<BoltFrontendTab/>
 				</div>}
-				{selectedTab === Tabs.runDeckTab && <div>
+				{selectedTab === BoltTabs.runDeckTab && <div>
 					<BoltRundeck/>
 				</div>}
-				{selectedTab === Tabs.emissaryTab && <div>
+				{selectedTab === BoltTabs.emissaryTab && <div>
 					<BoltEmissaryTab/>
 				</div>}
-				{selectedTab === Tabs.jenkinsTab && <div>
+				{selectedTab === BoltTabs.jenkinsTab && <div>
 					<BoltJenkinsTab/>
 				</div>}
 			</div>

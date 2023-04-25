@@ -6,35 +6,35 @@ import DebugSingleButton
 	from "~sidebar/sidebarMainContent/sidebarComponents/DebugCommands/DebugComponents/DebugSingleButtonComp";
 import DebugRoom from "~sidebar/sidebarMainContent/sidebarComponents/DebugCommands/DebugRoom";
 export default function DebugCommands() {
-	enum Tabs {
+	enum DebugTabs {
 		generalTab,
 		cppTab,
 		roomTab,
 		toursTab
 
 	}
-	const [selectedTab, setSelectedTab] = useState(Tabs.generalTab);
+	const [selectedTab, setSelectedTab] = useState(DebugTabs.generalTab);
 
 	return (
 		<>
 		<div className="debugCommandsContainer">
 			<div className="tabs debugCommandsTabList">
-				<a className={`tab debugCommandsTabItem tab-bordered ${selectedTab === Tabs.generalTab ? "debugCommandsTabActive" : ""}`} onClick={() => setSelectedTab(Tabs.generalTab)}>General</a>
-				<a className={`tab debugCommandsTabItem tab-bordered ${selectedTab === Tabs.cppTab ? "debugCommandsTabActive" : ""}`} onClick={() => setSelectedTab(Tabs.cppTab)}>CPP</a>
-				<a className={`tab debugCommandsTabItem tab-bordered ${selectedTab === Tabs.roomTab ? "debugCommandsTabActive" : ""}`} onClick={() => setSelectedTab(Tabs.roomTab)}>Room</a>
-				<a className={`tab debugCommandsTabItem tab-bordered ${selectedTab === Tabs.toursTab ? "debugCommandsTabActive" : ""}`} onClick={() => setSelectedTab(Tabs.toursTab)}>3DTours</a>
+				<a className={`tab debugCommandsTabItem tab-bordered ${selectedTab === DebugTabs.generalTab ? "debugCommandsTabActive" : ""}`} onClick={() => setSelectedTab(DebugTabs.generalTab)}>General</a>
+				<a className={`tab debugCommandsTabItem tab-bordered ${selectedTab === DebugTabs.cppTab ? "debugCommandsTabActive" : ""}`} onClick={() => setSelectedTab(DebugTabs.cppTab)}>CPP</a>
+				<a className={`tab debugCommandsTabItem tab-bordered ${selectedTab === DebugTabs.roomTab ? "debugCommandsTabActive" : ""}`} onClick={() => setSelectedTab(DebugTabs.roomTab)}>Room</a>
+				<a className={`tab debugCommandsTabItem tab-bordered ${selectedTab === DebugTabs.toursTab ? "debugCommandsTabActive" : ""}`} onClick={() => setSelectedTab(DebugTabs.toursTab)}>3DTours</a>
 			</div>
 			<div className="debugCommandsContentPanel">
-				{selectedTab === Tabs.generalTab && <div className="generalContentContainer">
+				{selectedTab === DebugTabs.generalTab && <div className="generalContentContainer">
 					<DebugGeneral/>
 				</div>}
-				{selectedTab === Tabs.cppTab && <div>
+				{selectedTab === DebugTabs.cppTab && <div>
 					<DebugCPP/>
 				</div>}
-				{selectedTab === Tabs.roomTab && <div>
+				{selectedTab === DebugTabs.roomTab && <div>
 					<DebugRoom/>
 				</div>}
-				{selectedTab === Tabs.toursTab && <div>
+				{selectedTab === DebugTabs.toursTab && <div>
 					<Debug3dTours/>
 				</div>}
 			</div>
