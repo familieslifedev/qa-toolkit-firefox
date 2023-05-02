@@ -49,6 +49,10 @@
     font-size: 1.5rem;
     font-weight: 300;
 }
+.optionSubHeading{
+    font-size: 1.3rem;
+    font-weight: 300;
+}
 /*</editor-fold>*/
 
 /*<editor-fold desc="ComplianceTools">*/
@@ -596,4 +600,5 @@ pre[contenteditable] {
     width: 130px;
     justify-content: right;
 }
+
 /*</editor-fold>*/
