@@ -3,6 +3,8 @@ import {FeedbackContext} from "~Utils/sidebarContext";
 import JsonEditorModal from "~sidebar/sidebarMainContent/sidebarComponents/jsonTools/JsonEditor/JsonEditorModal";
 import { useContext, useEffect, useState } from "react";
 import { openInNewTab } from "~Utils/backgroundMessageHandler";
+import { injectDebugCommand } from "~Utils/Utils";
+import DebugSingleButton from "./DebugComponents/DebugSingleButtonComp";
 
 export default function DebugGeneral() {
 	const { setFeedbackText } = useContext(FeedbackContext);
@@ -76,8 +78,8 @@ export default function DebugGeneral() {
 			<button className="btn btn-xs btn-primary debugSingleButton" title={"Stores current 2d Json in s3 and writes link to clipboard"} onClick={handleGet2dJsonFeeder}>Get 2d Json Feeder link</button>
 			<button className="btn btn-xs btn-primary debugSingleButton" title={"Gets the current plan 2d Json and write to clipboard"} onClick={handleGet2DJson}>Get 2D Json</button>
 			<button className="btn btn-xs btn-primary debugSingleButton" title={"Gets the current plan 3d Json and write to clipboard"} onClick={handleGet3DJson}>Get 3D Json</button>
-			<button className="btn btn-xs btn-primary debugSingleButton" title={"Preview Image from Feeder URL"} onClick={handleGetPlanImages}>Get Plan Images</button>
-
+			<button className="btn btn-xs btn-primary debugSingleButton" title={"Preview Image from Feeder"} onClick={handleGetPlanImages}>Get Preview Image</button>
+			<DebugSingleButton prettyName="Render Plan Images" title={"Generates plan images"} onClickFunction='renderPlanImages'/>
 		</div>
 	);
 }

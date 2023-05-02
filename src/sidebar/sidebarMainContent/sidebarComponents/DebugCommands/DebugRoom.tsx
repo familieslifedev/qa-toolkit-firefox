@@ -10,6 +10,7 @@ export default function DebugRoom() {
 			<DebugSingleButton prettyName="Collsion Shapes" onClickFunction='drawCollisionPolygons'/>
 			<DebugSingleButton prettyName="Ceiling Outer Shapes" onClickFunction='drawCeilingOuterShapes'/>
 			<DebugSingleButton prettyName="Floor Outer Shapes" onClickFunction='drawFloorOuterShapes'/>
+			<DebugSingleButton prettyName="Overlap Polygons" onClickFunction='drawOverlapPolygons'/>
 		</div>
 	)
 }
