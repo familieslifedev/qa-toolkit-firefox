@@ -3,7 +3,6 @@ import {FeedbackContext} from "~Utils/sidebarContext";
 import JsonEditorModal from "~sidebar/sidebarMainContent/sidebarComponents/jsonTools/JsonEditor/JsonEditorModal";
 import { useContext, useEffect, useState } from "react";
 import { openInNewTab } from "~Utils/backgroundMessageHandler";
-import { injectDebugCommand } from "~Utils/Utils";
 import DebugSingleButton from "./DebugComponents/DebugSingleButtonComp";
 
 export default function DebugGeneral() {
