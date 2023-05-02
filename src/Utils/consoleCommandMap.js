@@ -8,6 +8,7 @@ const consoleCommands = {
 	set2DJson: (...args) => __debugApi__.set2DJson(...args),
 	set2DJsonByURL: (...args) => __debugApi__.set2DJsonByUrl(...args),
 	getPlanImages: (...args) => __debugApi__.getPlanImages(),
+	renderPlanImages: () => __debugApi__.renderPlanImages(),
 	//</editor-fold>
 	//<editor-fold desc="CPP">
 	showCornice: () => __debugApi__.drawCorniceRuns(),
@@ -18,6 +19,7 @@ const consoleCommands = {
 	drawCollisionPolygons: () => __debugApi__.drawCollisionPolygons(),
 	drawCeilingOuterShapes: () => __debugApi__.drawCeilingOuterShapes(),
 	drawFloorOuterShapes: () => __debugApi__.drawFloorOuterShapes(),
+	drawOverlapPolygons: () => __debugApi__.drawOverlapPolygons(),
 
 	//</editor-fold>
 	//<editor-fold desc="Worktops">
@@ -31,6 +33,7 @@ const consoleCommands = {
 	drawTourPrunedNodes: () => __debugApi__.navigation.drawPrunedNodes(),
 	drawTourWidgetBounds: () => __debugApi__.navigation.drawWidgetBounds(),
 	//</editor-fold>
+
 
 }
 
