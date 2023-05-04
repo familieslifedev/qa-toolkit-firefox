@@ -26,7 +26,7 @@ export default function BoltSurveyorTab() {
         let currentUrl = isPlannerToggle ? `https://planner2d.${envCode}wrenkitchens.${region.trim()}/surveyor` : `https://planner2d.${envCode}wrenkitchens.${region.trim()}/showroom/kitchen?debug&features=planner-specialist-worktops-add-feature-removal,new-room-profile&planUrl=`;
 		console.log(currentUrl);
 
-		if (newTab == true) {
+		if (newTab) {
 			let response = await chrome.runtime.sendMessage({ type: "openInNewTab", url: currentUrl });
 			if (response) {
 				setFeedbackText(response);
