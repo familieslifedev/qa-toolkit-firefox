@@ -184,6 +184,9 @@
 .grp-btn {
   border: hsl(var(--pf)) solid 1px;
 }
+.toggle {
+    color: hsl(var(--pf));
+}
 /*</editor-fold>*/
 
 /*<editor-fold desc="Debug Commands Content">*/
