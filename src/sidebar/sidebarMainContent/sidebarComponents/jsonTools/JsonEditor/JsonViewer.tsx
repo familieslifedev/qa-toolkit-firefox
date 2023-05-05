@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useRef } from "react";
 import { copyFromClipboard, get2DJson, get3DJson, load2DJson, prettyPrintJson, writeToClipboard } from "~Utils/Utils";
 
 interface JsonViewProps {
@@ -6,30 +6,42 @@ interface JsonViewProps {
 };
 
 const JsonViewer = ({ edit }: JsonViewProps): JSX.Element => {
-  const [jsonData, setJsonData] = useState<string | object>(null);
-  const [updatedJson, setUpdatedJson] = useState<string | object>(null);
+  const [jsonData, setJsonData] = useState(null);
+  const inputTextElement = useRef(null);
 
   const handleGet2dJson = async (): Promise<void> => await handleGetJson(get2DJson);
   const handleGet3dJson = async (): Promise<void> => await handleGetJson(get3DJson);
   const handleFromClipboard = async (): Promise<void> => await handleGetJson(copyFromClipboard, true);
 
-  const handleGetJson = async (getJsonCallback: () => Promise<string | object>, parseResult: boolean = false): Promise<void> => {
+  const getInput = async (): Promise<any> => {
+    let jsonResult = null;
+
     try {
-      let result: string | object = await getJsonCallback();
+      jsonResult = await JSON.parse(inputTextElement?.current?.innerText);
+    } catch(err) {
+      jsonResult = null;
+      console.warn(err.message);
+    }
+
+    return jsonResult;
+  }
+
+  const handleGetJson = async (getJsonCallback: () => Promise<any>, parseResult: boolean = false): Promise<void> => {
+    try {
+      let result = await getJsonCallback();
       result = parseResult ? JSON.parse(result as string) : result;
 
       if (!result) return;
 
       setJsonData(result);
-      setUpdatedJson(null);
 
     } catch (err) {
       setJsonData(`Invalid JSON: ${err.message}`);
     }
   }
 
-  const handleJsonValidate = (): void => {
-    const jsonToValidate: string | object = updatedJson ?? jsonData;
+  const handleJsonValidate = async (): Promise<void> => {
+    const jsonToValidate = await getInput() ?? jsonData;
 
     try {
       if (!jsonToValidate) {
@@ -44,20 +56,13 @@ const JsonViewer = ({ edit }: JsonViewProps): JSX.Element => {
     }
   }
 
-  const handleEditJson = (e: React.FormEvent): void => {
-    const element = e.target as HTMLPreElement;
-
-    const newJsonData = element.innerText;
-    setUpdatedJson(newJsonData);
-  }
-
   const handleToClipboard = async (): Promise<void> => {
-    const clipboardData = updatedJson ? updatedJson : JSON.stringify(jsonData, null, 2);
+    const clipboardData = JSON.stringify(await getInput() ?? jsonData, null, 2);
     await writeToClipboard(clipboardData);
   }
 
   const handleLoadPlan = async (): Promise<void> => {
-    const jsonToLoad = updatedJson ?? JSON.stringify(jsonData);
+    const jsonToLoad = JSON.stringify(await getInput() ?? jsonData);
     await load2DJson(jsonToLoad);
   }
 
@@ -73,9 +78,7 @@ const JsonViewer = ({ edit }: JsonViewProps): JSX.Element => {
 
       <div className="jsonViewerContent mockup-code">
         {jsonData && (
-          <pre spellCheck={false} contentEditable={edit} dangerouslySetInnerHTML={{ __html: prettyPrintJson.toHtml(jsonData) }}
-               onInput={handleEditJson}>
-          </pre>
+          <pre ref={inputTextElement} spellCheck={false} contentEditable={edit} dangerouslySetInnerHTML={{ __html: prettyPrintJson.toHtml(jsonData) }}></pre>
         )}
       </div>
 
