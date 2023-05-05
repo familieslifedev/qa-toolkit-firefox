@@ -17,17 +17,18 @@ export async function openURL(url, tabId, newTab) {
 }
 
 //Copy from clipboard and return text, has to happen in a content script.
-export async function copyFromClipboard() {
+export async function copyFromClipboard(): Promise<string> {
     return await navigator.clipboard.readText();
 }
 
 //Write into clipboard, has to happen in a content script.
-export async function writeToClipboard(stringToWrite) {
-    if (!stringToWrite) {
+export async function writeToClipboard(toWrite: string): Promise<void> {
+    if (!toWrite) {
       console.log("Missing string to write to clipboard");
       return;
     }
-    await navigator.clipboard.writeText(stringToWrite);
+
+    await navigator.clipboard.writeText(toWrite);
   }
 
   //Convert json to html and formats them in a pretty printable way.
