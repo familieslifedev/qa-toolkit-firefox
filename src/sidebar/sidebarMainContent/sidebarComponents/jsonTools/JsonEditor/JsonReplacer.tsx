@@ -1,116 +1,135 @@
-import React, { useState, ReactElement } from 'react';
+import { useState, useRef, ReactElement } from 'react';
 import { copyFromClipboard, get2DJson, load2DJson, prettyPrintJson, writeToClipboard } from "~Utils/Utils";
+
+enum inputSide {
+  left,
+  right
+};
 
 const JsonReplacer = (): ReactElement => {
   const [leftJson, setLeftJson] = useState<any>(null);
   const [rightJson, setRightJson] = useState<any>(null);
-  const [updatedLeftJson, setUpdatedLeftJson] = useState<any>( null);
-  const [updatedRightJson, setUpdatedRightJson] = useState<any>( null);
+  const leftInputElement = useRef(null);
+  const rightInputElement = useRef(null);
 
-  const handleFromClipboard = async (isLeft: Boolean): Promise<void> => {
+  const getJsonSide = (side: inputSide) => {
+    return side === inputSide.left ? leftJson : rightJson;
+  }
+
+  const handleFromClipboard = async (side: inputSide): Promise<void> => {
     try {
-      const rawJson = await copyFromClipboard();
+      const rawJson: string = await copyFromClipboard();
       if (!rawJson) return;
       
-      let parsedJson = JSON.parse(rawJson);
-
-      if (isLeft) {
-        setLeftJson(parsedJson);
-        setUpdatedLeftJson(null);
-        return;
-      }
-
-      setRightJson(parsedJson);
-      setUpdatedRightJson(null);
+      const parsedJson = JSON.parse(rawJson);
+      side === inputSide.left ? setLeftJson(parsedJson) : setRightJson(parsedJson);
 
     } catch (err) {
       console.error(err);
 
-      const message: String = "Invalid JSON";
-      isLeft ? setLeftJson(message) : setRightJson(message);
+      const message: string = "Invalid JSON";
+      side === inputSide.left ? setLeftJson(message) : setRightJson(message);
     }
   }
 
-  const handleToClipboard = async (isLeft: Boolean): Promise<void> => {
-    const updatedJson = isLeft ? updatedLeftJson : updatedRightJson;
-    await writeToClipboard(updatedJson || JSON.stringify(isLeft ? leftJson : rightJson, null, 2));
+  const handleToClipboard = async (side: inputSide): Promise<void> => {
+    const inputJson = await getInput(side);
+    await writeToClipboard(JSON.stringify(inputJson, null, 2));
   }
 
-  const handleReplace = (setJsonFunc: any, targetJson: any, sourceJson: any, updatedJson: any): void => {
-    if (!targetJson || !sourceJson) return;
+  const handleReplace = async (side: inputSide): Promise<void> => {
+    const leftSide: boolean = side === inputSide.left;
+    const sourceJson = leftSide ? leftJson : rightJson;
 
-    const parsedJson = JSON.parse(updatedJson);
+    if (!sourceJson) return; // if target does not exist then we aren't too bothered
+
+    const newJson = await mergeChangesWithInput(side, sourceJson);
+    leftSide ? setLeftJson(newJson) : setRightJson(newJson);
+  }
+
+  const mergeChangesWithInput = async (side: inputSide, sourceJson): Promise<any> => {
+    // we actually want input from the opposite side
+    const oppositeSide = side === inputSide.left ? inputSide.right : inputSide.left
+    const json = await getInput(oppositeSide);
 
     const newPlan = {
-      ...targetJson.plan,
-      leadId: parsedJson?.plan?.leadId ?? sourceJson?.plan?.leadId,
-      email: parsedJson?.plan?.email ?? sourceJson?.plan?.email,
-      accountId: parsedJson?.plan?.accountId ?? sourceJson?.plan?.accountId,
-      planId: parsedJson?.plan?.planId ?? sourceJson?.plan?.planId
+      ...json?.plan,
+      "leadId": modifyTarget(sourceJson?.plan?.leadId, json?.plan?.leadId),
+      "email": modifyTarget(sourceJson?.plan?.email, json?.plan?.email),
+      "accountId": modifyTarget(sourceJson?.plan?.accountId, json?.plan?.accountId),
+      "planId": modifyTarget(sourceJson?.plan?.planId, json?.plan?.planId)
     };
 
     const newJson = {
-      ...targetJson,
+      ...json,
       plan: newPlan
     };
 
-    setJsonFunc(newJson);
+    side === inputSide.left ? setLeftJson(newJson) : setRightJson(newJson);
+    return newJson;
   }
 
-  // TODO - check which event type
-  const handleEditJson = (e, isLeft: Boolean): void => {
-    isLeft ? setUpdatedLeftJson(e.target.innerText) : setUpdatedRightJson(e.target.innerText);
+  const getInput = async (side: inputSide): Promise<any> => {
+    const inputElem = side === inputSide.left ? leftInputElement.current : rightInputElement.current;
+    const json = await JSON.parse(inputElem.innerText);
+
+    return json;
   }
 
-  const handleLoadPlan = async (isLeft: Boolean): Promise<void> => {
-    const updatedJson = isLeft ? updatedLeftJson : updatedRightJson;
-    await load2DJson(updatedJson || JSON.stringify(isLeft ? leftJson : rightJson, null, 2));
+  const modifyTarget = (sourceValue: number | string, targetValue: number | string): number | string => {
+    const result = sourceValue && (sourceValue === targetValue) ? sourceValue : targetValue;
+    return result;
   }
 
-  const handleGet2dJson = async (isLeft: Boolean): Promise<void> => {
-    const res = await get2DJson();
-    if (!res) return;
+  const handleLoadPlan = async (side: inputSide): Promise<void> => {
+    await load2DJson(JSON.stringify(getJsonSide(side), null, 2));
+  }
 
-    isLeft ? setLeftJson(res) : setRightJson(res);
-    isLeft ? setUpdatedLeftJson(res) : setUpdatedRightJson(res);
+  const handleGet2dJson = async (side: inputSide): Promise<void> => {
+    const json2dResult = await get2DJson();
+    if (!json2dResult) return;
+
+    side === inputSide.left ? setLeftJson(json2dResult) : setRightJson(json2dResult);
   }
 
   return(
     <div className="jsonReplacerContainer">
       <div className="jsonReplacerHeader">
         <div className="btn-group grp-left">
-          <button title="Get the current pages 2d Json" className="btn btn-sm" onClick={() => handleGet2dJson(true)}>Get 2D</button>
-          <button title="Get Json from feeder link or a direct json" className="btn btn-sm" onClick={() => handleFromClipboard(true)}>From Clipboard</button>
+          <button title="Get the current pages 2d Json" className="btn btn-sm" onClick={() => handleGet2dJson(inputSide.left)}>Get 2D</button>
+          <button title="Get Json from feeder link or a direct json" className="btn btn-sm" onClick={() => handleFromClipboard(inputSide.left)}>From Clipboard</button>
         </div>
         <div className="btn-group grp-right">
-          <button title="Get the current pages 2d Json" className="btn btn-sm" onClick={() => handleReplace(setLeftJson, leftJson, rightJson, updatedRightJson)}> ← </button>
-          <button title="Get Json from feeder link or a direct json" className="btn btn-sm" onClick={() => handleReplace(setRightJson, rightJson, leftJson, updatedLeftJson)}> → </button>
+          <button title="Replace left" className="btn btn-sm" onClick={() => handleReplace(inputSide.left)}> ← </button>
+          <button title="Replace right" className="btn btn-sm" onClick={() => handleReplace(inputSide.right)}> → </button>
         </div>
         <div className="btn-group grp-right">
-          <button title="Get the current pages 2d Json" className="btn btn-sm" onClick={() => handleGet2dJson(false)}>Get 2D</button>
-          <button title="Get Json from feeder link or a direct json" className="btn btn-sm"  onClick={() => handleFromClipboard(false)}>From clipboard</button>
+          <button title="Get the current pages 2d Json" className="btn btn-sm" onClick={() => handleGet2dJson(inputSide.right)}>Get 2D</button>
+          <button title="Get Json from feeder link or a direct json" className="btn btn-sm"  onClick={() => handleFromClipboard(inputSide.right)}>From clipboard</button>
         </div>
       </div>
+
       <div className="jsonReplacerContents ">
         <div className="jsonReplacerContent mockup-code">
-          <pre contentEditable={true} spellCheck={false} onInput={(e) => handleEditJson(e, true)}  dangerouslySetInnerHTML={{__html: prettyPrintJson.toHtml(leftJson)}}></pre>
+          <pre ref={leftInputElement} contentEditable={true} spellCheck={false} dangerouslySetInnerHTML={{__html: prettyPrintJson.toHtml(leftJson)}}></pre>
         </div>
         <div className="jsonReplacerContent mockup-code">
-          <pre contentEditable={true} spellCheck={false} onInput={(e) => handleEditJson(e, false)} dangerouslySetInnerHTML={{__html: prettyPrintJson.toHtml(rightJson)}}></pre>
+          <pre ref={rightInputElement} contentEditable={true} spellCheck={false} dangerouslySetInnerHTML={{__html: prettyPrintJson.toHtml(rightJson)}}></pre>
         </div>
       </div>
+
       <div className="jsonReplacerHeader">
         <div className="btn-group grp-left">
-          <button title="Get the current pages 2d Json" className="btn btn-sm" onClick={() => handleLoadPlan(true)}>Load Json</button>
-          <button title="Get Json from feeder link or a direct json" className="btn btn-sm" onClick={() => handleToClipboard(true)}>To Clipboard</button>
+          <button title="Get the current pages 2d Json" className="btn btn-sm" onClick={() => handleLoadPlan(inputSide.left)}>Load Json</button>
+          <button title="Get Json from feeder link or a direct json" className="btn btn-sm" onClick={() => handleToClipboard(inputSide.left)}>To Clipboard</button>
         </div>
         <div className="btn-group grp-right">
-          <button title="Get the current pages 2d Json" className="btn btn-sm" onClick={() => handleReplace(setLeftJson, leftJson, rightJson, updatedRightJson)}> ← </button>
-          <button title="Get Json from feeder link or a direct json" className="btn btn-sm" onClick={() => handleReplace(setRightJson, rightJson, leftJson, updatedLeftJson)}> → </button>
+          <button title="Replace left" className="btn btn-sm" onClick={() => handleReplace(inputSide.left)}> ← </button>
+          <button title="Replace right" className="btn btn-sm" onClick={() => handleReplace(inputSide.right)}> → </button>
         </div>
         <div className="btn-group grp-right">
-          <button title="Get the current pages 2d Json" className="btn btn-sm" onClick={() => handleLoadPlan(false)}>Load Json</button>
-          <button title="Get Json from feeder link or a direct json" className="btn btn-sm" onClick={() => handleToClipboard(false)}>To Clipboard</button>
+          <button title="Get the current pages 2d Json" className="btn btn-sm" onClick={() => handleLoadPlan(inputSide.right)}>Load Json</button>
+          <button title="Get Json from feeder link or a direct json" className="btn btn-sm" onClick={() => handleToClipboard(inputSide.right)}>To Clipboard</button>
         </div>
       </div>
     </div>
