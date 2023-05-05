@@ -78,7 +78,7 @@ export default function DebugGeneral() {
 			<button className="btn btn-xs btn-primary debugSingleButton" title={"Gets the current plan 2d Json and write to clipboard"} onClick={handleGet2DJson}>Get 2D Json</button>
 			<button className="btn btn-xs btn-primary debugSingleButton" title={"Gets the current plan 3d Json and write to clipboard"} onClick={handleGet3DJson}>Get 3D Json</button>
 			<button className="btn btn-xs btn-primary debugSingleButton" title={"Preview Image from Feeder"} onClick={handleGetPlanImages}>Get Preview Image</button>
-			<DebugSingleButton prettyName="Render Plan Images" title={"Generates plan images"} onClickFunction='renderPlanImages'/>
+			<DebugSingleButton prettyName="Render Plan Images" hoverTip="Generates plan images" onClickFunction='renderPlanImages'/>
 		</div>
 	);
 }
