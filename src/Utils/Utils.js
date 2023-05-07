@@ -101,7 +101,7 @@ export async function get3DJson() {
 export async function load2DJson(arg) {
 	let command;
 	let argsArray = [];
-	if (arg.startsWith("https://feeder")) {
+	if (arg?.startsWith("https://feeder")) {
 		command = "set2DJsonByURL";
 		argsArray[0] = arg;
 	}
