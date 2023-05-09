@@ -2,8 +2,9 @@ import { useStorage } from "@plasmohq/storage/dist/hook";
 import { regionArray, environmentArray, emissaryJobsArray } from "../componentArrays";
 import { useContext } from "react";
 import { FeedbackContext } from "~Utils/sidebarContext";
+import { Request as BackgroundRequest, RequestType } from "../../../../BackgroundService/Request";
 
-export default function BoltEmissaryTab() {
+export default function BoltEmissaryTab(): JSX.Element {
 	const { setFeedbackText } = useContext(FeedbackContext);
 	const [environment, setEnvironment] = useStorage("emissaryEnvironment", environmentArray[2].Code);
 	const [region, setRegion] = useStorage("emissaryRegion", regionArray[0].Emissary);
@@ -20,18 +21,19 @@ export default function BoltEmissaryTab() {
 	function handleRegionChange(event) {
 		setRegion(event.target.value);
 	}
-	async function frontendHandleNavigate(newTab: boolean) {
-		let currentUrl = `${region}${environment.trim()}/scheduler/${emissaryJob}`;
-		if (newTab == true) {
-			let response = await chrome.runtime.sendMessage({ type: "openInNewTab", url: currentUrl });
-			if (response) {
-				setFeedbackText(response);
-			}
-		} else {
-			let response = await chrome.runtime.sendMessage({ type: "openInCurrentTab", url: currentUrl });
-			if (response) {
-				setFeedbackText(response);
-			}
+
+	async function frontendHandleNavigate(newTab: boolean): Promise<void> {
+		const currentUrl = `${region}${environment.trim()}/scheduler/${emissaryJob}`;
+
+		const request: BackgroundRequest = {
+			type: newTab ? RequestType.OpenInNewTab : RequestType.OpenInCurrentTab,
+			functionName: null,
+			arguments: [currentUrl]
+		}
+
+		const response = await chrome.runtime.sendMessage(request);
+		if (response) {
+			setFeedbackText(response);
 		}
 	}
 

@@ -1,7 +1,9 @@
+import { Request as BackgroundRequest, RequestType } from '../BackgroundService/Request';
+
 //Verify Link and open url - setting currentTab will open in the current tab, otherwise it will open in a new tab.
-export async function openURL(url, tabId, newTab) {
+export async function openURL(url: string, tabId: number, newTab: boolean): Promise<void> {
 	try {
-		let response = await fetch(url)
+		const response = await fetch(url);
 		if (response.status === 200) {
 			if (newTab){
 				await chrome.tabs.create({ url: url })
@@ -61,57 +63,64 @@ export const prettyPrintJson = {
 	}
 };
 
-
-export async function injectDebugCommand(command, argsArray) {
-	const res = await chrome.runtime.sendMessage({
-		type: "BG_injectConsoleCommand",
+export async function injectDebugCommand(command: string, argsArray: any[]): Promise<any> {
+	const request: BackgroundRequest = {
 		functionName: command,
-		arguments: argsArray,
-	})
-	if(res){
-		return res;
+		type: RequestType.InjectConsoleCommand,
+		arguments: argsArray
 	}
-}
-export async function get2DJson() {
-	let command ="get2DJson"
-	let res = await chrome.runtime.sendMessage({
-		type: "BG_get2DJson",
-		functionName: command,
-	})
-	if (res){
 
-		return res;
+	let result = await chrome.runtime.sendMessage(request);
+	if (!result) {
+		throw new Error("injectDebugCommand: Failed get result");
 	}
+
+	return result;
 }
 
-export async function get3DJson() {
-	let command ="get3DJson"
-	let res = await chrome.runtime.sendMessage({
-		type: "BG_get3DJson",
-		functionName: command,
-	})
-	if (res){
-		return res;
-	}
-	else{
+export async function get2DJson(): Promise<any> {
+	const request: BackgroundRequest = {
+		functionName: "get2DJson",
+		type: RequestType.Get2dJson,
+		arguments: null
+	};
 
+	let result = await chrome.runtime.sendMessage(request);
+	if (!result) {
+		throw new Error("get2DJson: Failed to get 2D JSON");
 	}
+
+	return result;
 }
 
-export async function load2DJson(arg) {
-	let command;
-	let argsArray = [];
-	if (arg.startsWith("https://feeder")) {
-		command = "set2DJsonByURL";
-		argsArray[0] = arg;
+export async function get3DJson(): Promise<any> {
+	const request: BackgroundRequest = {
+		functionName: "get3DJson",
+		type: RequestType.Get3dJson,
+		arguments: null
 	}
-	else{
-		command = (`set2DJson`);
-		argsArray[0] = arg;
+
+	let result = await chrome.runtime.sendMessage(request);
+	if (!result) {
+		throw new Error("get3DJson: Failed to get 3D JSON");
 	}
-	await chrome.runtime.sendMessage({
-		type: "BG_injectConsoleCommand",
+	
+	return result;
+}
+
+export async function load2DJson(arg: any): Promise<void> {
+	// TODO - handle arbitrary JSON type
+	let argsArray: unknown[] = [arg];
+
+	const command = arg?.startsWith("https://feeder") ?
+		"set2DJsonByURL" : "set2DJson"
+	argsArray[0] = arg;
+
+	const request: BackgroundRequest = {
 		functionName: command,
-		arguments: argsArray,
-	})
+		type: RequestType.InjectConsoleCommand,
+		arguments: argsArray
+	};
+
+	await chrome.runtime.sendMessage(request);
 }

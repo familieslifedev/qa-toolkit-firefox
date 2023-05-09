@@ -1,28 +1,37 @@
 import React from "react";
+import { Request as BackgroundRequest, RequestType } from "../../../../BackgroundService/Request";
+
 export default function ComplianceTools() {
 
-  async function handleCorniceLoad() {
-    let command ="showCornice"
-    await chrome.runtime.sendMessage({
-      type: "BG_injectConsoleCommand",
-      functionName: command,
-    })
-  }
-  async function handlePelmetLoad() {
-    let command ="showPelmet"
-    await chrome.runtime.sendMessage({
-      type: "BG_injectConsoleCommand",
-      functionName: command,
-    })
-  }
-  async function handlePlinthLoad() {
-    let command ="showPlinth"
-    await chrome.runtime.sendMessage({
-      type: "BG_injectConsoleCommand",
-      functionName: command,
-    })
+  async function handleCorniceLoad(): Promise<void> {
+    const request: BackgroundRequest = {
+      functionName: "showCornice",
+      type: RequestType.InjectConsoleCommand,
+      arguments: null
+    };
+
+    await chrome.runtime.sendMessage(request);
   }
 
+  async function handlePelmetLoad(): Promise<void> {
+    const request: BackgroundRequest = {
+      functionName: "showPelmet",
+      type: RequestType.InjectConsoleCommand,
+      arguments: null
+    };
+
+    await chrome.runtime.sendMessage(request);
+  }
+
+  async function handlePlinthLoad() {
+    const request: BackgroundRequest = {
+      functionName: "showPlinth",
+      type: RequestType.InjectConsoleCommand,
+      arguments: null
+    };
+
+    await chrome.runtime.sendMessage(request);
+  }
 
   function handleAnnotationBtnClicked(accept : boolean) {
     const annotationPopup = document.querySelector('.check-notes-popup-wrapper')

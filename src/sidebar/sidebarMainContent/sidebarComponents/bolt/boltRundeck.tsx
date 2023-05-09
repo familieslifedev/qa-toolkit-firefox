@@ -2,6 +2,7 @@ import { useStorage } from "@plasmohq/storage/dist/hook";
 import { regionArray, environmentArray, rundeckJobsArray } from "../componentArrays";
 import { useContext } from "react";
 import { FeedbackContext } from "~Utils/sidebarContext";
+import { Request as BackgroundRequest, RequestType } from "../../../../BackgroundService/Request";
 
 
 export default function BoltRundeck() {
@@ -26,16 +27,16 @@ export default function BoltRundeck() {
 		const regionKey = regionCodeToKey[region];
 		const job = rundeckJobsArray.find((j) => j.Job === rundeckJob);
 		const url = job[regionKey];
-		if (newTab) {
-			let response = await chrome.runtime.sendMessage({ type: "openInNewTab", url: url });
-			if (response) {
-				setFeedbackText(response);
-			}
-		} else {
-			let response = await chrome.runtime.sendMessage({ type: "openInCurrentTab", url: url });
-			if (response) {
-				setFeedbackText(response);
-			}
+
+		const request: BackgroundRequest = {
+			type: newTab ? RequestType.OpenInNewTab : RequestType.OpenInCurrentTab,
+			functionName: null,
+			arguments: [url]
+		}
+
+		const response = await chrome.runtime.sendMessage(request);
+		if (response) {
+			setFeedbackText(response);
 		}
 	}
 

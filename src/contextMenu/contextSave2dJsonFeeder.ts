@@ -1,4 +1,4 @@
-import { BG_savePlanJson } from "~Utils/backgroundMessageHandler";
+import { Request as BackgroundRequest, RequestType } from "../BackgroundService/Request";
 
 export async function create2dJsonToFeeder() {
 	chrome.contextMenus.create({
@@ -21,14 +21,15 @@ export async function create2dJsonToFeeder() {
 	});
 }
 
-
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 	if (info.menuItemId === 'save2dJsonFeeder') {
-		await BG_savePlanJson({
-			type: "BG_savePlanJson",
+
+		const request: BackgroundRequest = {
 			functionName: "get2DJson",
-		});
+			type: RequestType.SavePlanJson,
+			arguments: null
+		}
+
+		await chrome.runtime.sendMessage(request);
 	}
-
-
 });

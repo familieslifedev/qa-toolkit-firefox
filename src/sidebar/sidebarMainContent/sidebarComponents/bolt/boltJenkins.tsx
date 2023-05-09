@@ -2,8 +2,9 @@ import { useStorage } from "@plasmohq/storage/dist/hook";
 import { regionArray, environmentArray, jenkinsJobsArray } from "../componentArrays";
 import { useContext } from "react";
 import { FeedbackContext } from "~Utils/sidebarContext";
+import { Request as BackgroundRequest, RequestType } from "../../../../BackgroundService/Request";
 
-export default function BoltJenkinsTab() {
+export default function BoltJenkinsTab(): JSX.Element {
 	const { setFeedbackText } = useContext(FeedbackContext);
 	const [environment, setEnvironment] = useStorage("jenkinsEnvironment", environmentArray[0].Code);
 	const [region, setRegion] = useStorage("jenkinsRegion", regionArray[0].Jenkins);
@@ -24,16 +25,15 @@ export default function BoltJenkinsTab() {
 		const finalEnvironment = environment.trim() === "" ? "master" : environment.trim();
 		const currentUrl = `https://jenkins.wrenkitchens.com/job/${jenkinsJob}/job/${region}/job/${finalEnvironment.trim()}/`;
 
-		if (newTab == true) {
-			let response = await chrome.runtime.sendMessage({ type: "openInNewTab", url: currentUrl });
-			if (response) {
-				setFeedbackText(response);
-			}
-		} else {
-			let response = await chrome.runtime.sendMessage({ type: "openInCurrentTab", url: currentUrl });
-			if (response) {
-				setFeedbackText(response);
-			}
+		const request: BackgroundRequest = {
+			type: newTab ? RequestType.OpenInNewTab : RequestType.OpenInCurrentTab,
+			functionName: null,
+			arguments: [currentUrl]
+		}
+
+		const response = await chrome.runtime.sendMessage(request);
+		if (response) {
+			setFeedbackText(response);
 		}
 	}
 
