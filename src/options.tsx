@@ -29,7 +29,6 @@ function OptionsIndex() {
       <h2 className="optionsHeading"> Theme Settings </h2>
 
       <div className="divider"></div>
-      <label className="label label-text-alt">Theme select</label>
       <select onChange={saveTheme} value={theme} className="select select-primary w-full max-w-xs" title={"Set Theme"}>
         <option disabled>Select a Theme</option>
         {themes.map(({ name, value }) => (
@@ -43,15 +42,14 @@ function OptionsIndex() {
       <h2 className="optionsHeading">Control Settings</h2>
       <div className="divider"></div>
       <h1 className="text-lg ">Keybind to toggle sidebar</h1>
-      <label className="label label-text-alt ">Modifier + Key to toggle sidebar</label>
       <div className="flex flex-wrap" >
-        <select onChange={saveModKey} value={modifierKey} className="select select-primary w-36 m-1" title={"Modifier Key"}>
-          <option value="Control">Control</option>
+        <select onChange={saveModKey} value={modifierKey} className="select select-primary w-36 mr-2" title={"Modifier Key"}>
+          <option value="Control">Control</option> 
           <option value="Shift">Shift</option>
           <option value="Alt">Alt / Option</option>
         </select>
         <input
-          className="input input-primary w-20 m-1"
+          className="input input-primary w-20"
           defaultValue={triggerKey}
           maxLength={1}
           onClick={(event) => (event.target as HTMLInputElement).select()}

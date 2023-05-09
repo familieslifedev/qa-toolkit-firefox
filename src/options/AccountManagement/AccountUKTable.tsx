@@ -79,13 +79,8 @@ function AccountUKTable() {
 						</tr>
 					))}
 					</tbody>
-					<tfoot>
-					<tr>
-						<th></th>
-						<th><button onClick={handleNewAccountButton}>Add New</button></th>
-					</tr>
-					</tfoot>
 				</table>
+				<button className="btn btn-sm btn-secondary mb-1" onClick={handleNewAccountButton}>Add New</button>
 			</div>
 			{showNewAccountModal && (
 				<AddAccountModal

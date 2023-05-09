@@ -31,8 +31,8 @@
 /*<editor-fold desc="Options">*/
 /*Options   */
 .optionsPanel {
-    width: 100vw;
-    height: 100vh;
+    width: inherit;
+    height: inherit;
     display: flex;
     flex-direction: column;
     background-color: hsl(var(--b1));
@@ -44,6 +44,7 @@
     font-weight: 600;
     margin-left: auto;
     margin-right: auto;
+    margin-top: 4px;
 }
 .optionsHeading {
     font-size: 1.5rem;
@@ -581,8 +582,12 @@ pre[contenteditable] {
 .accountManagementSection{
 
 }
+.table th:first-child {
+    position: static;
+}
 .accountManagementTable{
-    width: 90%;
+    margin-top: 10px;
+    width: 100%;
 }
 .addAccountModal{
     display: flex;
