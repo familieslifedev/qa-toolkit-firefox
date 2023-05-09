@@ -1,76 +1,69 @@
-import React, { useState } from "react";
+import { useState, useRef } from "react";
 import { copyFromClipboard, get2DJson, get3DJson, load2DJson, prettyPrintJson, writeToClipboard } from "~Utils/Utils";
 
+interface JsonViewProps {
+  edit: boolean
+};
 
-
-
-const JsonViewer = ({ edit }) => {
+const JsonViewer = ({ edit }: JsonViewProps): JSX.Element => {
   const [jsonData, setJsonData] = useState(null);
-  const [updatedJson, setUpdatedJson] = useState(null);
+  const inputTextElement = useRef(null);
 
+  const handleGet2dJson = async (): Promise<void> => await handleGetJson(get2DJson);
+  const handleGet3dJson = async (): Promise<void> => await handleGetJson(get3DJson);
+  const handleFromClipboard = async (): Promise<void> => await handleGetJson(copyFromClipboard, true);
 
-  const handleGet2dJson = async () => {
-    let res = await get2DJson()
-    if (res) {
-      setJsonData(res);
-      setUpdatedJson(null);
-    }
-  }
-  const handleGet3dJson = async () => {
-    let res = await get3DJson()
-    if(res){
-      setJsonData(res);
-      setUpdatedJson(null);
-    }
-  }
-  const handleFromClipboard = async () => {
-    try {
-      const res = await copyFromClipboard()
-      if (res) {
-        setJsonData(JSON.parse(res));
-        setUpdatedJson(null);
-      }
-    } catch (error) {
-      setJsonData("Invalid Json");
-    }
-  }
-
-  function handleJsonValidate() {
-    let jsonToValidate = updatedJson !== null ? updatedJson : jsonData;
+  const getInput = async (): Promise<any> => {
+    let jsonResult = null;
 
     try {
-      if (jsonToValidate) {
-        let parsedJson = JSON.parse(typeof jsonToValidate === 'string' ? jsonToValidate : JSON.stringify(jsonToValidate));
-        alert('JSON is valid!');
-      } else {
+      jsonResult = await JSON.parse(inputTextElement?.current?.innerText);
+    } catch(err) {
+      jsonResult = null;
+      console.warn(err.message);
+    }
+
+    return jsonResult;
+  }
+
+  const handleGetJson = async (getJsonCallback: () => Promise<any>, parseResult: boolean = false): Promise<void> => {
+    try {
+      let result = await getJsonCallback();
+      result = parseResult ? JSON.parse(result as string) : result;
+
+      if (!result) return;
+
+      setJsonData(result);
+
+    } catch (err) {
+      setJsonData(`Invalid JSON: ${err.message}`);
+    }
+  }
+
+  const handleJsonValidate = async (): Promise<void> => {
+    const jsonToValidate = await getInput() ?? jsonData;
+
+    try {
+      if (!jsonToValidate) {
         alert('Please enter some JSON first');
+        return;
       }
-    } catch (error) {
-      alert('Invalid JSON');
+
+      alert('JSON is valid!');
+
+    } catch (err) {
+      alert(`Invalid JSON: ${err.message}`);
     }
   }
 
-
-
-  const handleEditJson = (e) => {
-    const newJsonData = e.target.innerText;
-    setUpdatedJson(newJsonData);
+  const handleToClipboard = async (): Promise<void> => {
+    const clipboardData = JSON.stringify(await getInput() ?? jsonData, null, 2);
+    await writeToClipboard(clipboardData);
   }
 
-  async function handleToClipboard() {
-    if(updatedJson) {
-      await writeToClipboard(updatedJson);
-    } else {
-      await writeToClipboard(JSON.stringify(jsonData,null,2));
-    }
-  }
-
-  async function handleLoadPlan() {
-    if (updatedJson) {
-      await load2DJson(updatedJson);
-    } else {
-      await load2DJson(JSON.stringify(jsonData));
-    }
+  const handleLoadPlan = async (): Promise<void> => {
+    const jsonToLoad = JSON.stringify(await getInput() ?? jsonData);
+    await load2DJson(jsonToLoad);
   }
 
   return (
@@ -82,14 +75,13 @@ const JsonViewer = ({ edit }) => {
           <button title="Get Json from feeder link or a direct json" className="btn btn-sm" onClick={handleFromClipboard}>From Clipboard</button>
         </div>
       </div>
+
       <div className="jsonViewerContent mockup-code">
         {jsonData && (
-          <pre spellCheck={false} contentEditable={edit} dangerouslySetInnerHTML={{ __html: prettyPrintJson.toHtml(jsonData) }}
-               onInput={handleEditJson} >
-          </pre>
-
+          <pre ref={inputTextElement} spellCheck={false} contentEditable={edit} dangerouslySetInnerHTML={{ __html: prettyPrintJson.toHtml(jsonData) }}></pre>
         )}
       </div>
+
       <div className="jsonReplacerHeader">
         <div className="btn-group">
           <button title="Validate the Json to ensure the integrity" className="btn btn-sm" onClick={handleJsonValidate}>Validate</button>

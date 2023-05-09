@@ -19,17 +19,18 @@ export async function openURL(url: string, tabId: number, newTab: boolean): Prom
 }
 
 //Copy from clipboard and return text, has to happen in a content script.
-export async function copyFromClipboard() {
-	return await navigator.clipboard.readText();
+export async function copyFromClipboard(): Promise<string> {
+  return await navigator.clipboard.readText();
 }
 
 //Write into clipboard, has to happen in a content script.
-export async function writeToClipboard(stringToWrite) {
-	if (!stringToWrite) {
-		console.log("Missing string to write to clipboard");
-		return;
-	}
-	await navigator.clipboard.writeText(stringToWrite);
+export async function writeToClipboard(toWrite: string): Promise<void> {
+  if (!toWrite) {
+    console.log("Missing string to write to clipboard");
+    return;
+  }
+
+  await navigator.clipboard.writeText(toWrite);
 }
 
 //Convert json to html and formats them in a pretty printable way.
@@ -100,7 +101,7 @@ export async function get3DJson(): Promise<any> {
 		arguments: null
 	}
 
-	let result = await chrome.runtime.sendMessage(request);
+	const result = await chrome.runtime.sendMessage(request);
 	if (!result) {
 		throw new Error("get3DJson: Failed to get 3D JSON");
 	}
