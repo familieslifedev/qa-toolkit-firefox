@@ -2,8 +2,9 @@ import { useStorage } from "@plasmohq/storage/dist/hook";
 import { regionArray, environmentArray } from "../componentArrays";
 import { useContext } from "react";
 import { FeedbackContext } from "~Utils/sidebarContext";
+import { Request as BackgroundRequest, RequestType } from "../../../../BackgroundService/Request";
 
-export default function BoltFrontendTab() {
+export default function BoltFrontendTab(): JSX.Element {
 	const { setFeedbackText } = useContext(FeedbackContext);
 	const [environment, setEnvironment] = useStorage("frontendEnvironment", environmentArray[0].Code);
 	const [region, setRegion] = useStorage("frontendRegion", regionArray[0].Code);
@@ -21,16 +22,15 @@ export default function BoltFrontendTab() {
 		const currentUrl = `https://frontend.${envCode}wrenkitchens.${region.trim()}`;
 		console.log(currentUrl);
 
-		if (newTab == true) {
-			let response = await chrome.runtime.sendMessage({ type: "openInNewTab", url: currentUrl });
-			if (response) {
-				setFeedbackText(response);
-			}
-		} else {
-			let response = await chrome.runtime.sendMessage({ type: "openInCurrentTab", url: currentUrl });
-			if (response) {
-				setFeedbackText(response);
-			}
+		const request: BackgroundRequest = {
+			type: newTab ? RequestType.OpenInNewTab : RequestType.OpenInCurrentTab,
+			functionName: null,
+			arguments: [currentUrl]
+		}
+
+		const response = await chrome.runtime.sendMessage(request);
+		if (response) {
+			setFeedbackText(response);
 		}
 	}
 

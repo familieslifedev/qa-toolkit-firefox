@@ -1,20 +1,17 @@
-import * as backgroundMessageHandler from "./Utils/backgroundMessageHandler";
-import * as contextMenuController from "./contextMenu/contextMenuController"
+import type { BaseMessageHandler, HandlerResponse } from "~BackgroundService/Handlers/BaseMessageHandler";
+import * as backgroundMessageHandler from "./BackgroundService/backgroundMessageHandler";
 import { initialiseContextMenu } from "./contextMenu/contextMenuController";
-export {};
+import type { Request as BackgroundRequest } from "./BackgroundService/Request";
 console.log('background script loaded');
 
 
 // initialize Background Message Handler
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  const handler = backgroundMessageHandler[request.type];
-  if (handler) {
-    handler(request, sender, sendResponse);
-  } else {
-    console.error("Unknown message type:", request.type);
-  }
+chrome.runtime.onMessage.addListener((request: BackgroundRequest, sender, sendResponse: HandlerResponse) => {
+  
+  const handler: BaseMessageHandler = backgroundMessageHandler.MakeHandler(request);
+  handler.handle(request, sendResponse);
+  return true;
 });
-
 
 //initialize Context Menu Controller
 chrome.runtime.onInstalled.addListener(() => {initialiseContextMenu()});

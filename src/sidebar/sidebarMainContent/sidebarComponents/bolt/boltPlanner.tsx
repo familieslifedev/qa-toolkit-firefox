@@ -2,8 +2,9 @@ import { useStorage } from "@plasmohq/storage/dist/hook";
 import { regionArray, environmentArray } from "../componentArrays";
 import { useContext, useState } from "react";
 import { FeedbackContext } from "~Utils/sidebarContext";
+import { Request as BackgroundRequest, RequestType } from "../../../../BackgroundService/Request";
 
-export default function BoltSurveyorTab() {
+export default function BoltSurveyorTab(): JSX.Element {
 	const { setFeedbackText } = useContext(FeedbackContext);
 	const [environment, setEnvironment] = useStorage("plannerEnvironment", environmentArray[0].Code);
 	const [region, setRegion] = useStorage("plannerRegion", regionArray[0].Code);
@@ -26,16 +27,15 @@ export default function BoltSurveyorTab() {
         let currentUrl = isPlannerToggle ? `https://planner2d.${envCode}wrenkitchens.${region.trim()}/surveyor` : `https://planner2d.${envCode}wrenkitchens.${region.trim()}/showroom/kitchen?debug&features=planner-specialist-worktops-add-feature-removal,new-room-profile&planUrl=`;
 		console.log(currentUrl);
 
-		if (newTab) {
-			let response = await chrome.runtime.sendMessage({ type: "openInNewTab", url: currentUrl });
-			if (response) {
-				setFeedbackText(response);
-			}
-		} else {
-			let response = await chrome.runtime.sendMessage({ type: "openInCurrentTab", url: currentUrl });
-			if (response) {
-				setFeedbackText(response);
-			}
+		const request: BackgroundRequest = {
+			type: newTab ? RequestType.OpenInNewTab : RequestType.OpenInCurrentTab,
+			functionName: null,
+			arguments: [currentUrl]
+		}
+
+		const response = await chrome.runtime.sendMessage(request);
+		if (response) {
+			setFeedbackText(response);
 		}
 	}
 

@@ -1,9 +1,14 @@
+import { Request as BackgroundRequest, RequestType } from "../BackgroundService/Request";
 
-const  SidebarNav  = () => {
+const SidebarNav = (): JSX.Element => {
   function openOptions() {
-    chrome.runtime.sendMessage({ type: "openOptionsPage" });
+    const request: BackgroundRequest = {
+      type: RequestType.OpenOptionsPage,
+      functionName: null,
+      arguments: null
+    }
+    chrome.runtime.sendMessage(request);
   }
-
 
   return (
       <div className="navbar bg-base-100">

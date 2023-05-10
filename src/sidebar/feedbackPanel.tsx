@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
+import { Request as BackgroundRequest, RequestType } from "../BackgroundService/Request";
 
-const FeedbackPanel = ({ feedbackText, feedbackProgress }) => {
-  const [autoConsume, setAutoConsume] = useState(false);
+const FeedbackPanel = ({ feedbackText, feedbackProgress }): JSX.Element => {
+  const [autoConsume, setAutoConsume] = useState<boolean>(false);
 
+   async function tempOverride(): Promise<void> {
+    const request: BackgroundRequest = {
+      type: RequestType.InjectConsoleCommand,
+      functionName: "showPlinth",
+      arguments: null
+    };
 
-   async function tempOverride() {
-     let command ="showPlinth"
-     await chrome.runtime.sendMessage({
-       type: "BG_injectConsoleCommand",
-       functionName: command,
-     })
+    const _ = await chrome.runtime.sendMessage(request);
   }
 
   useEffect(() => {
@@ -35,7 +37,6 @@ const FeedbackPanel = ({ feedbackText, feedbackProgress }) => {
   function handleAutoConsume(e) {
     setAutoConsume(e.target.checked);
   }
-
 
   return (
     <div className="feedbackPanelContainer">
