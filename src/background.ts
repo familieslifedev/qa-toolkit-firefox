@@ -10,6 +10,7 @@ chrome.runtime.onMessage.addListener((request: BackgroundRequest, sender, sendRe
   
   const handler: BaseMessageHandler = backgroundMessageHandler.MakeHandler(request);
   handler.handle(request, sendResponse);
+  return true;
 });
 
 //initialize Context Menu Controller
