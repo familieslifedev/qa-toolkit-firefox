@@ -10,12 +10,12 @@ export type HandlerResponse = {
 }
 
 export abstract class BaseMessageHandler implements BackgroundMessageHandler {
-    private queryOptions: { active: boolean, lastFocusedWindow: boolean };
+    private readonly queryOptions: { active: boolean, lastFocusedWindow: boolean };
     protected errorMessage: string;
     protected currentTab: chrome.tabs.Tab[];
     protected currentTabId: number;
 
-    public constructor(errorMessage: string = null) {
+    protected constructor(errorMessage: string = null) {
         this.queryOptions = { active: true, lastFocusedWindow: true };
         this.errorMessage = errorMessage ?? "Error";
     }

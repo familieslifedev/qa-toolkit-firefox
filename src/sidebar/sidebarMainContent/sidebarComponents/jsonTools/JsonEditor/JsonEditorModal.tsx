@@ -4,9 +4,8 @@ import JsonReplacer from "~sidebar/sidebarMainContent/sidebarComponents/jsonTool
 import Draggable from "react-draggable";
 
 enum tabs {
-  Viewer,
-  Replace,
-  Editor
+  Editor,
+  Replace
 }
 
 interface Props {
@@ -15,7 +14,7 @@ interface Props {
 }
 
 export default function JsonEditorModal({ hidden, onHiddenChange }: Props): JSX.Element {
-  const [activeTab, setActiveTab] = useState<tabs>(tabs.Viewer);
+  const [activeTab, setActiveTab] = useState<tabs>(tabs.Editor);
 
   const handleHidePanel = () => {
     onHiddenChange(true);
@@ -35,20 +34,17 @@ export default function JsonEditorModal({ hidden, onHiddenChange }: Props): JSX.
 
         <label className="btn btn-xs btn-circle absolute right-1.5 top-1.5" onClick={handleHidePanel}>✕</label>
         <div className="tabs jsonEditTabs">
-          <h1 className={`tab tab-bordered jsonEditTab ${activeTab === tabs.Viewer ? 'tab-active' : ''}`} onClick={() => handleTabClick(tabs.Viewer)}> Viewer </h1>
-          <h1 className={`tab tab-bordered jsonEditTab ${activeTab === tabs.Replace ? 'tab-active' : ''}`} onClick={() => handleTabClick(tabs.Replace)}> Replace </h1>
           <h1 className={`tab tab-bordered jsonEditTab ${activeTab === tabs.Editor ? 'tab-active' : ''}`} onClick={() => handleTabClick(tabs.Editor)}> Editor </h1>
+          <h1 className={`tab tab-bordered jsonEditTab ${activeTab === tabs.Replace ? 'tab-active' : ''}`} onClick={() => handleTabClick(tabs.Replace)}> Replace </h1>
+
         </div>
 
         <div className="jsonContentContainer">
-          <div className={`tabContent ${activeTab === tabs.Viewer ? 'active' : ''}`}>
-            <JsonViewer edit={false} />
+          <div className={`tabContent ${activeTab === tabs.Editor ? 'active' : ''}`}>
+            <JsonViewer edit={true} />
           </div>
           <div className={`tabContent ${activeTab === tabs.Replace ? 'active' : ''}`}>
             <JsonReplacer />
-          </div>
-          <div className={`tabContent ${activeTab === tabs.Editor ? 'active' : ''}`}>
-            <JsonViewer edit={true} />
           </div>
         </div>
       </div>
