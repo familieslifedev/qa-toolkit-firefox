@@ -1,5 +1,6 @@
 import { copyFromClipboard, writeToClipboard } from "~Utils/Utils";
 import { isJsonUrl, getJsonFromUrl } from "~Utils/JsonHelper";
+import { isAccountPage } from "~Utils/urlHelper";
 
 type FrontendDetails = {
     accountId?: string;
@@ -14,9 +15,7 @@ export class JsonFixer {
     public async registerJson(): Promise<void> {
         const json = await copyFromClipboard();
             
-        // nope - not what i wanted
         const parsedJson = isJsonUrl(json) ? getJsonFromUrl(json) : JSON.parse(json);
-
         if (!parsedJson) {
             throw new Error("JsonFixer: Failed to get JSON");
         }
@@ -25,8 +24,7 @@ export class JsonFixer {
     }
 
     public scrapeFrontendDetails(url: string): void {
-        // url needs to be account view
-        // https://frontend.project5.wrenkitchens.com/accounts/account/view/8183904
+        if (!isAccountPage(url)) throw new Error("JsonFixer: Needs to scrape from an Account page.");
 
         const accountId = this.scrapeAccountId();
         const email = this.scrapeEmail();
@@ -39,16 +37,17 @@ export class JsonFixer {
         }
     }
 
-    public async fix(): Promise<void> { // should return fixed json
+    public async fix(): Promise<void> {
         if (!this.json && !this.frontendDetails) {
-            throw new Error("JsonFixer: JSON and frontend details both need to be set to fix.");
+            throw new Error("JsonFixer: JSON and frontend details both need to be set for fix.");
         }
 
         if (this.frontendDetails.accountId) this.json.plan.accountId = this.frontendDetails.accountId;
         if (this.frontendDetails.email) this.json.plan.email = this.frontendDetails.email;
         if (this.frontendDetails.leadId) this.json.plan.leadId = this.frontendDetails.leadId;
 
-        await writeToClipboard(this.json);
+        const stringifiedJson: string = JSON.stringify(this.json);
+        await writeToClipboard(stringifiedJson);
         this.resetData();
     }
 

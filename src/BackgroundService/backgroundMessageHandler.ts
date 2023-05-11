@@ -5,6 +5,7 @@ import { GetJson } from "./Handlers/GetJson"
 import { SavePlanJson } from "./Handlers/SavePlanJson"
 import { OpenUrl } from "./Handlers/OpenUrl";
 import { OpenOptions } from "./Handlers/OpenOptions";
+import { GetCurrentUrl } from "./Handlers/GetCurrentUrl";
 
 
 export const MakeHandler = (request: BackgroundRequest): BaseMessageHandler => {
@@ -31,5 +32,8 @@ export const MakeHandler = (request: BackgroundRequest): BaseMessageHandler => {
 
 		case RequestType.OpenOptionsPage:
 			return new OpenOptions(null);
+
+		case RequestType.GetCurrentUrl:
+			return new GetCurrentUrl("Failed to get current tab URL");
 	}
 }

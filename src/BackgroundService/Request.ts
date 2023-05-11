@@ -7,7 +7,8 @@ export enum RequestType {
     SavePlanJson,
     OpenOptionsPage,
     OpenInNewTab,
-    OpenInCurrentTab
+    OpenInCurrentTab,
+    GetCurrentUrl
 }
 
 export interface Request {
