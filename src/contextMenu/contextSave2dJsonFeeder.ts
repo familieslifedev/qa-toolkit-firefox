@@ -1,4 +1,6 @@
-import { Request as BackgroundRequest, RequestType } from "../BackgroundService/Request";
+import { ContentRequest, ContentRequestType } from "../ContentService/Request";
+import { sendJsonToFeeder } from "../Utils/JsonHelper";
+import { executeBackground } from "../Utils/scripts";
 
 export async function create2dJsonToFeeder() {
 	chrome.contextMenus.create({
@@ -23,13 +25,20 @@ export async function create2dJsonToFeeder() {
 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 	if (info.menuItemId === 'save2dJsonFeeder') {
+		const tab = await chrome.tabs.query({active: true, currentWindow: true});
+		const currentTab = tab[0];
+		const currentTabUrl = currentTab.url;
 
-		const request: BackgroundRequest = {
-			functionName: "get2DJson",
-			type: RequestType.SavePlanJson,
-			arguments: null
-		}
+		const json = await executeBackground(currentTab, "get2DJson");
 
-		await chrome.runtime.sendMessage(request);
+		const planId = json[0].result.plan.planId;
+		const urlText = await sendJsonToFeeder(json[0].result, planId, currentTabUrl);
+
+		const clipboardRequest: ContentRequest = {
+			type: ContentRequestType.WriteToClipboard,
+			arguments: [urlText],
+			functionName: null
+		};
+		await chrome.tabs.sendMessage(currentTab.id, clipboardRequest);
 	}
 });

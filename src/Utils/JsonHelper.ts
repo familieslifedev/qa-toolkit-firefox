@@ -1,5 +1,5 @@
 
-export const sendJsonToFeeder = async (JsonResult: any, planId: number, currentTabUrl: string): Promise<void> => {
+export const sendJsonToFeeder = async (JsonResult: any, planId: number, currentTabUrl: string): Promise<string> => {
 
     const currentProject = currentTabUrl.match(/(\.project[0-9])/)?.[0] || '';
     const url = `https://feeder${currentProject}.wrenkitchens.com/plan/save-plan-json`;
@@ -22,14 +22,11 @@ export const sendJsonToFeeder = async (JsonResult: any, planId: number, currentT
     });
 
     if (storeJson.ok) {
-        const textToWrite = `https://feeder${currentProject}.wrenkitchens.com/plan/read-plan-json/${filename}`;
-        const tab = await chrome.tabs.query({active: true, currentWindow: true});
-        const currentTab = tab[0];
-        await chrome.tabs.sendMessage(currentTab.id, {
-            type: 'Content_writeToClipboard',
-            text: textToWrite,
-        });
+        const predictedUrl = `https://feeder${currentProject}.wrenkitchens.com/plan/read-plan-json/${filename}`;
+        return predictedUrl;
     }
+
+    return "Failed to save JSON";
 }
 
 const generateFeederJsonFilename = (planId: number): string => {

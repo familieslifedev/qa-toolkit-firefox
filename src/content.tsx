@@ -5,31 +5,42 @@ import SidebarMainContent from "~sidebar/sidebarMainContent";
 import { useEffect, useState } from "react";
 import FeedbackPanel from "~sidebar/feedbackPanel";
 import {FeedbackContext} from "~Utils/sidebarContext";
-import JsonEditorModal from "~sidebar/sidebarMainContent/sidebarComponents/jsonTools/JsonEditor/JsonEditorModal";
-import * as contentMessageHandler from "~Utils/contentMessageHandler";
+import type { BaseMessageHandler } from "./ContentService/Handlers/BaseMessageHandler";
+import type { ContentRequest } from "~ContentService/Request";
+import type { HandlerResponse } from "~BackgroundService/Handlers/BaseMessageHandler";
+import { MakeHandler } from "~ContentService/contentMessageHandler";
 export const getStyle = () => {
   const style = document.createElement("style")
   style.textContent = cssText
   return style
 }
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  try {
-    const handler = contentMessageHandler[request.type];
+chrome.runtime.onMessage.addListener((request: ContentRequest, sender, sendResponse: HandlerResponse) => {
+  console.log("handle request");
+  const handler: BaseMessageHandler = MakeHandler(request);
+  handler.handle(request, sendResponse);
 
-    if (handler) {
-      handler(request, sender, sendResponse);
-    } else {
-      console.error("Unknown message type:", request.type);
-      sendResponse({ error: 'Unknown message type' });
-    }
-  } catch (error) {
-    console.error("Error processing message:", error);
-    sendResponse({ error: 'Error processing message' });
-  }
-    // Asynchronous response, keep the channel open
-    return true;
+  return true;
 });
+
+// chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+//   try {
+//     const handler = contentMessageHandler[request.type];
+
+//     if (handler) {
+//       handler(request, sender, sendResponse);
+//     } else {
+//       console.error("Unknown message type:", request.type);
+//       sendResponse({ error: 'Unknown message type' });
+//     }
+//   } catch (error) {
+//     console.error("Error processing message:", error);
+//     sendResponse({ error: 'Error processing message' });
+//   }
+//     // Asynchronous response, keep the channel open
+//     return true;
+// });
+
 const Sidebar = () => {
   const [isHidden, setIsHidden] = useState( true);
   const [theme, setTheme] = useStorage("theme", "emerald");

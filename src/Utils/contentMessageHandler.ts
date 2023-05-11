@@ -1,7 +1,7 @@
 import { autofillUkFrontendAccount, autofillUsFrontendAccount } from "~Utils/UtilsDomManipulation";
 import { writeToClipboard } from "~Utils/Utils";
 
-export const Content_inputFrontendAccount = async (request, sender, sendResponse) => {
+export const Content_inputFrontendAccount = async (request, sender, sendResponse): Promise<boolean> => {
 	try {
 		request.accountRegion === "UK" ? await autofillUkFrontendAccount(request.account) : await autofillUsFrontendAccount(request.account);
 		sendResponse({ success: true });
@@ -9,9 +9,11 @@ export const Content_inputFrontendAccount = async (request, sender, sendResponse
 		console.error('Error auto filling account:', error);
 		sendResponse({ success: false, error: `Error auto filling account: ${error}` });
 	}
+
+	return true;
 };
 
-export const Content_writeToClipboard = async (request, sender, sendResponse) => {
+export const Content_writeToClipboard = async (request, sender, sendResponse): Promise<boolean> => {
 	try {
 		await writeToClipboard(request.text);
 		sendResponse({ success: true });
@@ -19,4 +21,6 @@ export const Content_writeToClipboard = async (request, sender, sendResponse) =>
 		console.error('Error writing to clipboard:', error);
 		sendResponse({ success: false, error: `Error writing to clipboard: ${error}` });
 	}
+
+	return true;
 };
