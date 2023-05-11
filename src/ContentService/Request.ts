@@ -1,6 +1,7 @@
 
 export enum ContentRequestType {
-    WriteToClipboard
+    WriteToClipboard,
+    AutofillAccount
 }
 
 export interface ContentRequest {

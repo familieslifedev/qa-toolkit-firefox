@@ -9,7 +9,6 @@ export class WriteToClipboard extends BaseMessageHandler {
     }
 
     public async handle(request: ContentRequest, sendResponse: HandlerResponse): Promise<void> {
-        super.handle(request, sendResponse);
 
         if (request.arguments.length < 1) throw new Error(`WriteToClipboard handler arguments: Expected first argument to be text to write. Received ${request.arguments.length} arguments.`);
         const textToWrite: string = request.arguments[0];

@@ -1,5 +1,6 @@
 import { Storage } from "@plasmohq/storage";
 import type { FrontendAccount } from "~Utils/UtilInterfaces";
+import { ContentRequest, ContentRequestType } from "~ContentService/Request";
 
 const frontendAccountStorage = new Storage();
 const frontendAccountStorageUS = new Storage();
@@ -76,11 +77,15 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 
 		// Send the entire account data
 		if (selectedAccount) {
-			await chrome.tabs.sendMessage(tab.id, {
-				type: "Content_inputFrontendAccount",
-				accountRegion: parentId === "accountContextMenu" ? "UK" : "US",
-				account: selectedAccount,
-			});
+			const accountRegion: string = parentId === "accountContextMenu" ? "UK" : "US";
+			const request: ContentRequest = {
+				type: ContentRequestType.AutofillAccount,
+				functionName: null,
+				arguments: [accountRegion, selectedAccount]
+			}
+
+			await chrome.tabs.sendMessage(tab.id, request);
+
 		} else {
 			console.error("Could not find account with id: " + info.menuItemId);
 		}
