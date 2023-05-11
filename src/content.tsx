@@ -16,30 +16,11 @@ export const getStyle = () => {
 }
 
 chrome.runtime.onMessage.addListener((request: ContentRequest, sender, sendResponse: HandlerResponse) => {
-  console.log("handle request");
   const handler: BaseMessageHandler = MakeHandler(request);
   handler.handle(request, sendResponse);
 
   return true;
 });
-
-// chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-//   try {
-//     const handler = contentMessageHandler[request.type];
-
-//     if (handler) {
-//       handler(request, sender, sendResponse);
-//     } else {
-//       console.error("Unknown message type:", request.type);
-//       sendResponse({ error: 'Unknown message type' });
-//     }
-//   } catch (error) {
-//     console.error("Error processing message:", error);
-//     sendResponse({ error: 'Error processing message' });
-//   }
-//     // Asynchronous response, keep the channel open
-//     return true;
-// });
 
 const Sidebar = () => {
   const [isHidden, setIsHidden] = useState( true);
