@@ -61,20 +61,10 @@ export class JsonFixer {
         }
     
         const leadNames: Array<string> = leads.map(lead => {
-            return lead.textContent.trim();
+            return lead.outerText.trim().replace(/^\s\n+|\s\n+$/g,'');
         });
 
         return leadNames;
-    }
-
-    private getLeadIdFromElement(elem: HTMLElement): string {
-        const l = elem.textContent.trim().split(" ");
-
-        let rawLead = l[0];
-
-        const leadId = rawLead.startsWith("L") ? rawLead.substring(1) : rawLead;
-
-        return leadId;
     }
 
     private scrapeAccountId(): string {
@@ -88,9 +78,17 @@ export class JsonFixer {
         return email;
     }
 
+    private scrapeLeadId(leadName: string): string {
+        const leads: Array<HTMLElement> = Array.from(document.querySelectorAll(".account-view-lead-description"));
+        const chosenLead: HTMLElement = this.selectLead(leads, leadName);
+
+        const leadId = this.getLeadIdFromElement(chosenLead);
+        return leadId;
+    }
+
     private selectLead(leads: Array<HTMLElement>, leadName: string): HTMLElement {
         const leadIndex = leads.findIndex(elem => {
-            return elem.textContent.trim() === leadName;
+            return elem.outerText.trim() === leadName;
         });
         if (leadIndex !== -1) {
             return leads[leadIndex];
@@ -99,11 +97,13 @@ export class JsonFixer {
         throw new Error("selectLead: No valid leads");
     }
 
-    private scrapeLeadId(leadName: string): string {
-        const leads: Array<HTMLElement> = Array.from(document.querySelectorAll(".account-view-lead-description"));
-        const chosenLead: HTMLElement = this.selectLead(leads, leadName);
+    private getLeadIdFromElement(elem: HTMLElement): string {
+        const l = elem.outerText.trim().split(" ");
 
-        const leadId = this.getLeadIdFromElement(chosenLead);
+        let rawLead = l[0]?.replace(/^\s\n+|\s\n+$/g,'');
+
+        const leadId = rawLead.startsWith("L") ? rawLead.substring(1) : rawLead;
+
         return leadId;
     }
 
