@@ -38,7 +38,7 @@ export default function JsonTools(): JSX.Element {
 		};
 	}, [isJsonEditorVisible]);
 
-	function handleJsonEditorPanel() {
+	function handleJsonEditorPanel(): void {
 		setIsJsonEditorVisible(!isJsonEditorVisible);
 	}
 
@@ -56,7 +56,7 @@ export default function JsonTools(): JSX.Element {
 		return currentTabUrl ?? null;
 	}
 
-	const handleJsonFixer = async (e) => {
+	const handleJsonFixer = async (): Promise<void> => {
 		const currentTabUrl = await getCurrentUrl();
 
 		await jsonFixer.registerJson();
@@ -64,33 +64,13 @@ export default function JsonTools(): JSX.Element {
 		await jsonFixer.fix();
 	}
 
-	const populateJsonFixerDropdownWithLeads = async (): Promise<Array<string>> => {
-		let leads: Array<string> = null;
-
+	const prepareLeadNames = async (): Promise<Array<string>> => {
 		const currentTabUrl = await getCurrentUrl();
 		if (!currentTabUrl) {
 			return new Array<string>();
 		}
 
-		leads = jsonFixer.getLeads(currentTabUrl) ?? new Array<string>();
-
-		return leads;
-	}
-
-	const prepareLeadNames = async (): Promise<Array<string>> => {
-		let newLeadNames = new Array<string>();
-
-		const leads = await populateJsonFixerDropdownWithLeads()
-		for (let lead of leads) {
-			newLeadNames.push(lead.trim());
-		}
-
-		return newLeadNames ?? new Array<string>();
-	}
-
-	const debugLeadNames = (): void => {
-		const names = prepareLeadNames();
-		console.log(names);
+		return jsonFixer.getLeads(currentTabUrl) ?? new Array<string>();
 	}
 
 	const selectLeadName = (event): void => {
@@ -119,11 +99,7 @@ export default function JsonTools(): JSX.Element {
 			
 			<button className="btn btn-sm btn-wide btn-primary"
 				title={"Requires: active frontend account page & JSON in clipboard - applies accountId, email, and leadId values to JSON"}
-				onClick={handleJsonFixer}>Apply account info to JSON</button>
-
-			{/* <button className="btn btn-sm btn-wide btn-primary"
-				title=""
-				onClick={handleJsonFixer}>Debug: get lead names</button> */}
+				onClick={handleJsonFixer}>Write account info to JSON</button>
 		</div>
 	);
 }
