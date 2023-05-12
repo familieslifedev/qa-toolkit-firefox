@@ -1,14 +1,14 @@
 import cssText from "data-text:~style.css"
-import SidebarNav from "~sidebar/sidebarNav";
+import SidebarNav from "~Components/Sidebar/SidebarNav";
 import {useStorage} from "@plasmohq/storage/dist/hook";
-import SidebarMainContent from "~sidebar/sidebarMainContent";
+import SidebarMainContent from "~Components/Sidebar/SidebarContent";
 import { useEffect, useState } from "react";
-import FeedbackPanel from "~sidebar/feedbackPanel";
+import FeedbackPanel from "~Components/Sidebar/FeedbackPanel";
 import {FeedbackContext} from "~Utils/sidebarContext";
-import type { BaseMessageHandler } from "./ContentService/Handlers/BaseMessageHandler";
-import type { ContentRequest } from "~ContentService/Request";
-import type { HandlerResponse } from "~BackgroundService/Handlers/BaseMessageHandler";
-import { MakeHandler } from "~ContentService/contentMessageHandler";
+import type { BaseMessageHandler } from "./Services/Content/Handlers/BaseMessageHandler";
+import type { HandlerResponse } from "~/Services/Background/Handlers/BaseMessageHandler";
+import type { ContentRequest } from "~Services/Content/Request";
+import { MakeHandler } from "~Services/Content/contentMessageHandler";
 export const getStyle = () => {
   const style = document.createElement("style")
   style.textContent = cssText
