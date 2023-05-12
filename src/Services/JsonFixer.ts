@@ -23,12 +23,12 @@ export class JsonFixer {
         this.json = parsedJson;
     }
 
-    public scrapeFrontendDetails(url: string): void {
-        if (!isAccountPage(url)) throw new Error("JsonFixer: Needs to scrape from an Account page.");
+    public scrapeFrontendDetails(url: string, leadName: string): void {
+        if (!isAccountPage(url)) return;
 
         const accountId = this.scrapeAccountId();
         const email = this.scrapeEmail();
-        const leadId = this.scrapeLeadId(); // TODO - get other lead IDs, rather than just the first
+        const leadId = this.scrapeLeadId(leadName);
 
         this.frontendDetails = <FrontendDetails>{
             accountId: accountId,
@@ -51,10 +51,25 @@ export class JsonFixer {
         this.resetData();
     }
 
+    public getLeads(url: string): Array<string> {
+        if (!isAccountPage(url)) return new Array<string>();
+
+        const leads: Array<HTMLElement> = Array.from(document.querySelectorAll(".account-view-lead-description")) as Array<HTMLElement>;
+        if (!leads) {
+            console.log("No leads");
+            return new Array<string>();
+        }
+    
+        const leadNames: Array<string> = leads.map(lead => {
+            return lead.textContent.trim();
+        });
+
+        return leadNames;
+    }
+
     private getLeadIdFromElement(elem: HTMLElement): string {
         const l = elem.textContent.trim().split(" ");
 
-        const type = l.pop(); // should we handle bedrooms and kitchens?
         let rawLead = l[0];
 
         const leadId = rawLead.startsWith("L") ? rawLead.substring(1) : rawLead;
@@ -73,9 +88,22 @@ export class JsonFixer {
         return email;
     }
 
-    private scrapeLeadId(): string {
-        const leads: NodeListOf<HTMLElement> = document.querySelectorAll(".account-view-lead-description");
-        const leadId = this.getLeadIdFromElement(leads[0]);
+    private selectLead(leads: Array<HTMLElement>, leadName: string): HTMLElement {
+        const leadIndex = leads.findIndex(elem => {
+            return elem.textContent.trim() === leadName;
+        });
+        if (leadIndex !== -1) {
+            return leads[leadIndex];
+        }
+
+        throw new Error("selectLead: No valid leads");
+    }
+
+    private scrapeLeadId(leadName: string): string {
+        const leads: Array<HTMLElement> = Array.from(document.querySelectorAll(".account-view-lead-description"));
+        const chosenLead: HTMLElement = this.selectLead(leads, leadName);
+
+        const leadId = this.getLeadIdFromElement(chosenLead);
         return leadId;
     }
 
