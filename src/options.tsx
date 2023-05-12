@@ -1,8 +1,8 @@
 import { useState } from "react"
 import "./style.css"
 import { useStorage } from "@plasmohq/storage/dist/hook";
-import { themes } from "~options/themes";
-import AccountManagementOptions from "~options/AccountManagement/AccountManagmentOptions";
+import { themes } from "~Utils/themes";
+import AccountManagementOptions from "~Components/AccountManagement/AccountManagmentOptions";
 function OptionsIndex() {
   const [theme, setTheme] = useStorage("theme", "emerald");
   const [triggerKey, setTriggerKey] = useStorage("triggerKey", "Q");

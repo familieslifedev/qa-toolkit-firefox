@@ -1,11 +1,11 @@
 import cssText from "data-text:~style.css"
-import SidebarNav from "~sidebar/sidebarNav";
+import SidebarNav from "~Components/Sidebar/SidebarNav";
 import {useStorage} from "@plasmohq/storage/dist/hook";
-import SidebarMainContent from "~sidebar/sidebarMainContent";
+import SidebarMainContent from "~Components/Sidebar/SidebarContent";
 import { useEffect, useState } from "react";
-import FeedbackPanel from "~sidebar/feedbackPanel";
+import FeedbackPanel from "~Components/Sidebar/FeedbackPanel";
 import {FeedbackContext} from "~Utils/sidebarContext";
-import JsonEditorModal from "~sidebar/sidebarMainContent/sidebarComponents/jsonTools/JsonEditor/JsonEditorModal";
+import JsonEditorModal from "~Components/JsonTools/JsonEditor/JsonEditorModal";
 import * as contentMessageHandler from "~Utils/contentMessageHandler";
 export const getStyle = () => {
   const style = document.createElement("style")
