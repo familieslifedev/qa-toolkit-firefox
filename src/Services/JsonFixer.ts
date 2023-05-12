@@ -14,13 +14,16 @@ export class JsonFixer {
 
     public async registerJson(): Promise<void> {
         const json = await copyFromClipboard();
-            
-        const parsedJson = isJsonUrl(json) ? getJsonFromUrl(json) : JSON.parse(json);
-        if (!parsedJson) {
-            throw new Error("JsonFixer: Failed to get JSON");
-        }
+        
+        try {
+            const parsedJson = isJsonUrl(json) ? getJsonFromUrl(json) : JSON.parse(json);
+            this.json = parsedJson;
 
-        this.json = parsedJson;
+        } catch(err) {
+            // TODO - this error should be hooked up to whatever notification system gets implemented
+            console.warn("JsonFixer: Parsing JSON failed. Are you sure you have one in the clipboard?");
+            return;
+        }
     }
 
     public scrapeFrontendDetails(url: string, leadName: string): void {
