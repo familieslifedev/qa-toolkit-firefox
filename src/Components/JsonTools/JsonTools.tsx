@@ -10,8 +10,9 @@ export default function JsonTools(): JSX.Element {
 	const [isJsonEditorVisible, setIsJsonEditorVisible] = useState<boolean>(false);
 	const [jsonFixer, setJsonFixer] = useState<JsonFixer>(new JsonFixer());
 	const [leadNames, setLeadNames] = useState<Array<string>>(new Array<string>());
-	const jsonFixerSelect = useRef();
+	const [selectedLeadName, setSelectedLeadName] = useState<string>("");
 
+	// Load the lead names
 	useEffect(() => {
 		(async() => {
 			const leads = await prepareLeadNames();
@@ -59,7 +60,7 @@ export default function JsonTools(): JSX.Element {
 		const currentTabUrl = await getCurrentUrl();
 
 		await jsonFixer.registerJson();
-		jsonFixer.scrapeFrontendDetails(currentTabUrl, jsonFixerSelect.current.text);
+		jsonFixer.scrapeFrontendDetails(currentTabUrl, selectedLeadName);
 		await jsonFixer.fix();
 	}
 
@@ -92,6 +93,10 @@ export default function JsonTools(): JSX.Element {
 		console.log(names);
 	}
 
+	const selectLeadName = (event): void => {
+		setSelectedLeadName(event.target.value);
+	}
+
 	return (
 		<div className="jsonContainer">
 			<button className="btn btn-sm btn-wide btn-primary" title={"Open Json Viewer/Editor"} onClick={handleJsonEditorPanel}>Open Json Edit</button>
@@ -103,7 +108,7 @@ export default function JsonTools(): JSX.Element {
 				<label className="label">
 					<span className="label-text">Selected Lead:</span>
 				</label>
-				<select ref={jsonFixerSelect} onChange={handleJsonFixer} value="" className="select select-primary select-xs select-bordered">
+				<select onChange={selectLeadName} value={selectedLeadName} className="select select-primary select-xs select-bordered">
 					{leadNames.map(leadName => (
 						<option key={leadName} value={leadName}>
 							{leadName}
