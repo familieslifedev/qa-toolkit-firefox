@@ -16,6 +16,7 @@ export class SavePlanJson extends MainScriptExecutor {
         const planId: number = this.result[0]?.result?.plan?.planId;
         const jsonResult: any = this.result[0]?.result;
 
-        await sendJsonToFeeder(jsonResult, planId, currentTabUrl);
+        const urlText: string = await sendJsonToFeeder(jsonResult, planId, currentTabUrl);
+        sendResponse(urlText);
     }
 }

@@ -5,31 +5,23 @@ import SidebarMainContent from "~Components/Sidebar/SidebarContent";
 import { useEffect, useState } from "react";
 import FeedbackPanel from "~Components/Sidebar/FeedbackPanel";
 import {FeedbackContext} from "~Utils/sidebarContext";
-import JsonEditorModal from "~Components/JsonTools/JsonEditor/JsonEditorModal";
-import * as contentMessageHandler from "~Utils/contentMessageHandler";
+import type { BaseMessageHandler } from "./Services/Content/Handlers/BaseMessageHandler";
+import type { HandlerResponse } from "~/Services/Background/Handlers/BaseMessageHandler";
+import type { ContentRequest } from "~Services/Content/Request";
+import { MakeHandler } from "~Services/Content/contentMessageHandler";
 export const getStyle = () => {
   const style = document.createElement("style")
   style.textContent = cssText
   return style
 }
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  try {
-    const handler = contentMessageHandler[request.type];
+chrome.runtime.onMessage.addListener((request: ContentRequest, sender, sendResponse: HandlerResponse) => {
+  const handler: BaseMessageHandler = MakeHandler(request);
+  handler.handle(request, sendResponse);
 
-    if (handler) {
-      handler(request, sender, sendResponse);
-    } else {
-      console.error("Unknown message type:", request.type);
-      sendResponse({ error: 'Unknown message type' });
-    }
-  } catch (error) {
-    console.error("Error processing message:", error);
-    sendResponse({ error: 'Error processing message' });
-  }
-    // Asynchronous response, keep the channel open
-    return true;
+  return true;
 });
+
 const Sidebar = () => {
   const [isHidden, setIsHidden] = useState( true);
   const [theme, setTheme] = useStorage("theme", "emerald");
