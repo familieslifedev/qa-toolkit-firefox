@@ -29,6 +29,13 @@ export const sendJsonToFeeder = async (JsonResult: any, planId: number, currentT
     return "Failed to save JSON";
 }
 
+export const isJsonUrl = (data: any): boolean => data?.startsWith("https://feeder") && data?.endsWith(".json");
+
+export const getJsonFromUrl = async (url: string): Promise<any> => {
+    const response = await fetch(url);
+    return response;
+}
+
 const generateFeederJsonFilename = (planId: number): string => {
     const now: Date = new Date();
     const year: number = now.getFullYear();
