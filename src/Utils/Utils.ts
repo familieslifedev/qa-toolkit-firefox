@@ -125,3 +125,19 @@ export async function load2DJson(arg: any): Promise<void> {
 
 	await chrome.runtime.sendMessage(request);
 }
+
+export function convertPenceToPounds(int: number | null): string {
+	return int === null ? '' : (int / 100).toFixed(2);
+}
+
+export function trimAllWhitespace(str: string): string {
+	return str.replace(/\s/g, '');
+}
+
+export function isWithinRangeComparison(value: number, target: number, range: number ): boolean {
+	const min = target - range;
+	const max = target + range;
+	return value >= min && value <= max;
+}
+
+

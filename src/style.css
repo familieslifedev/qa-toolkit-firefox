@@ -474,7 +474,87 @@
     visibility: visible;
 }
 /*</editor-fold>*/
+/*<editor-fold desc="SNS Panel">*/
+.SNSEditorPanel {
+    background-color: hsl(var(--b1));
+    border-radius: var(--rounded-btn, 0.5rem);
+    border: 1px solid hsl(var(--pf));
+    position: fixed;
+    top: 10vh;
+    left: 10vw;
+    width: 1000px;
+    height: 800px;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+}
+.SNSEditorPanel.hidden{
+    display: none;
+}
+.SNSHeaderBar {
+    width: 100%;
+    height: 35px;
+    background-color: hsl(var(--p));
+    border-radius: var(--rounded-btn, 0.5rem) var(--rounded-btn, 0.5rem) 0 0;
+    border-bottom: hsl(var(--b2)) solid 1px;
+}
+.SNSMainContent{
+    width: 100%;
+    height: 80%;
+}
+.SNSCurrentProduct{
+    height: 30%;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center ;
+    justify-content: space-evenly;
+    align-items: center;
+    border-bottom: hsl(var(--b2)) solid 1px;
+}
+.SNSAlternativeProducts{
+    display: flex;
+    flex-direction: row;
+    height: 70%;
+}
+.SNSInnerLeft{
+    min-width: 50%;
+    max-width: 50%;
+    height: 100%;
+    padding: 10px;
+    border-right: hsl(var(--b2)) solid 1px;
+}
+.SNSInnerRight{
+    width: auto;
+    height: 100%;
+    padding: 10px;
+}
+.SNSFooter{
+    height: 15%;
+    width: 100%;
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    border-top: hsl(var(--b2)) solid 1px;
+    align-items: baseline;
+    justify-content: space-evenly;
+}
+.SNSProductImage{
+    height: 150px;
+    width: 150px;
+    min-height: 150px;
+    min-width: 150px;
+    background-color: white;
+    border: hsl(var(--pf)) solid 2px;
+}
+.alignItemsCenter{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
 
+/*</editor-fold>*/
 /*<editor-fold desc="JsonViewer">*/
 .jsonViewerContainer {
     width: 100%;
