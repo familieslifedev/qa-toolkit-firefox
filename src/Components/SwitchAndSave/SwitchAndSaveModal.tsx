@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { stringify } from 'query-string/base';
-import { convertPenceToPounds, isWithinRangeComparison, trimAllWhitespace } from "~Utils/Utils";
-import { ProductInterface, ProductTypes, ProductStatuses, ProductApiResponse } from "~Utils/Constants";
-import * as events from "events";
+import { convertPenceToPounds, isWithinRangeComparison } from "~Utils/Utils";
+import { ProductInterface, ProductStatuses, ProductApiResponse } from "~Utils/Constants";
 
 interface Props {
 	hidden: boolean;
@@ -90,6 +89,12 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 		const currentWidthMm = currentProduct.widthMm;
 		const currentSubCategoryHandle = currentProduct.retailSubCategory.handle;
 
+		console.log('###############################################################################################')
+		console.log(`%cCurrent Product`, "color:orange; font-weight:bold; font-size:30px;")
+		console.log(currentProduct)
+		console.log('###############################################################################################')
+
+
 		let alternative1Products = allSameTypeProducts.items.filter(
 			(product) =>
 				product.manufacturer === currentManufacturer &&
@@ -104,7 +109,7 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 		console.log('###############################################################################################')
 		console.log(`%cAlternative 1`, "color:green; font-weight:bold; font-size:30px;")
 		console.log('-----------------------------------------------------------------------------------------------')
-		console.log(`%cFound ${alternative1Products.length} that match same manufacturer`, "color:green; font-weight:bold; font-size:20px;")
+		console.log(`%cFound ${alternative1Products.length} that matches the same manufacturer and are at least ${alternative1PriceDifference}% cheaper than current selection`, "color:green; font-weight:bold; font-size:20px;")
 		console.log(alternative1Products)
 		console.log('###############################################################################################')
 
@@ -126,9 +131,9 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 				(a, b) => b.promoPrice.gross - a.promoPrice.gross
 			);
 			console.log('-----------------------------------------------------------------------------------------------')
-			console.log(`%cFound ${alternative1Products.length} that match different manufacturer`, "color:green; font-weight:bold; font-size:20px;")
+			console.log(`%cFound ${alternative1Products.length} that match different manufacturer and are at least ${alternative1PriceDifference}% cheaper than current selection`, "color:green; font-weight:bold; font-size:20px;")
 			console.log(alternative1Products)
-			console.log('-----------------------------------------------------------------------------------------------')
+			console.log('###############################################################################################')
 
 
 			alternative1 =
@@ -139,7 +144,7 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 
 		let alternative2Products = allSameTypeProducts.items.filter(
 			(product) =>
-				product.manufacturer !== (alternative1 ? alternative1.manufacturer : currentManufacturer) &&
+				product.manufacturer !== currentManufacturer &&
 				product.promoPrice.gross < (currentAlternativeComparison ? alternative1.promoPrice.gross * (1 - (alternative2PriceDifference / 100)) : currentPromoPrice * (1 - (alternative2PriceDifference / 100))) &&
 				isWithinRangeComparison(product.widthMm, currentWidthMm, acceptableWidthDifference) &&
 				product.retailSubCategory.handle === currentSubCategoryHandle
@@ -148,6 +153,12 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 		alternative2Products.sort(
 			(a, b) => b.promoPrice.gross - a.promoPrice.gross
 		);
+		console.log('###############################################################################################')
+		console.log(`%cAlternative 2`, "color:blue; font-weight:bold; font-size:30px;")
+		console.log('-----------------------------------------------------------------------------------------------')
+		console.log(`%cFound ${alternative2Products.length} that match different manufacturer and are at least ${alternative2PriceDifference}% cheaper than ${currentAlternativeComparison ? 'alternative 1': 'current Selection'}`, "color:green; font-weight:bold; font-size:20px;")
+		console.log(alternative2Products)
+		console.log('###############################################################################################')
 
 		let alternative2 =
 			alternative2Products.length > 0 ? alternative2Products[0] : null;
@@ -155,7 +166,7 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 		if (alternative2 === null) {
 			alternative2Products = allSameTypeProducts.items.filter(
 				(product) =>
-					product.manufacturer === (alternative1 ? alternative1.manufacturer : currentManufacturer) &&
+					product.manufacturer === currentManufacturer &&
 					product.promoPrice.gross < (currentAlternativeComparison ? alternative1.promoPrice.gross * (1 - (alternative2PriceDifference / 100)) : currentPromoPrice * (1 - (alternative2PriceDifference / 100))) &&
 					isWithinRangeComparison(product.widthMm, currentWidthMm, acceptableWidthDifference) &&
 					product.retailSubCategory.handle === currentSubCategoryHandle
@@ -164,6 +175,10 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 			alternative2Products.sort(
 				(a, b) => b.promoPrice.gross - a.promoPrice.gross
 			);
+			console.log('-----------------------------------------------------------------------------------------------')
+			console.log(`%cFound ${alternative2Products.length} that match same manufacturer and are at least ${alternative2PriceDifference}% cheaper than ${currentAlternativeComparison ?  'alternative 1': 'current selection'}`, "color:green; font-weight:bold; font-size:20px;")
+			console.log(alternative2Products)
+			console.log('###############################################################################################')
 
 			alternative2 =
 				alternative2Products.length > 0
@@ -176,8 +191,10 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 		await setAlternativeProduct2(alternative2);
 
 		if (!alternative1 && !alternative2) {
-			console.log('Recommended Alternatives', 'No Alternatives Found');
+			console.log('No Recommended Alternatives Found', "color:red; font-weight:bold; font-size:20px;");
 		} else {
+			console.log('###############################################################################################')
+			console.log(`%cRecommended Alternatives`, "color:red; font-weight:bold; font-size:30px;")
 			console.log('-----------------------------------------------------------------------------------------------')
 			alternative1 ? console.log('Recommended Alternative 1', alternative1) : console.log('Recommended Alternative 1', 'No Alternatives Found')
 			console.log('-----------------------------------------------------------------------------------------------')
