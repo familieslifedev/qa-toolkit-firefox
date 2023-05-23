@@ -52,7 +52,6 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 		const url = `https://feeder.${projectTier}.wrenkitchens.com/products`;
 
 		const query = {
-			productStateHandle: 'Active',
 			productCode: inputProductSKU,
 		};
 
@@ -228,6 +227,7 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 					<div className={"SNSInnerRight"}>
 						<h1><b>Current Product</b></h1>
 						<p><b>Product:</b>  {currentProduct?.items[0]?.productName}</p>
+						<p><b>Status:</b> {currentProduct?.items[0]?.productStateHandle}</p>
 						<p><b>Brand:</b>  {currentProduct?.items[0]?.manufacturer}</p>
 						<p><b>SKU:</b>  {currentProduct?.items[0]?.productCode}</p>
 						<p><b>Category:</b>  {currentProduct?.items[0]?.retailCategory.name}</p>
@@ -243,6 +243,7 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 						/>
 						<h1><b>Alternative One</b></h1>
 						<p><b>Product:</b> {alternativeProduct1?.productName}</p>
+						<p><b>Status:</b> {alternativeProduct1?.productStateHandle}</p>
 						<p><b>Brand:</b> {alternativeProduct1?.manufacturer}</p>
 						<p><b>SKU:</b> {alternativeProduct1?.productCode}</p>
 						<p><b>Category:</b> {alternativeProduct1?.retailCategory.name}</p>
@@ -269,6 +270,7 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 						/>
 						<h1><b>Alternative Two</b></h1>
 						<p><b>Product:</b> {alternativeProduct2?.productName}</p>
+						<p><b>Status:</b> {alternativeProduct2?.productStateHandle}</p>
 						<p><b>Brand:</b> {alternativeProduct2?.manufacturer}</p>
 						<p><b>SKU:</b> {alternativeProduct2?.productCode}</p>
 						<p><b>Category:</b> {alternativeProduct2?.retailCategory.name}</p>
@@ -309,7 +311,7 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 					</div>
 				</div>
 				<div className="flex-col space-y-0.5 alignItemsCenter">
-					<label className="label-text">Run Comparison</label>
+					<select className="select select-sm"> </select>
 					<button className="btn btn-sm btn-primary " onClick={getCurrentProduct}> Compare </button>
 				</div>
 			</div>
