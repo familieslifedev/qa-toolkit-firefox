@@ -1,6 +1,6 @@
 import type { BaseMessageHandler, HandlerResponse } from "~Services/Background/Handlers/BaseMessageHandler";
 import * as backgroundMessageHandler from "./Services/Background/backgroundMessageHandler";
-import { initialiseContextMenu } from "./Services/contextMenu/contextMenuController";
+import { initialiseContextMenu } from "~Services/contextMenu/contextMenuController";
 import type { Request as BackgroundRequest } from "./Services/Background/Request";
 console.log('background script loaded');
 

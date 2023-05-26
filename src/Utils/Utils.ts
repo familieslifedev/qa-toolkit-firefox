@@ -125,3 +125,4 @@ export async function load2DJson(arg: any): Promise<void> {
 
 	await chrome.runtime.sendMessage(request);
 }
+

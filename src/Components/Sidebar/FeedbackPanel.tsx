@@ -40,8 +40,8 @@ const FeedbackPanel = ({ feedbackText, feedbackProgress }): JSX.Element => {
 
   return (
     <div className="feedbackPanelContainer">
-      <p> Auto Consume Inputs</p>
-      <input type="checkbox" id="autoConsume" defaultChecked={autoConsume} onInput={handleAutoConsume}></input>
+    {/*  <p> Auto Consume Inputs</p>
+      <input type="checkbox" id="autoConsume" defaultChecked={autoConsume} onInput={handleAutoConsume}></input>*/}
       <div className="feedbackTextContainer">
         <p>{feedbackText}</p>
       </div>
