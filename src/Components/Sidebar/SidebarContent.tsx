@@ -5,6 +5,7 @@ import ColourPicker from "~Components/ColourPicker/ColourPicker";
 import Calc from "~Components/Calc/Calc";
 import DebugCommands from "~Components/DebugCommands/DebugCommands";
 import { Request as BackgroundRequest, RequestType } from "../../Services/Background/Request";
+import MiscTools from "~Components/MiscTools/MiscTools";
 
 const SidebarContent = (): JSX.Element => {
 
@@ -22,6 +23,7 @@ const SidebarContent = (): JSX.Element => {
   return (
   <div className="sidebarMainContentContainer">
     <SidebarMenuItem displayName={"Bolt"} component={<Bolt/>} ></SidebarMenuItem>
+    <SidebarMenuItem displayName={"Misc Tools"} component={<MiscTools/>} ></SidebarMenuItem>
     <SidebarMenuItem displayName={"Json Tools"} component={<JsonTools/>} ></SidebarMenuItem>
     <SidebarMenuItem displayName={"Debug Commands"} component={<DebugCommands/>} ></SidebarMenuItem>
     <SidebarMenuItem displayName={"Colour Picker"} component={<ColourPicker/>} ></SidebarMenuItem>
