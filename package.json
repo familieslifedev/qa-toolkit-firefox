@@ -36,7 +36,8 @@
   "manifest": {
     "host_permissions": [
       "http://*/*",
-      "https://*/*"
+      "https://*/*",
+      "<all_urls>"
     ],
     "permissions": [
       "clipboardRead",
@@ -46,7 +47,10 @@
       "scripting",
       "storage",
       "notifications",
-      "contextMenus"
+      "contextMenus",
+      "downloads",
+      "desktopCapture",
+      "tabCapture"
     ]
   }
 }

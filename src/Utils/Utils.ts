@@ -1,4 +1,5 @@
 import { Request as BackgroundRequest, RequestType } from '../Services/Background/Request';
+import { re } from "mathjs";
 
 //Verify Link and open url - setting currentTab will open in the current tab, otherwise it will open in a new tab.
 export async function openURL(url: string, tabId: number, newTab: boolean): Promise<void> {
@@ -140,4 +141,23 @@ export function isWithinRangeComparison(value: number, target: number, range: nu
 	return value >= min && value <= max;
 }
 
+
+
+export async function save2dJsonToFeeder(args:any) {
+	const request: BackgroundRequest = {
+		functionName: "SavePlanJson",
+		type: RequestType.SavePlanJson,
+		arguments: args
+	}
+
+	let res = await chrome.runtime.sendMessage(request);
+	if (!res) {
+		throw new Error("save2dJsonToFeeder: Failed to save 2D JSON");
+	}
+	else {
+		return res;
+	}
+
+
+}
 
