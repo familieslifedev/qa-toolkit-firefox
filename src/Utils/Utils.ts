@@ -1,5 +1,4 @@
 import { Request as BackgroundRequest, RequestType } from '../Services/Background/Request';
-import { re } from "mathjs";
 
 //Verify Link and open url - setting currentTab will open in the current tab, otherwise it will open in a new tab.
 export async function openURL(url: string, tabId: number, newTab: boolean): Promise<void> {
