@@ -96,7 +96,7 @@ export default function MiscTools() {
 
 	return (
 			<div className="jsonContainer">
-				<button className="btn btn-sm btn-wide btn-primary" title="Generates auto-layouts JSONS given a list of plan JSONS" onClick={handleAutolayoutButton}>AutoAutoLayout</button>
+				<button className="btn btn-sm btn-wide btn-primary" title="Generates auto-layouts JSONS given a list of plan JSONS" onClick={handleAutolayoutButton}>AutoAutoFiller</button>
 			</div>
 		);
 	}
