@@ -474,6 +474,7 @@
     visibility: visible;
 }
 /*</editor-fold>*/
+
 /*<editor-fold desc="SNS Panel">*/
 .SNSEditorPanel {
     background-color: hsl(var(--b1));
@@ -482,7 +483,7 @@
     position: fixed;
     top: 10vh;
     left: 10vw;
-    width: 1000px;
+    width: 1200px;
     height: 800px;
     z-index: 1;
     display: flex;
@@ -499,8 +500,14 @@
     border-bottom: hsl(var(--b2)) solid 1px;
 }
 .SNSMainContent{
+    width: 70%;
+    height: 90%;
+}
+.SNSComparePanel{
+    display: flex;
+    flex-direction: row;
     width: 100%;
-    height: 80%;
+    height: 100%;
 }
 .SNSCurrentProduct{
     height: 30%;
@@ -531,14 +538,13 @@
     padding: 10px;
 }
 .SNSFooter{
-    height: 15%;
-    width: 100%;
+    height: 100%;
+    width: 25%;
     padding: 5px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     border-top: hsl(var(--b2)) solid 1px;
-    align-items: baseline;
-    justify-content: space-evenly;
+    border-left: hsl(var(--b2)) solid 1px;
 }
 .SNSProductImage{
     height: 150px;
@@ -553,8 +559,15 @@
     align-items: center;
     justify-content: space-evenly;
 }
+.SNSRuleEntry{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    align-items: center;
+}
 
 /*</editor-fold>*/
+
 /*<editor-fold desc="JsonViewer">*/
 .jsonViewerContainer {
     width: 100%;

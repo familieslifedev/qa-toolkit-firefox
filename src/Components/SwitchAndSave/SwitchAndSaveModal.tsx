@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { stringify } from 'query-string/base';
 import { convertPenceToPounds, isWithinRangeComparison } from "~Utils/Utils";
 import { ProductInterface, ProductStatuses, ProductApiResponse } from "~Utils/Constants";
+import { useStorage } from "@plasmohq/storage/dist/hook";
 
 interface Props {
 	hidden: boolean;
@@ -12,13 +13,33 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 	const [inputProductSKU, setInputProductSKU] = useState<string>('');
 	const [projectTier, setProjectTier] = useState<string>('project2');
 	const [currentProduct, setCurrentProduct] = useState<ProductApiResponse>(null);
-	const [sameCategoryProducts, setSameCategoryProducts] = useState<string>(null);
-	const [sameSubCategoryProducts, setSameSubCategoryProducts] = useState<string>(null);
 	const [alternativeProduct1, setAlternativeProduct1] = useState<ProductInterface>(null);
 	const [alternative1PriceDifference, setAlternative1PriceDifference] = useState<number>(5);
 	const [alternativeProduct2, setAlternativeProduct2] = useState<ProductInterface>(null);
 	const [alternative2PriceDifference, setAlternative2PriceDifference] = useState<number>(10);
 	const [currentAlternativeComparison, setCurrentAlternativeComparison] = useState<boolean>(true);
+
+
+	const [ruleStatuses, setRuleStatuses] = useStorage('ruleStatuses', {
+		isSameSubCategory: { isActive: true, isHard: true, rank: 1 },
+		isSameBrand: { isActive: true, isHard: true, rank: 2 },
+		isSameColour: { isActive: true, isHard: true, rank: 3 },
+		isWithinWidthRange: { isActive: true, isHard: false, rank: 4 },
+		isSameFuelType: { isActive: true, isHard: false, rank: 5 },
+
+		// Add more rule statuses here
+	});
+
+	const handleRuleChange = (ruleName, key, value) => {
+		setRuleStatuses(prevStatuses => ({
+			...prevStatuses,
+			[ruleName]: {
+				...prevStatuses[ruleName],
+				[key]: value,
+			},
+		}));
+	};
+
 
 	enum inputEvents{
 		productSKU = 'productSKU',
@@ -216,103 +237,125 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 				<button className="btn btn-xs btn-circle absolute right-1.5 top-1.5" onClick={handleHidePanel}>✕</button>
 				<label className="jsonEditorHeaderLabel">Switch and Save Comparator</label>
 			</div>
-			<div className="SNSMainContent">
-				<div className="SNSCurrentProduct">
-					<div>
-						<img  src={currentProduct?.items[0]?.defaultImageUrl}
-							  alt={currentProduct?.items[0]?.defaultImageId}
-							  className = "SNSProductImage"
-						/>
+			<div className="SNSComparePanel">
+				<div className="SNSMainContent">
+					<div className="SNSCurrentProduct">
+						<div>
+							<img  src={currentProduct?.items[0]?.defaultImageUrl}
+								  alt={currentProduct?.items[0]?.defaultImageId}
+								  className = "SNSProductImage"
+							/>
+						</div>
+						<div className={"SNSInnerRight"}>
+							<h1><b>Current Product</b></h1>
+							<p><b>Product:</b>  {currentProduct?.items[0]?.productName}</p>
+							<p><b>Status:</b> {currentProduct?.items[0]?.productStateHandle}</p>
+							<p><b>Brand:</b>  {currentProduct?.items[0]?.manufacturer}</p>
+							<p><b>SKU:</b>  {currentProduct?.items[0]?.productCode}</p>
+							<p><b>Category:</b>  {currentProduct?.items[0]?.retailCategory.name}</p>
+							<p><b>Sub Category:</b>  {currentProduct?.items[0]?.retailSubCategory.name}</p>
+							<p><b>Price:</b> {currentProduct?.items[0]?.promoPrice?.gross ? `£${convertPenceToPounds(currentProduct.items[0]?.promoPrice.gross)}` : ''}</p>
+						</div>
 					</div>
-					<div className={"SNSInnerRight"}>
-						<h1><b>Current Product</b></h1>
-						<p><b>Product:</b>  {currentProduct?.items[0]?.productName}</p>
-						<p><b>Status:</b> {currentProduct?.items[0]?.productStateHandle}</p>
-						<p><b>Brand:</b>  {currentProduct?.items[0]?.manufacturer}</p>
-						<p><b>SKU:</b>  {currentProduct?.items[0]?.productCode}</p>
-						<p><b>Category:</b>  {currentProduct?.items[0]?.retailCategory.name}</p>
-						<p><b>Sub Category:</b>  {currentProduct?.items[0]?.retailSubCategory.name}</p>
-						<p><b>Price:</b> {currentProduct?.items[0]?.promoPrice?.gross ? `£${convertPenceToPounds(currentProduct.items[0]?.promoPrice.gross)}` : ''}</p>
-					</div>
-				</div>
-				<div className="SNSAlternativeProducts">
-					<div className="SNSInnerLeft">
-						<img  src={alternativeProduct1?.defaultImageUrl}
-							  alt={alternativeProduct1?.defaultImageId}
-							  className = "SNSProductImage"
-						/>
-						<h1><b>Alternative One</b></h1>
-						<p><b>Product:</b> {alternativeProduct1?.productName}</p>
-						<p><b>Status:</b> {alternativeProduct1?.productStateHandle}</p>
-						<p><b>Brand:</b> {alternativeProduct1?.manufacturer}</p>
-						<p><b>SKU:</b> {alternativeProduct1?.productCode}</p>
-						<p><b>Category:</b> {alternativeProduct1?.retailCategory.name}</p>
-						<p><b>Sub Category:</b> {alternativeProduct1?.retailSubCategory.name}</p>
-						<p><b>Price:</b>{" "}
-							{alternativeProduct1?.promoPrice?.gross
-								? `£${convertPenceToPounds(alternativeProduct1?.promoPrice.gross)}`
-								: ""}
-						</p>
-						<p><b>Save:  </b>{alternativeProduct1?.promoPrice?.gross ? `£${convertPenceToPounds((Math.abs(currentProduct?.items[0]?.promoPrice.gross - alternativeProduct1?.promoPrice.gross)))}`
-							: ""} </p>
-						<p><b>Percent Difference: </b>
-							{alternativeProduct1?.promoPrice?.gross && currentProduct?.items[0]?.promoPrice.gross
-								? `${(Math.abs(currentProduct.items[0].promoPrice.gross - alternativeProduct1.promoPrice.gross) / currentProduct.items[0].promoPrice.gross * 100).toFixed(2)}%`
-								: ""}
-						</p>
+					<div className="SNSAlternativeProducts">
+						<div className="SNSInnerLeft">
+							<img  src={alternativeProduct1?.defaultImageUrl}
+								  alt={alternativeProduct1?.defaultImageId}
+								  className = "SNSProductImage"
+							/>
+							<h1><b>Alternative One</b></h1>
+							<p><b>Product:</b> {alternativeProduct1?.productName}</p>
+							<p><b>Status:</b> {alternativeProduct1?.productStateHandle}</p>
+							<p><b>Brand:</b> {alternativeProduct1?.manufacturer}</p>
+							<p><b>SKU:</b> {alternativeProduct1?.productCode}</p>
+							<p><b>Category:</b> {alternativeProduct1?.retailCategory.name}</p>
+							<p><b>Sub Category:</b> {alternativeProduct1?.retailSubCategory.name}</p>
+							<p><b>Price:</b>{" "}
+								{alternativeProduct1?.promoPrice?.gross
+									? `£${convertPenceToPounds(alternativeProduct1?.promoPrice.gross)}`
+									: ""}
+							</p>
+							<p><b>Save:  </b>{alternativeProduct1?.promoPrice?.gross ? `£${convertPenceToPounds((Math.abs(currentProduct?.items[0]?.promoPrice.gross - alternativeProduct1?.promoPrice.gross)))}`
+								: ""} </p>
+							<p><b>Percent Difference: </b>
+								{alternativeProduct1?.promoPrice?.gross && currentProduct?.items[0]?.promoPrice.gross
+									? `${(Math.abs(currentProduct.items[0].promoPrice.gross - alternativeProduct1.promoPrice.gross) / currentProduct.items[0].promoPrice.gross * 100).toFixed(2)}%`
+									: ""}
+							</p>
 
-					</div>
-					<div className="SNSInnerRight">
-						<img  src={alternativeProduct2?.defaultImageUrl}
-							  alt={alternativeProduct2?.defaultImageId}
-							  className = "SNSProductImage"
+						</div>
+						<div className="SNSInnerRight">
+							<img  src={alternativeProduct2?.defaultImageUrl}
+								  alt={alternativeProduct2?.defaultImageId}
+								  className = "SNSProductImage"
 
-						/>
-						<h1><b>Alternative Two</b></h1>
-						<p><b>Product:</b> {alternativeProduct2?.productName}</p>
-						<p><b>Status:</b> {alternativeProduct2?.productStateHandle}</p>
-						<p><b>Brand:</b> {alternativeProduct2?.manufacturer}</p>
-						<p><b>SKU:</b> {alternativeProduct2?.productCode}</p>
-						<p><b>Category:</b> {alternativeProduct2?.retailCategory.name}</p>
-						<p><b>Sub Category:</b> {alternativeProduct2?.retailSubCategory.name}</p>
-						<p>
-							<b>Price:</b>{" "}
-							{alternativeProduct2?.promoPrice.gross
-								? `£${convertPenceToPounds(alternativeProduct2?.promoPrice.gross)}`
-								: ""}
-						</p>
-						<p><b>Save:  </b>{alternativeProduct2?.promoPrice?.gross ? `£${convertPenceToPounds((Math.abs(currentProduct?.items[0]?.promoPrice.gross - alternativeProduct2?.promoPrice.gross)))}`
-							: ""} </p>
-						<p><b>Percent Difference: </b>
-							{alternativeProduct2?.promoPrice?.gross && (currentAlternativeComparison ? alternativeProduct1?.promoPrice.gross : currentProduct?.items[0]?.promoPrice.gross)
-								? `${(Math.abs((currentAlternativeComparison ? alternativeProduct1.promoPrice.gross : currentProduct.items[0].promoPrice.gross) - alternativeProduct2.promoPrice.gross) / (currentAlternativeComparison ? alternativeProduct1.promoPrice.gross : currentProduct.items[0].promoPrice.gross) * 100).toFixed(2)}%`
-								: ""}
-						</p>
+							/>
+							<h1><b>Alternative Two</b></h1>
+							<p><b>Product:</b> {alternativeProduct2?.productName}</p>
+							<p><b>Status:</b> {alternativeProduct2?.productStateHandle}</p>
+							<p><b>Brand:</b> {alternativeProduct2?.manufacturer}</p>
+							<p><b>SKU:</b> {alternativeProduct2?.productCode}</p>
+							<p><b>Category:</b> {alternativeProduct2?.retailCategory.name}</p>
+							<p><b>Sub Category:</b> {alternativeProduct2?.retailSubCategory.name}</p>
+							<p>
+								<b>Price:</b>{" "}
+								{alternativeProduct2?.promoPrice.gross
+									? `£${convertPenceToPounds(alternativeProduct2?.promoPrice.gross)}`
+									: ""}
+							</p>
+							<p><b>Save:  </b>{alternativeProduct2?.promoPrice?.gross ? `£${convertPenceToPounds((Math.abs(currentProduct?.items[0]?.promoPrice.gross - alternativeProduct2?.promoPrice.gross)))}`
+								: ""} </p>
+							<p><b>Percent Difference: </b>
+								{alternativeProduct2?.promoPrice?.gross && (currentAlternativeComparison ? alternativeProduct1?.promoPrice.gross : currentProduct?.items[0]?.promoPrice.gross)
+									? `${(Math.abs((currentAlternativeComparison ? alternativeProduct1.promoPrice.gross : currentProduct.items[0].promoPrice.gross) - alternativeProduct2.promoPrice.gross) / (currentAlternativeComparison ? alternativeProduct1.promoPrice.gross : currentProduct.items[0].promoPrice.gross) * 100).toFixed(2)}%`
+									: ""}
+							</p>
 
+						</div>
 					</div>
-				</div>
 
-			</div>
-			<div className="SNSFooter">
-				<div className="flex-col space-y-0.5 alignItemsCenter">
-					<label className="label-text">Product SKU</label>
-					<input className="input input-sm input-bordered" type="text" value={inputProductSKU} onChange={(e) => handleInputChange(e, inputEvents.productSKU)} />
 				</div>
-				<div className="flex-col space-y-0.5 alignItemsCenter">
-					<label className="label-text">Alternative 1 Price %</label>
-					<input className="input input-sm input-bordered" type="number" value={alternative1PriceDifference} onChange={(e) => handleInputChange(e, inputEvents.alternative1Price)}/>
-				</div>
-				<div className="flex-col space-y-0.5 alignItemsCenter">
-					<label className="label-text">Alternative 2 Price %</label>
-					<input className="input input-sm input-bordered" type="number" value={alternative2PriceDifference} onChange={(e) => handleInputChange(e, inputEvents.alternative2Price)}/>
-					<div className="flex space-x-0.5 alignItemsCenter">
-						<input type="checkbox" className="toggle toggle-sm toggle-success" onChange={handleCheckChange} checked={currentAlternativeComparison} />
-						<label className="label-text">Current / Alternative 1</label>
+				<div className="SNSFooter">
+					<div className="flex-col space-y-0.5 alignItemsCenter">
+						<label className="label-text">Product SKU</label>
+						<input className="input input-sm input-bordered" type="text" value={inputProductSKU} onChange={(e) => handleInputChange(e, inputEvents.productSKU)} />
 					</div>
-				</div>
-				<div className="flex-col space-y-0.5 alignItemsCenter">
-					<select className="select select-sm"> </select>
-					<button className="btn btn-sm btn-primary " onClick={getCurrentProduct}> Compare </button>
+					<div className="flex-col space-y-0.5 alignItemsCenter">
+						<label className="label-text">Alternative 1 Price %</label>
+						<input className="input input-sm input-bordered" type="number" value={alternative1PriceDifference} onChange={(e) => handleInputChange(e, inputEvents.alternative1Price)}/>
+					</div>
+					<div className="flex-col space-y-0.5 alignItemsCenter">
+						<label className="label-text">Alternative 2 Price %</label>
+						<input className="input input-sm input-bordered" type="number" value={alternative2PriceDifference} onChange={(e) => handleInputChange(e, inputEvents.alternative2Price)}/>
+						<div className="flex space-x-0.5 alignItemsCenter">
+							<input type="checkbox" className="toggle toggle-sm toggle-success" onChange={handleCheckChange} checked={currentAlternativeComparison} />
+							<label className="label-text">Current / Alternative 1</label>
+						</div>
+					</div>
+					<form className="form-control">
+						{Object.entries(ruleStatuses).map(([ruleName, { isActive, isHard, rank }]) => (
+							<div key={ruleName}>
+								<h2 className="font-bold" >{ruleName}</h2>
+								<div  className="SNSRuleEntry">
+								<label>
+									Active:&nbsp;
+									<input type="checkbox" checked={isActive} onChange={e => handleRuleChange(ruleName, 'isActive', e.target.checked)} />
+								</label>
+								<label>
+									Hard Rule:&nbsp;
+									<input type="checkbox" checked={isHard} onChange={e => handleRuleChange(ruleName, 'isHard', e.target.checked)} />
+								</label>
+								<label>
+									Priority:&nbsp;
+									<input type="number" min="1" className="input input-bordered input-xs w-14" value={rank} onChange={e => handleRuleChange(ruleName, 'rank', Number(e.target.value))} />
+								</label>
+								</div>
+							</div>
+						))}
+					</form>
+					<div className="flex-col space-y-0.5 alignItemsCenter">
+						<button className="btn btn-sm btn-primary " onClick={getCurrentProduct}> Compare </button>
+					</div>
 				</div>
 			</div>
 		</div>
