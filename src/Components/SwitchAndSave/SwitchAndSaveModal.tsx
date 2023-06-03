@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { stringify } from 'query-string/base';
-import { convertPenceToPounds, isWithinRangeComparison } from "~Utils/Utils";
+import { convertPenceToPounds, get2DJson, isWithinRangeComparison } from "~Utils/Utils";
 import { ProductInterface, ProductStatuses, ProductApiResponse } from "~Utils/Constants";
 import { useStorage } from "@plasmohq/storage/dist/hook";
+import { environmentArray } from "~Utils/componentArrays";
 
 interface Props {
 	hidden: boolean;
@@ -11,13 +12,14 @@ interface Props {
 
 export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): JSX.Element {
 	const [inputProductSKU, setInputProductSKU] = useState<string>('');
-	const [projectTier, setProjectTier] = useState<string>('project2');
+	const [environment, setEnvironment] = useStorage<string>('SNSEnvironment', 'Live');
 	const [currentProduct, setCurrentProduct] = useState<ProductApiResponse>(null);
 	const [alternativeProduct1, setAlternativeProduct1] = useState<ProductInterface>(null);
 	const [alternative1PriceDifference, setAlternative1PriceDifference] = useState<number>(5);
 	const [alternativeProduct2, setAlternativeProduct2] = useState<ProductInterface>(null);
 	const [alternative2PriceDifference, setAlternative2PriceDifference] = useState<number>(10);
 	const [currentAlternativeComparison, setCurrentAlternativeComparison] = useState<boolean>(true);
+	const [campaignPhaseId, setCampaignPhaseId] = useStorage<number>("SNSCampaignID",null);
 
 
 	const [ruleStatuses, setRuleStatuses] = useStorage('ruleStatuses', {
@@ -45,6 +47,7 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 		productSKU = 'productSKU',
 		alternative1Price = 'alternative1Price',
 		alternative2Price = 'alternative2Price',
+		campaignPhaseId = 'campaignPhaseId'
 	}
 
 
@@ -62,18 +65,30 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 			case inputEvents.alternative2Price:
 				setAlternative2PriceDifference(e.target.valueAsNumber);
 				break;
+			case inputEvents.campaignPhaseId:
+				setCampaignPhaseId(e.target.valueAsNumber);
+				break;
 			default:
 				break;
 		}
 	};
 
+	const getPhaseId = async (): Promise<void> =>{
+		const Json = await get2DJson();
+		if (Json) {
+			console.log(Json);
+			setCampaignPhaseId(Json.lock.campaignPhaseId)
+		}
+	}
+
 
 //AP.DW.AEG.114
 	const getCurrentProduct = async (): Promise<any> => {
-		const url = `https://feeder.${projectTier}.wrenkitchens.com/products`;
+		const url = `https://feeder.${environment ? `${environment}.` : ''}wrenkitchens.com/products`;
 
 		const query = {
 			productCode: inputProductSKU,
+			campaignPhaseId: campaignPhaseId,
 		};
 
 		const response = await fetch(`${url}?${stringify(query)}`);
@@ -87,7 +102,7 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 	};
 
 	const getAllSameTypeProducts = async (results): Promise<any> => {
-		const url = `https://feeder.${projectTier}.wrenkitchens.com/products`;
+		const url = `https://feeder.${environment ? `${environment}.` : ''}wrenkitchens.com/products`;
 		const acceptableWidthDifference = 10;
 
 		const query = {
@@ -105,7 +120,7 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 
 		const currentProduct = results.items[0];
 		const currentManufacturer = currentProduct.manufacturer;
-		const currentPromoPrice = currentProduct.promoPrice.gross;
+		const currentPromoPrice = currentProduct.discountedOrderPrice?.gross ?? currentProduct.promoPrice.gross;
 		const currentWidthMm = currentProduct.widthMm;
 		const currentSubCategoryHandle = currentProduct.retailSubCategory.handle;
 
@@ -230,6 +245,9 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 	}
 
 
+	function handleEnvChange(event) {
+		setEnvironment(event.target.value)
+	}
 
 	return (
 		<div className={`SNSEditorPanel ${hidden ? 'hidden' : ''}`}>
@@ -315,21 +333,42 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 					</div>
 
 				</div>
-				<div className="SNSFooter">
-					<div className="flex-col space-y-0.5 alignItemsCenter">
-						<label className="label-text">Product SKU</label>
+				<div className="SNSRulesBar">
+					<div className="flex-col space-y-0.5 alignItemsCenter ">
+						<label className="label-text font-bold">Product SKU</label>
 						<input className="input input-sm input-bordered" type="text" value={inputProductSKU} onChange={(e) => handleInputChange(e, inputEvents.productSKU)} />
 					</div>
+					<div className="flex flex-row alignItemsCenter">
 					<div className="flex-col space-y-0.5 alignItemsCenter">
-						<label className="label-text">Alternative 1 Price %</label>
-						<input className="input input-sm input-bordered" type="number" value={alternative1PriceDifference} onChange={(e) => handleInputChange(e, inputEvents.alternative1Price)}/>
+						<label className="label-text font-bold">Alternative 1 Price %</label>
+						<input className="input input-xs input-bordered w-14" type="number" value={alternative1PriceDifference} onChange={(e) => handleInputChange(e, inputEvents.alternative1Price)}/>
 					</div>
 					<div className="flex-col space-y-0.5 alignItemsCenter">
-						<label className="label-text">Alternative 2 Price %</label>
-						<input className="input input-sm input-bordered" type="number" value={alternative2PriceDifference} onChange={(e) => handleInputChange(e, inputEvents.alternative2Price)}/>
+						<label className="label-text font-bold">Alternative 2 Price %</label>
+						<input className="input input-xs input-bordered w-14" type="number" value={alternative2PriceDifference} onChange={(e) => handleInputChange(e, inputEvents.alternative2Price)}/>
 						<div className="flex space-x-0.5 alignItemsCenter">
 							<input type="checkbox" className="toggle toggle-sm toggle-success" onChange={handleCheckChange} checked={currentAlternativeComparison} />
-							<label className="label-text">Current / Alternative 1</label>
+							<label className="label-text">Current/Alt</label>
+						</div>
+					</div>
+					</div>
+					<div className="flex flex-row alignItemsCenter">
+						<div className="flex-col space-y-0.5 alignItemsCenter">
+							<label className="label-text font-bold">Environment</label>
+							<select onChange={handleEnvChange} value={environment}  className="select select-xs select-bordered">
+								{environmentArray.map(environmentArray => (
+									<option key={environmentArray.Name} value={environmentArray.Code}>
+										{environmentArray.Name}
+									</option>
+								))}
+							</select>
+						</div>
+						<div className="flex-col space-y-0.5 alignItemsCenter">
+							<label className="label-text font-bold">Campaign Phase Id</label>
+							<div className="input-group">
+								<input className="input input-xs input-bordered w-14" type="number" value={campaignPhaseId} onChange={(e) => handleInputChange(e, inputEvents.campaignPhaseId)} />
+								<button className="btn btn-xs" title="Get from current plan" onClick={getPhaseId}>From plan</button>
+							</div>
 						</div>
 					</div>
 					<form className="form-control">
@@ -337,24 +376,24 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 							<div key={ruleName}>
 								<h2 className="font-bold" >{ruleName}</h2>
 								<div  className="SNSRuleEntry">
-								<label>
-									Active:&nbsp;
-									<input type="checkbox" checked={isActive} onChange={e => handleRuleChange(ruleName, 'isActive', e.target.checked)} />
-								</label>
-								<label>
-									Hard Rule:&nbsp;
-									<input type="checkbox" checked={isHard} onChange={e => handleRuleChange(ruleName, 'isHard', e.target.checked)} />
-								</label>
-								<label>
-									Priority:&nbsp;
-									<input type="number" min="1" className="input input-bordered input-xs w-14" value={rank} onChange={e => handleRuleChange(ruleName, 'rank', Number(e.target.value))} />
-								</label>
+									<label>
+										Active:&nbsp;
+										<input type="checkbox" checked={isActive} onChange={e => handleRuleChange(ruleName, 'isActive', e.target.checked)} />
+									</label>
+									<label>
+										Hard Rule:&nbsp;
+										<input type="checkbox" checked={isHard} onChange={e => handleRuleChange(ruleName, 'isHard', e.target.checked)} />
+									</label>
+									<label>
+										Priority:&nbsp;
+										<input type="number" min="1" className="input input-bordered input-xs w-14" value={rank} onChange={e => handleRuleChange(ruleName, 'rank', Number(e.target.value))} />
+									</label>
 								</div>
 							</div>
 						))}
 					</form>
-					<div className="flex-col space-y-0.5 alignItemsCenter">
-						<button className="btn btn-sm btn-primary " onClick={getCurrentProduct}> Compare </button>
+					<div className="flex-col space-y-0.5 alignItemsCenter mt-4 w-full">
+						<button className="btn btn-sm btn-primary w-full" onClick={getCurrentProduct}> Compare </button>
 					</div>
 				</div>
 			</div>

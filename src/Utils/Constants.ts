@@ -57,24 +57,24 @@ export interface ProductInterface {
 	manufacturerPartNumber: string;
 	manufacturer: string;
 	listPrice: {
-		gross: number;
 		net: number;
+		gross: number;
 	};
 	costPerMeterSquared: {
-		gross: number | null;
 		net: number | null;
+		gross: number | null;
 	};
 	promoPrice: {
-		gross: number;
 		net: number;
+		gross: number;
 	};
 	priceMatches: {
 		[key: string]: {
 			retailer: string;
-			price: number[] | {
+			price: {
 				grossValue: number;
 				netValue: number;
-			};
+			} | any[];
 		};
 	};
 	heightMm: number;
@@ -82,11 +82,11 @@ export interface ProductInterface {
 	widthMm: number;
 	minCustomLengthMm: number;
 	packQuantity: number;
-	requiredApertureHeightMm: number | null;
-	productDetail: null;
+	requiredApertureHeightMm: number;
+	productDetail: any;
 	defaultImageId: string;
 	defaultImageUrl: string;
-	productShape: null;
+	productShape: any;
 	showOnSalesSystem: boolean;
 	showOnTradeSalesSystem: boolean;
 	showOnTradeWebsiteWrenTrade: boolean;
@@ -98,7 +98,7 @@ export interface ProductInterface {
 		handle: string;
 		name: string;
 	};
-	plannerColour: null;
+	plannerColour: any;
 	retailCategory: {
 		handle: string;
 		name: string;
@@ -111,10 +111,10 @@ export interface ProductInterface {
 		handle: string;
 		name: string;
 	};
-	productStyle: null;
-	productRange: null;
+	productStyle: any;
+	productRange: any;
 	productFlags: any[];
-	productMaterial: null;
+	productMaterial: any;
 	showroomVisibility: any[];
 	attributes: {
 		[key: string]: string;
@@ -135,8 +135,16 @@ export interface ProductInterface {
 		image500Url: string;
 		image800Url: string;
 	}[];
-	productRelations: any[];
-	edgeColour: null;
+	productRelations: {
+		productId: number;
+		relationTypeHandle: string;
+		quantity: string;
+		productCode: string;
+		productDescription: string;
+		retailCategoryHandle: string;
+		retailSubCategoryHandle: string;
+	}[];
+	edgeColour: any;
 	isExpressDelivery: boolean;
 	technicalSpecificationUrl: string;
 	availableCollections: string[];
@@ -154,7 +162,18 @@ export interface ProductInterface {
 		showToCustomerServices: boolean;
 		showOnStoreDesignFrontend: boolean;
 	}[];
+	discountedOrderPrice: {
+		net: number;
+		gross: number;
+	};
+	formattedDiscountedOrderPrice: string;
+	discountType: string;
+	discountValue: {
+		net: number;
+		gross: number;
+	};
 }
+
 
 export interface ProductApiResponse {
 	filterCounts: any[];

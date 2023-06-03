@@ -537,9 +537,9 @@
     height: 100%;
     padding: 10px;
 }
-.SNSFooter{
+.SNSRulesBar{
     height: 100%;
-    width: 25%;
+    width: 30%;
     padding: 5px;
     display: flex;
     flex-direction: column;
@@ -556,7 +556,7 @@
 }
 .alignItemsCenter{
     display: flex;
-    align-items: center;
+    align-items: start;
     justify-content: space-evenly;
 }
 .SNSRuleEntry{
