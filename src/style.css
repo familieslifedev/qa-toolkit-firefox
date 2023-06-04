@@ -510,7 +510,7 @@
     height: 100%;
 }
 .SNSCurrentProduct{
-    height: 30%;
+    height: 40%;
     padding: 10px;
     display: flex;
     flex-direction: row;
@@ -545,6 +545,7 @@
     flex-direction: column;
     border-top: hsl(var(--b2)) solid 1px;
     border-left: hsl(var(--b2)) solid 1px;
+    font-size: 0.8rem;
 }
 .SNSProductImage{
     height: 150px;

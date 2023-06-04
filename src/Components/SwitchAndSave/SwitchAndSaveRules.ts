@@ -1,33 +1,59 @@
 import { isWithinRangeComparison } from "~Utils/Utils";
-import { useStorage } from "@plasmohq/storage/dist/hook";
 
-
-
-
-
-// Define the type for a single rule status
 export interface RuleStatus {
 	isActive: boolean;
 	isHard: boolean;
-	rank: number;
+	priority: number;
 }
 
-// Define the type for the ruleStatuses state
 export interface RuleStatuses {
 	[ruleName: string]: RuleStatus;
 }
 
-const acceptableWidthDifference = 5;
-
-
-const softRules = {
-	isSameManufacturer: (product, currentProduct) => product.manufacturer === currentProduct.manufacturer,
-	isWithinPriceRange: (product, currentProduct, priceDifference) => product.promoPrice.gross < currentProduct * (1 - (priceDifference / 100)),
-};
-
-const hardRules = {
-	isSameRetailCategory: (product, currentProduct) => product.retailCategory.handle === currentProduct.retailCategory.handle,
-	isWithinWidthRange: (product, currentProduct) => isWithinRangeComparison(product.widthMm, currentProduct.widthMm, acceptableWidthDifference),
+export const rules = {
 	isSameSubCategory: (product, currentProduct) => product.retailSubCategory.handle === currentProduct.retailSubCategory.handle,
+	isSameBrand: (product, currentProduct) => product.manufacturer === currentProduct.manufacturer,
+	isDifferentBrand: (product, currentProduct) => product.manufacturer !== currentProduct.manufacturer,
+	isSameColour: (product, currentProduct) => product.productColour.handle === currentProduct.productColour.handle,
+	isWithinWidthRange: (product, currentProduct) => isWithinRangeComparison(product.widthMm, currentProduct.widthMm, 50),
+	isSameFuelType: (product, currentProduct) => {
+		if (currentProduct.attributes["Fuel type"] && !product.attributes["Fuel type"]) {
+			return false;
+		}
+
+		if (!currentProduct.attributes["Fuel type"]&& product.attributes["Fuel type"]) {
+			return false;
+		}
+
+		return product.attributes["Fuel type"] === currentProduct.attributes["Fuel type"];
+	},
 };
+
+export function isCheaperByPercentage(product: any, comparisonProduct: any, percentageDifference: number): boolean {
+	let comparisonPrice = comparisonProduct.discountedOrderPrice?.gross ?? comparisonProduct.promoPrice?.gross;
+	let productPrice = product.discountedOrderPrice?.gross ?? product.promoPrice?.gross;
+
+	if (comparisonPrice === undefined || productPrice === undefined) {
+		console.log("comparisonPrice or productPrice is undefined");
+		return false;
+	}
+
+	return productPrice < comparisonPrice * (1 - percentageDifference / 100);
+}
+
+
+
+
+export function getPrice(product) {
+	if (!product) {
+		return null;
+	}
+
+	return product.discountedOrderPrice?.gross ?? product.promoPrice.gross;
+}
+
+
+
+
+
 
