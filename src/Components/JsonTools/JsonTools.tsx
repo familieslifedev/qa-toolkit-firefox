@@ -9,7 +9,7 @@ import SwitchAndSaveModal from "~Components/SwitchAndSave/SwitchAndSaveModal";
 export default function JsonTools(): JSX.Element {
 	const { setFeedbackText } = useContext(FeedbackContext);
 	const [isJsonEditorVisible, setIsJsonEditorVisible] = useState<boolean>(false);
-	const [isSNSVisible, setIsSNSVisible] = useState<boolean>(true);
+	const [isSNSVisible, setIsSNSVisible] = useState<boolean>(false);
 	const [jsonFixer, setJsonFixer] = useState<JsonFixer>(new JsonFixer());
 	const [leadNames, setLeadNames] = useState<Array<string>>(new Array<string>());
 	const [selectedLeadName, setSelectedLeadName] = useState<string>("");
