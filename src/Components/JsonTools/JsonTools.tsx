@@ -3,11 +3,13 @@ import { FeedbackContext } from "~Utils/sidebarContext";
 import JsonEditorModal from "~Components/JsonTools/JsonEditor/JsonEditorModal";
 import { useContext, useEffect, useState, useRef } from "react";
 import { JsonFixer } from "~/Services/JsonFixer";
+import SwitchAndSaveModal from "~Components/SwitchAndSave/SwitchAndSaveModal";
 
 //TODO create a better way to access the JSON editor.
 export default function JsonTools(): JSX.Element {
 	const { setFeedbackText } = useContext(FeedbackContext);
 	const [isJsonEditorVisible, setIsJsonEditorVisible] = useState<boolean>(false);
+	const [isSNSVisible, setIsSNSVisible] = useState<boolean>(false);
 	const [jsonFixer, setJsonFixer] = useState<JsonFixer>(new JsonFixer());
 	const [leadNames, setLeadNames] = useState<Array<string>>(new Array<string>());
 	const [selectedLeadName, setSelectedLeadName] = useState<string>("");
@@ -40,6 +42,10 @@ export default function JsonTools(): JSX.Element {
 
 	function handleJsonEditorPanel(): void {
 		setIsJsonEditorVisible(!isJsonEditorVisible);
+	}
+
+	function handleSNSPanel(): void {
+		setIsSNSVisible(!isSNSVisible);
 	}
 
 	const getCurrentUrl = async (): Promise<string> => {
@@ -79,9 +85,13 @@ export default function JsonTools(): JSX.Element {
 
 	return (
 		<div className="jsonContainer">
+			<button className="btn btn-sm btn-wide btn-primary" title={"Open Switch and Save Modal"} onClick={handleSNSPanel}>Switch and Save</button>
 			<button className="btn btn-sm btn-wide btn-primary" title={"Open Json Viewer/Editor"} onClick={handleJsonEditorPanel}>Open Json Edit</button>
 			<div>
 				<JsonEditorModal hidden={!isJsonEditorVisible} onHiddenChange={handleJsonEditorPanel} />
+			</div>
+			<div>
+				<SwitchAndSaveModal hidden={!isSNSVisible} onHiddenChange={handleSNSPanel} />
 			</div>
 			
 			<div className="form-control w-full max-w-xs">

@@ -8,7 +8,6 @@ function OptionsIndex() {
   const [triggerKey, setTriggerKey] = useStorage("triggerKey", "Q");
   const [modifierKey, setModifierKey] = useStorage("modifierKey");
 
-
   function saveTheme(event) {
     setTheme(event.target.value).then(r => console.log("theme Updated"));
   }

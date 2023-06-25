@@ -44,6 +44,8 @@ export const emissaryJobsArray = [
 	{Job: "refresh-product-unit-range-combination", Name: "Refresh Unit Range Combi"},
 
 ]
+
+
 // export function environmentArray() {
 //   //setup arrays first, then they can be used for initial values.
 //   const environmentArray = Array(9).fill( 9).map((_, i) => {
