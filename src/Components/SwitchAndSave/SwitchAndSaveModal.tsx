@@ -3,7 +3,7 @@ import { stringify } from 'query-string/base';
 import { convertPenceToPounds, get2DJson, isWithinRangeComparison } from "~Utils/Utils";
 import { ProductInterface, ProductStatuses, ProductApiResponse } from "~Utils/Constants";
 import { useStorage } from "@plasmohq/storage/dist/hook";
-import { environmentArray } from "~Utils/componentArrays";
+import { environmentArray, regionArray } from "~Utils/componentArrays";
 import { getPrice, isCheaperByPercentage, rules, RuleStatuses }
 	from "~Components/SwitchAndSave/SwitchAndSaveRules";
 
@@ -15,6 +15,7 @@ interface Props {
 export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): JSX.Element {
 	const [inputProductSKU, setInputProductSKU] = useState<string>('');
 	const [environment, setEnvironment] = useStorage<string>('SNSEnvironment', '');
+	const [region, setRegion] = useState(regionArray[0].Code);
 	const [currentProduct, setCurrentProduct] = useState<ProductApiResponse>(null);
 	const [alternativeProduct1, setAlternativeProduct1] = useState<ProductInterface>(null);
 	const [alternative1PriceDifference, setAlternative1PriceDifference] = useState<number>(5);
@@ -105,7 +106,7 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 
 //AP.DW.AEG.114
 	const getCurrentProduct = async (): Promise<any> => {
-		const url = `https://feeder.${environment ? `${environment}.` : ''}wrenkitchens.com/products`;
+		const url = `https://feeder.${environment ? `${environment}.` : ''}wrenkitchens.${region}/products`;
 
 		const query = {
 			productCode: inputProductSKU,
@@ -156,14 +157,16 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 			const intermediateFilteredProducts = filteredProducts.filter(product => rules[ruleName](product, currentProduct)); // Always compare with original product
 			console.log(`Filtered Products After Rule ${ruleName}:`, intermediateFilteredProducts);
 
-			// If this rule cannot be satisfied by any product, we stop here and return the products
-			// that passed the last successful filtration.
+			// If this rule cannot be satisfied by any product, we keep the products
+			// that passed the last successful filtration and move on to the next rule.
 			if (intermediateFilteredProducts.length === 0) {
-				break;
+				console.log(`No product matches rule ${ruleName}, keeping the last successful filtration.`);
+				continue;
 			}
 
 			filteredProducts = intermediateFilteredProducts;
 		}
+
 
 		// We want to return the most expensive product that matches the rules.
 		filteredProducts.sort((a, b) => getPrice(b) - getPrice(a));
@@ -172,7 +175,7 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 	}
 
 	const getAllSameTypeProducts = async (results): Promise<any> => {
-		const url = `https://feeder.${environment ? `${environment}.` : ''}wrenkitchens.com/products`;
+		const url = `https://feeder.${environment ? `${environment}.` : ''}wrenkitchens.${region}/products`;
 
 		const query = {
 			productStateHandle: ProductStatuses.Active,
@@ -208,6 +211,9 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 
 	function handleEnvChange(event) {
 		setEnvironment(event.target.value)
+	}
+	function handleRegionChange(event) {
+		setRegion(event.target.value)
 	}
 
 	return (
@@ -353,6 +359,16 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 								{environmentArray.map(environmentArray => (
 									<option key={environmentArray.Name} value={environmentArray.Code}>
 										{environmentArray.Name}
+									</option>
+								))}
+							</select>
+						</div>
+						<div className="flex-col space-y-0.5 alignItemsCenter">
+							<label className="label-text font-bold">Region</label>
+							<select onChange={handleRegionChange} value={region}  className="select select-xs select-bordered">
+								{regionArray.map(regionArray => (
+									<option key={regionArray.Name} value={regionArray.Code}>
+										{regionArray.Name}
 									</option>
 								))}
 							</select>
