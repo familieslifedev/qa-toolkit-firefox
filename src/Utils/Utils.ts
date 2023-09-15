@@ -1,4 +1,7 @@
 import { Request as BackgroundRequest, RequestType } from '../Services/Background/Request';
+import { stringify } from "query-string/base";
+import type { projectTier } from "~Utils/Constants";
+import type { regions } from "~Utils/Constants";
 
 //Verify Link and open url - setting currentTab will open in the current tab, otherwise it will open in a new tab.
 export async function openURL(url: string, tabId: number, newTab: boolean): Promise<void> {
@@ -105,7 +108,7 @@ export async function get3DJson(): Promise<any> {
 	if (!result) {
 		throw new Error("get3DJson: Failed to get 3D JSON");
 	}
-	
+
 	return result;
 }
 
@@ -160,3 +163,23 @@ export async function save2dJsonToFeeder(args:any) {
 
 }
 
+export const productFeederQuery = async (environment:projectTier , region:regions  , ProductSKU:string, campaignPhaseId?:number ): Promise<any> => {
+	const url = `https://feeder.${environment ? `${environment}.` : ''}wrenkitchens.${region}/products`;
+
+	const query = {
+		productCode: ProductSKU,
+		campaignPhaseId: campaignPhaseId,
+	};
+
+	const response = await fetch(`${url}?${stringify(query)}`);
+	try{
+		const result = await response.json();
+		if(result){
+			console.log(result);
+			return(result);
+		}
+	}
+	catch(error){
+		return error;
+	}
+}

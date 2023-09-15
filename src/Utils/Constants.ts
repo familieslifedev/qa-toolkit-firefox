@@ -1,3 +1,8 @@
+export enum ModalTypes {
+	JsonEditor = "JSONEditor",
+	SwitchAndSave= "SwitchAndSave",
+	ProductQuery = "ProductQuery",
+}
 export enum ProductTypes {
 	Frontals = "Frontals",
 	CoffeeMachines = "CoffeeMachines",
@@ -28,9 +33,9 @@ export enum oven_sub_categories {
 	'SingleWallOvens' = "Single Wall Ovens",
 }
 
-export enum Regions {
-	UK = "UK",
-	US = "US",
+export enum regions {
+	UK = "com",
+	US = "us",
 }
 
 export enum projectTier{

@@ -26,6 +26,54 @@
 * {
     overscroll-behavior: contain;
 }
+
+/*</editor-fold>*/
+
+/*<editor-fold desc="Global">*/
+.tabContentContainer {
+    position: relative;
+    width: 100%;
+}
+
+.tabContent {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+}
+
+.tabContent.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.handle:hover{
+    cursor: grab;
+}
+
+.handle:active{
+    cursor: grabbing;
+}
+
+.modalTabs{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px;
+
+}
+.modalTab{
+    flex-grow: 1;
+    border-color: hsl(var(--b3));
+}
+.modalTab.tab-active{
+    flex-grow: 1;
+    border-color: hsl(var(--a));
+}
 /*</editor-fold>*/
 
 /*<editor-fold desc="Options">*/
@@ -234,7 +282,7 @@
 
 /*</editor-fold>*/
 
-/*<editor-fold desc="JsonTools">*/
+/*<editor-fold desc="ToolSets">*/
 .jsonContainer {
     display: flex;
     flex-direction: column;
@@ -390,9 +438,8 @@
     border-radius: var(--rounded-btn, 0.5rem);
     border: 1px solid hsl(var(--pf));
     position: fixed;
-    top: 10vh; /* center panel vertically in viewport */
-    left: 10vw; /* center panel horizontally in viewport */
-    transform: translate(-50%, -50%);
+    top: 10vh;
+    left: 10vw;
     width: 60svw;
     height: 1000px;
     max-width: 1000px;
@@ -407,12 +454,7 @@
     background-color: hsl(var(--p));
     border-radius: var(--rounded-btn, 0.5rem) var(--rounded-btn, 0.5rem) 0 0;
 }
-.jsonEditorHeaderBar:hover{
-    cursor: grab;
-}
-.jsonEditorHeaderBar:active{
-    cursor: grabbing;
-}
+
 .jsonEditorHeaderLabel{
     color: hsl(var(--pc));
     font-size: 1.2rem;
@@ -424,12 +466,6 @@
     display: inline-block;
     vertical-align: middle;
 }
-.jsonEditorHeaderLabel:hover{
-    cursor: grab;
-}
-.jsonEditorHeaderLabel:active{
-    cursor: grabbing;
-}
 .jsonEditorPanel.hidden {
     display: none;
 }
@@ -438,41 +474,8 @@
     position: absolute;
     right: 10px;
 }
-.jsonEditTabs{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin: 20px;
 
-}
-.jsonEditTab{
-    flex-grow: 1;
-    border-color: hsl(var(--b3));
-}
-.jsonEditTab.tab-active{
-    flex-grow: 1;
-    border-color: hsl(var(--a));
-}
-.jsonContentContainer {
-    position: relative;
-    width: 100%;
-}
 
-.tabContent {
-    position: absolute;
-    width: 100%;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
-}
-
-.tabContent.active {
-    opacity: 1;
-    visibility: visible;
-}
 /*</editor-fold>*/
 
 /*<editor-fold desc="SNS Panel">*/
@@ -567,6 +570,57 @@
     align-items: center;
 }
 
+/*</editor-fold>*/
+
+/*<editor-fold desc="Product Query Panel">*/
+.ProductQueryPanel {
+    background-color: hsl(var(--b1));
+    border-radius: var(--rounded-btn, 0.5rem);
+    border: 1px solid hsl(var(--pf));
+    position: fixed;
+    top: 10vh;
+    left: 10vw;
+    width: 1200px;
+    height: 800px;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+}
+.ProductQueryPanel.hidden{
+    display: none;
+}
+.ProductQueryHeaderBar {
+    width: 100%;
+    height: 35px;
+    background-color: hsl(var(--p));
+    border-radius: var(--rounded-btn, 0.5rem) var(--rounded-btn, 0.5rem) 0 0;
+    border-bottom: hsl(var(--b2)) solid 1px;
+}
+.productQueryContainer{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+}
+.productQueryContentLeft{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 70%;
+    min-width: 70%;
+    height: 100%;
+    padding: 10px;
+    border-right: blue solid 1px;
+}
+.productQueryContentRight{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: auto;
+    height: 100%;
+    padding: 10px;
+    border: yellow 1px solid;
+}
 /*</editor-fold>*/
 
 /*<editor-fold desc="JsonViewer">*/

@@ -6,6 +6,7 @@ import { useStorage } from "@plasmohq/storage/dist/hook";
 import { environmentArray, regionArray } from "~Utils/componentArrays";
 import { getPrice, isCheaperByPercentage, rules, RuleStatuses }
 	from "~Components/SwitchAndSave/SwitchAndSaveRules";
+import Draggable from "react-draggable";
 
 interface Props {
 	hidden: boolean;
@@ -217,8 +218,9 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 	}
 
 	return (
+		<Draggable handle="#SNSHeaderBar">
 		<div className={`SNSEditorPanel ${hidden ? 'hidden' : ''}`}>
-			<div className="SNSHeaderBar">
+			<div id="SNSHeaderBar" className="SNSHeaderBar handle">
 				<button className="btn btn-xs btn-circle absolute right-1.5 top-1.5" onClick={handleHidePanel}>✕</button>
 				<label className="jsonEditorHeaderLabel">Switch and Save Comparator</label>
 			</div>
@@ -431,5 +433,6 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 				</div>
 			</div>
 		</div>
+		</Draggable>
 	);
 }

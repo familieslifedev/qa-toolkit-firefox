@@ -33,13 +33,13 @@ export default function JsonEditorModal({ hidden, onHiddenChange }: Props): JSX.
         </div>
 
         <label className="btn btn-xs btn-circle absolute right-1.5 top-1.5" onClick={handleHidePanel}>✕</label>
-        <div className="tabs jsonEditTabs">
-          <h1 className={`tab tab-bordered jsonEditTab ${activeTab === tabs.Editor ? 'tab-active' : ''}`} onClick={() => handleTabClick(tabs.Editor)}> Editor </h1>
-          <h1 className={`tab tab-bordered jsonEditTab ${activeTab === tabs.Replace ? 'tab-active' : ''}`} onClick={() => handleTabClick(tabs.Replace)}> Replace </h1>
+        <div className="modalTabs">
+          <h1 className={`tab tab-bordered modalTab ${activeTab === tabs.Editor ? 'tab-active' : ''}`} onClick={() => handleTabClick(tabs.Editor)}> Editor </h1>
+          <h1 className={`tab tab-bordered modalTab ${activeTab === tabs.Replace ? 'tab-active' : ''}`} onClick={() => handleTabClick(tabs.Replace)}> Replace </h1>
 
         </div>
 
-        <div className="jsonContentContainer">
+        <div className="tabContentContainer">
           <div className={`tabContent ${activeTab === tabs.Editor ? 'active' : ''}`}>
             <JsonViewer edit={true} />
           </div>
