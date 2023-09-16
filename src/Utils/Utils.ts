@@ -163,13 +163,21 @@ export async function save2dJsonToFeeder(args:any) {
 
 }
 
-export const productFeederQuery = async (environment:projectTier , region:regions  , ProductSKU:string, campaignPhaseId?:number ): Promise<any> => {
+export const productFeederQuery = async (environment:projectTier , region:regions  , ProductInput?:string, campaignPhaseId?:number ): Promise<any> => {
 	const url = `https://feeder.${environment ? `${environment}.` : ''}wrenkitchens.${region}/products`;
 
-	const query = {
-		productCode: ProductSKU,
+	const isSKU = (ProductInput || '').includes('.');
+	const isID = /^\d+$/.test(ProductInput || '');
+
+	let query: any = {
 		campaignPhaseId: campaignPhaseId,
 	};
+
+	if (isSKU) {
+		query.productCode = ProductInput;
+	} else if (isID) {
+		query.productId = ProductInput;
+	}
 
 	const response = await fetch(`${url}?${stringify(query)}`);
 	try{
