@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Draggable from "react-draggable";
-import { convertPenceToPounds, get2DJson, productFeederQuery } from "~Utils/Utils";
-import { ProductInterface, projectTier, regions } from "~Utils/Constants";
+import { convertPenceToPounds, get2DJson, productFeederQuery, unitFeederQuery } from "~Utils/Utils";
+import { ProductInterface, projectTier, regions, UnitInterface } from "~Utils/Constants";
 import { getPrice } from "~Components/SwitchAndSave/SwitchAndSaveRules";
 
 enum tabs {
@@ -12,6 +12,7 @@ enum tabs {
 
 interface UserInputs {
   productQueryInput: string;
+  unitQueryInput: string;
   environment: projectTier;
   region: regions;
   campaignPhaseId: number;
@@ -25,9 +26,11 @@ interface Props {
 export default function ProductQuery({ hidden, onHiddenChange }: Props): JSX.Element {
   const [activeTab, setActiveTab] = useState<tabs>(tabs.Product);
   const [productQueryResult, setProductQueryResult] = useState<ProductInterface>();
+  const [unitQueryResult, setUnitQueryResult] = useState<UnitInterface>();
 
   const [userInputs, setUserInputs] = useState<UserInputs>({
     productQueryInput: '',
+    unitQueryInput: '',
     environment: projectTier.project0,
     region: regions.UK,
     campaignPhaseId: 255,
@@ -66,6 +69,7 @@ export default function ProductQuery({ hidden, onHiddenChange }: Props): JSX.Ele
   };
 
   async function handleProductQuery() {
+    if (!userInputs.productQueryInput) return;
     const searchResponse = await productFeederQuery(userInputs.environment, userInputs.region, userInputs.productQueryInput, userInputs.campaignPhaseId);
     if (searchResponse) {
       console.log('ProductQuery: ', searchResponse);
@@ -107,13 +111,18 @@ export default function ProductQuery({ hidden, onHiddenChange }: Props): JSX.Ele
     return `https://frontend.${userInputs.environment === projectTier.live ? '' : userInputs.environment + '.'}wrenkitchens.${userInputs.region}/pim/product/view/${productQueryResult?.productCode}#details_tab`;
   };
 
+  const generatePimLinkUnit = (): string => {
+    return `https://frontend.${userInputs.environment === projectTier.live ? '' : userInputs.environment + '.'}wrenkitchens.${userInputs.region}/pim/unit/view/${unitQueryResult?.unitDefinitionId}`;
+  }
+
+
 
 
   function displayProductQueryResults(): JSX.Element {
     if (productQueryResult) {
       return (
           <div className="productQueryResults">
-            <div className="ProductQueryHeader">
+            <div className="ProductQueryTopSection">
               <div className="productQueryImageContainer">
                 <button className="productQueryImageCycleButton productQueryImageCycleButtonLeft" onClick={() => handleImageChange('prev')}>←</button>
                 <div className="productQueryImageContainer">
@@ -127,7 +136,8 @@ export default function ProductQuery({ hidden, onHiddenChange }: Props): JSX.Ele
               </div>
               <div className="flex-col">
                 <p><b>Product Name:</b> {productQueryResult?.productName || "N/a"}</p>
-                <p><b>Product SKU:</b> {productQueryResult?.productCode || "N/a"} <b>  Product ID:</b> {productQueryResult?.productId || "N/a"}</p>
+                <p><b>Product SKU:</b> {productQueryResult?.productCode || "N/a"}</p>
+                <p><b>Product ID:</b> {productQueryResult?.productId || "N/a"} </p>
                 <p><b>Brand:</b> {productQueryResult?.manufacturer || "N/a"}</p>
                 <p>{handlePriceQuery()}</p>
                 <p><b>Colour: </b> {productQueryResult?.productColour?.name || "N/a"}</p>
@@ -147,6 +157,36 @@ export default function ProductQuery({ hidden, onHiddenChange }: Props): JSX.Ele
               </div>
             </div>
 
+            <div className="ProductQueryMiddleSection">
+              {productQueryResult && Object.keys(productQueryResult?.descriptions).map((key, index) => (
+                  <p key={index} dangerouslySetInnerHTML={{ __html: `${key}: ${productQueryResult?.descriptions[key]}` }}></p>
+              ))}
+            </div>
+            <div className="ProductQueryBottomSection">
+              <div className="ProductAttributesSection">
+                <div className="productAttributeBorderRight">
+                  <h1><b>Product Attributes: </b></h1>
+                  {productQueryResult && Object.keys(productQueryResult?.attributes)
+                      .sort((a, b) => a.localeCompare(b)) // Sort keys alphabetically
+                      .map((key, index) => (
+                          <p key={index}>
+                            <b>{key}:</b> {productQueryResult?.attributes[key]}
+                          </p>
+                      ))}
+                </div>
+              </div>
+              <div className="ProductAttributesSection">
+                <h1><b>Product Hidden In: </b></h1>
+                {productQueryResult?.showroomVisibility &&
+                    [...productQueryResult.showroomVisibility]
+                        .sort((a, b) => a.name.localeCompare(b.name))
+                        .map((item, index) => (
+                            <div key={index}>
+                              <p><b>{item.name}:</b> {item.availability}</p>
+                            </div>
+                        ))}
+              </div>
+            </div>
           </div>
       );
     } else {
@@ -157,6 +197,68 @@ export default function ProductQuery({ hidden, onHiddenChange }: Props): JSX.Ele
       );
     }
   }
+
+  function formatRoomTypeHandle(input: string): string {
+    if (!input) return '';
+    let formattedString = input.charAt(0).toUpperCase() + input.slice(1);
+    if (formattedString.endsWith('s')) {
+      formattedString = formattedString.slice(0, -1);
+    }
+    return formattedString;
+  }
+
+
+
+  async function handleUnitQuery() {
+    if (!userInputs.unitQueryInput) return;
+    const searchResponse = await unitFeederQuery(userInputs.environment, userInputs.region, userInputs.unitQueryInput);
+    if (searchResponse) {
+      console.log('ProductQuery: ', searchResponse);
+      setUnitQueryResult(searchResponse[0]);
+    } else {
+      console.log('ProductQuery: No results');
+    }
+  }
+
+  function displayUnitQueryResults(): JSX.Element {
+    if (unitQueryResult) {
+      return (
+          <div className="unitQueryResults">
+            <div className="ProductQueryTopSection">
+              <div className="productQueryImageContainer">
+                {unitQueryResult && unitQueryResult.unitId ? (
+                    <img
+                        src={`https://project-static.wrenkitchens.com/planner/images/units/${formatRoomTypeHandle(unitQueryResult.roomTypeHandle)}/new/${unitQueryResult.unitDefinitionId}.png`}
+                        alt="Unit" />
+                ) : null}
+              </div>
+              <div className="flex-col">
+                <p><b>Unit Name: </b>{unitQueryResult?.unitDescription || "N/a"}</p>
+                <p><b>Unit Type: </b>{unitQueryResult?.unitType || "N/a"}</p>
+                <p><b>Unit ID: </b>{unitQueryResult?.unitId || "N/a"}</p>
+                <p><b>Unit Definition: </b>{unitQueryResult?.unitDefinitionId || "N/a"}</p>
+                <p><b>Status: </b>{unitQueryResult?.availability || "N/a"}</p>
+                <p><b>Room Type: </b>{unitQueryResult?.roomTypeHandle || "N/a"}</p>
+                <p><b>Dimensions: </b>H{unitQueryResult?.heightMm || "N/a"}mm W{unitQueryResult?.widthMm || "N/a"}mm D{unitQueryResult?.depthMm || "N/a"}mm </p>
+                <p><b>Category: </b>{unitQueryResult?.category || "N/a"}</p>
+                <p><b>Sub-Category: </b>{unitQueryResult?.subCategory || "N/a"}</p>
+                <p><b>Unit Configuration: </b>{unitQueryResult?.unitConfiguration || "N/a"}</p>
+                <p><b>PIM Link: </b> <a className="link link-accent" target="_blank" href={generatePimLinkUnit()}>Click Here</a></p>
+              </div>
+            </div>
+          </div>
+      );
+    } else {
+      return (
+          <div className="productQueryResults">
+            <h1>No Results</h1>
+          </div>
+      )
+    }
+  }
+
+
+
 
   return (
       <Draggable handle="#ProductQueryHeaderBar">
@@ -238,13 +340,65 @@ export default function ProductQuery({ hidden, onHiddenChange }: Props): JSX.Ele
                   <button className="btn btn-sm btn-primary" onClick={handleProductQuery}>Search</button>
                 </div>
               </div>
-              <div className={`tabContent ${activeTab === tabs.Unit ? 'active' : ''}`}>
+            </div>
+            <div className={`tabContent ${activeTab === tabs.Unit ? 'active' : ''}`}>
+              <div className="productQueryContainer">
+                <div className="productQueryContentLeft">
+                  {displayUnitQueryResults()}
+                </div>
+                <div className="productQueryContentRight">
+                  <div className="flex-col space-y-0.5 alignItemsCenter ">
+                    <label className="label-text font-bold">Unit ID: </label>
+                    <input
+                        name="unitQueryInput"
+                        className="input input-sm input-bordered"
+                        type="text"
+                        value={userInputs.unitQueryInput}
+                        onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="flex flex-row alignItemsCenter">
+                    <div className="flex-col space-y-0.5 alignItemsCenter">
+                      <label className="label-text font-bold">Environment</label>
+                      <select
+                          name="environment"
+                          onChange={handleInputChange}
+                          value={userInputs.environment}
+                          className="select select-xs select-bordered"
+                      >
+                        {Object.keys(projectTier).map(key => (
+                            <option key={key} value={projectTier[key]}>
+                              {key}
+                            </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="flex-col space-y-0.5 alignItemsCenter">
+                      <label className="label-text font-bold">Region</label>
+                      <select
+                          name="region"
+                          onChange={handleInputChange}
+                          value={userInputs.region}
+                          className="select select-xs select-bordered"
+                      >
+                        {Object.keys(regions).map(key => (
+                            <option key={key} value={regions[key]}>
+                              {key}
+                            </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                  <button className="btn btn-sm btn-primary" onClick={handleUnitQuery}>Search</button>
+                </div>
               </div>
-              <div className={`tabContent ${activeTab === tabs.Range ? 'active' : ''}`}>
-              </div>
+            </div>
+            <div className={`tabContent ${activeTab === tabs.Range ? 'active' : ''}`}>
+              <p>Range Query Coming Soon!</p>
             </div>
           </div>
         </div>
       </Draggable>
   );
 }
+

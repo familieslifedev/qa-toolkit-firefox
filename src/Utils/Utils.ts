@@ -191,3 +191,27 @@ export const productFeederQuery = async (environment:projectTier , region:region
 		return error;
 	}
 }
+
+export const unitFeederQuery = async (environment:projectTier , region:regions  , unitInput?:string ): Promise<any> => {
+	const url = `https://feeder.${environment ? `${environment}.` : ''}wrenkitchens.${region}/units`;
+
+	const isSKU = (unitInput || '').includes('.');
+	const isID = /^\d+$/.test(unitInput || '');
+
+	let query: any = {
+		unitDefinitionId: unitInput,
+	};
+
+	const response = await fetch(`${url}?${stringify(query)}`);
+	try{
+		const result = await response.json();
+		if(result){
+			console.log(result);
+			return(result);
+		}
+	}
+	catch(error){
+		return error;
+	}
+}
+
