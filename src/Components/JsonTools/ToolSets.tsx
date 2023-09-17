@@ -12,7 +12,7 @@ export default function ToolSets(): JSX.Element {
 	const { setFeedbackText } = useContext(FeedbackContext);
 	const [isJsonEditorVisible, setIsJsonEditorVisible] = useState<boolean>(false);
 	const [isSNSVisible, setIsSNSVisible] = useState<boolean>(false);
-	const [isProductQueryVisible, setIsProductQueryVisible] = useState<boolean>(true);
+	const [isProductQueryVisible, setIsProductQueryVisible] = useState<boolean>(false);
 	const [jsonFixer, setJsonFixer] = useState<JsonFixer>(new JsonFixer());
 	const [leadNames, setLeadNames] = useState<Array<string>>(new Array<string>());
 	const [selectedLeadName, setSelectedLeadName] = useState<string>("");
@@ -108,7 +108,7 @@ export default function ToolSets(): JSX.Element {
 		<div className="jsonContainer">
 			<button className="btn btn-sm btn-wide btn-primary" title={"Open Json Viewer/Editor"} onClick={ () => handlePanelVisibility(ModalTypes.JsonEditor)}>Open Json Edit</button>
 			<button className="btn btn-sm btn-wide btn-primary" title={"Open Switch and Save Modal"} onClick={ () => handlePanelVisibility(ModalTypes.SwitchAndSave)}>Switch and Save</button>
-			<button className="btn btn-sm btn-wide btn-primary" title={"Open Product Query"} onClick={ () => handlePanelVisibility(ModalTypes.ProductQuery)}>Product Query</button>
+			<button className="btn btn-sm btn-wide btn-primary" title={"Open Product Query"} onClick={ () => handlePanelVisibility(ModalTypes.ProductQuery)}>Feeder Query</button>
 			<div>
 				<JsonEditorModal hidden={!isJsonEditorVisible} onHiddenChange={ () => handlePanelVisibility(ModalTypes.JsonEditor)} />
 			</div>

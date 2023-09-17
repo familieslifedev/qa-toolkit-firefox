@@ -23,7 +23,7 @@ const SidebarContent = (): JSX.Element => {
   return (
   <div className="sidebarMainContentContainer">
     <SidebarMenuItem displayName={"Bolt"} component={<Bolt/>} ></SidebarMenuItem>
-    <SidebarMenuItem displayName={"Misc Tools"} component={<MiscTools/>} ></SidebarMenuItem>
+    <SidebarMenuItem displayName={"Auto Tools"} component={<MiscTools/>} ></SidebarMenuItem>
     <SidebarMenuItem displayName={"Tool Sets"} component={<ToolSets/>} ></SidebarMenuItem>
     <SidebarMenuItem displayName={"Debug Commands"} component={<DebugCommands/>} ></SidebarMenuItem>
     <SidebarMenuItem displayName={"Colour Picker"} component={<ColourPicker/>} ></SidebarMenuItem>
