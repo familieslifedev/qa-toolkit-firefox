@@ -31,5 +31,4 @@ const SidebarContent = (): JSX.Element => {
   </div>
 )
 }
-
 export default SidebarContent

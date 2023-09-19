@@ -16,17 +16,16 @@ export const rules = {
 	isDifferentBrand: (product, currentProduct) => product.manufacturer !== currentProduct.manufacturer,
 	isSameColour: (product, currentProduct) => product.productColour.handle === currentProduct.productColour.handle,
 	isWithinWidthRange: (product, currentProduct) => isWithinRangeComparison(product.widthMm, currentProduct.widthMm, 50),
+	isWithinHeightRange: (product, currentProduct) => isWithinRangeComparison(product.heightMm, currentProduct.heightMm, 50),
+	isSameDoorSplit: (product, currentProduct) => product.attributes["Door Split"] === currentProduct.attributes["Door Split"],
 	isSameFuelType: (product, currentProduct) => {
-		if (currentProduct.attributes["Fuel type"] && !product.attributes["Fuel type"]) {
-			return false;
-		}
-
-		if (!currentProduct.attributes["Fuel type"]&& product.attributes["Fuel type"]) {
+		if (!currentProduct.attributes["Fuel type"] || !product.attributes["Fuel type"]) {
 			return false;
 		}
 
 		return product.attributes["Fuel type"] === currentProduct.attributes["Fuel type"];
 	},
+
 };
 
 export function isCheaperByPercentage(product: any, comparisonProduct: any, percentageDifference: number): boolean {

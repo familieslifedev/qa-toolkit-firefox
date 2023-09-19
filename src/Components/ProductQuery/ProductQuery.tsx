@@ -262,7 +262,7 @@ export default function ProductQuery({ hidden, onHiddenChange }: Props): JSX.Ele
 
   return (
       <Draggable handle="#ProductQueryHeaderBar">
-        <div className={`ProductQueryPanel ${hidden ? 'hidden' : ''}`}>
+        <div className={`ProductQueryPanel pane ${hidden ? 'hidden' : ''}`}>
 
           <div id="ProductQueryHeaderBar" className="ProductQueryHeaderBar handle">
             <label className="jsonEditorHeaderLabel">Product Query</label>

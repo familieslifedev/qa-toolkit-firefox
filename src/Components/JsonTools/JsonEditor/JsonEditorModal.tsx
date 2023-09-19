@@ -26,7 +26,7 @@ export default function JsonEditorModal({ hidden, onHiddenChange }: Props): JSX.
 
   return (
     <Draggable handle="#jsonEditorHeaderBar">
-      <div className={`jsonEditorPanel ${hidden ? 'hidden' : ''}`}>
+      <div className={`jsonEditorPanel pane ${hidden ? 'hidden' : ''}`}>
 
         <div id="jsonEditorHeaderBar" className="jsonEditorHeaderBar handle">
           <label className="jsonEditorHeaderLabel">Json Edit</label>
