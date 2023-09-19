@@ -1,7 +1,7 @@
-import { Request as BackgroundRequest, RequestType } from '../Services/Background/Request';
+import { Request as BackgroundRequest, RequestType } from "../Services/Background/Request";
 import { stringify } from "query-string/base";
-import type { projectTier } from "~Utils/Constants";
-import type { regions } from "~Utils/Constants";
+import { FeederQueryType, projectTier, regions } from "~Utils/Constants";
+
 
 //Verify Link and open url - setting currentTab will open in the current tab, otherwise it will open in a new tab.
 export async function openURL(url: string, tabId: number, newTab: boolean): Promise<void> {
@@ -163,55 +163,48 @@ export async function save2dJsonToFeeder(args:any) {
 
 }
 
-export const productFeederQuery = async (environment:projectTier , region:regions  , ProductInput?:string, campaignPhaseId?:number ): Promise<any> => {
-	const url = `https://feeder.${environment ? `${environment}.` : ''}wrenkitchens.${region}/products`;
+export const feederQuery = async (
+	queryType: FeederQueryType,
+	environment: projectTier,
+	region: regions,
+	input?: string,
+	campaignPhaseId?: number
+): Promise<any> => {
+	const url = `https://feeder.${environment === projectTier.live ? '' : `${environment}.`}wrenkitchens.${region}/${queryType}`;
 
-	const isSKU = (ProductInput || '').includes('.');
-	const isID = /^\d+$/.test(ProductInput || '');
+	let query: any = {};
 
-	let query: any = {
-		campaignPhaseId: campaignPhaseId,
-	};
+	if (queryType === FeederQueryType.Products) {
+		query.campaignPhaseId = campaignPhaseId;
+	}
+
+	const isSKU = (input || '').includes('.');
+	const isID = /^\d+$/.test(input || '');
 
 	if (isSKU) {
-		query.productCode = ProductInput;
+		if (queryType === FeederQueryType.Products) {
+			query.productCode = input;
+		} else {
+			query.unitDefinitionId = input;
+		}
 	} else if (isID) {
-		query.productId = ProductInput;
+		if (queryType === FeederQueryType.Products) {
+			query.productId = input;
+		} else {
+			query.unitDefinitionId = input;
+		}
 	}
 
 	const response = await fetch(`${url}?${stringify(query)}`);
-	try{
+	try {
 		const result = await response.json();
-		if(result){
+		if (result) {
 			console.log(result);
-			return(result);
+			return result;
 		}
-	}
-	catch(error){
+	} catch (error) {
 		return error;
 	}
-}
+};
 
-export const unitFeederQuery = async (environment:projectTier , region:regions  , unitInput?:string ): Promise<any> => {
-	const url = `https://feeder.${environment ? `${environment}.` : ''}wrenkitchens.${region}/units`;
-
-	const isSKU = (unitInput || '').includes('.');
-	const isID = /^\d+$/.test(unitInput || '');
-
-	let query: any = {
-		unitDefinitionId: unitInput,
-	};
-
-	const response = await fetch(`${url}?${stringify(query)}`);
-	try{
-		const result = await response.json();
-		if(result){
-			console.log(result);
-			return(result);
-		}
-	}
-	catch(error){
-		return error;
-	}
-}
 

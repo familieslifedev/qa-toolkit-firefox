@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Draggable from "react-draggable";
-import { convertPenceToPounds, get2DJson, productFeederQuery, unitFeederQuery } from "~Utils/Utils";
-import { ProductInterface, projectTier, regions, UnitInterface } from "~Utils/Constants";
+import { convertPenceToPounds, feederQuery, get2DJson } from "~Utils/Utils";
+import { FeederQueryType, ProductInterface, projectTier, regions, UnitInterface } from "~Utils/Constants";
 import { getPrice } from "~Components/SwitchAndSave/SwitchAndSaveRules";
 
 enum tabs {
@@ -70,7 +70,7 @@ export default function ProductQuery({ hidden, onHiddenChange }: Props): JSX.Ele
 
   async function handleProductQuery() {
     if (!userInputs.productQueryInput) return;
-    const searchResponse = await productFeederQuery(userInputs.environment, userInputs.region, userInputs.productQueryInput, userInputs.campaignPhaseId);
+    const searchResponse = await feederQuery(FeederQueryType.Products,userInputs.environment, userInputs.region, userInputs.productQueryInput, userInputs.campaignPhaseId);
     if (searchResponse) {
       console.log('ProductQuery: ', searchResponse);
       setProductQueryResult(searchResponse.items[0]);
@@ -167,7 +167,7 @@ export default function ProductQuery({ hidden, onHiddenChange }: Props): JSX.Ele
                 <div className="productAttributeBorderRight">
                   <h1><b>Product Attributes: </b></h1>
                   {productQueryResult && Object.keys(productQueryResult?.attributes)
-                      .sort((a, b) => a.localeCompare(b)) // Sort keys alphabetically
+                      .sort((a, b) => a.localeCompare(b)) // So3554rt keys alphabetically
                       .map((key, index) => (
                           <p key={index}>
                             <b>{key}:</b> {productQueryResult?.attributes[key]}
@@ -199,11 +199,20 @@ export default function ProductQuery({ hidden, onHiddenChange }: Props): JSX.Ele
   }
 
   function formatRoomTypeHandle(input: string): string {
+    // function to handle the formatting of the room type handle for image url in wren static, BEDROOM_2022 -> Bedroom, kitchens -> Kitchen
     if (!input) return '';
-    let formattedString = input.charAt(0).toUpperCase() + input.slice(1);
+
+    //This allows further parsing of the BEDROOM_2022 handle
+    const firstPart = input.split('_')[0];
+
+    //this capitalises the first letter and lowercases the rest
+    let formattedString = firstPart.charAt(0).toUpperCase() + firstPart.slice(1).toLowerCase();
+
+    //This removes the 's' from the end of the string if it exists (roomtype for kitchen needs to be Kitchens)
     if (formattedString.endsWith('s')) {
       formattedString = formattedString.slice(0, -1);
     }
+
     return formattedString;
   }
 
@@ -211,7 +220,7 @@ export default function ProductQuery({ hidden, onHiddenChange }: Props): JSX.Ele
 
   async function handleUnitQuery() {
     if (!userInputs.unitQueryInput) return;
-    const searchResponse = await unitFeederQuery(userInputs.environment, userInputs.region, userInputs.unitQueryInput);
+    const searchResponse = await feederQuery(FeederQueryType.Units, userInputs.environment, userInputs.region, userInputs.unitQueryInput);
     if (searchResponse) {
       console.log('ProductQuery: ', searchResponse);
       setUnitQueryResult(searchResponse[0]);
@@ -220,20 +229,33 @@ export default function ProductQuery({ hidden, onHiddenChange }: Props): JSX.Ele
     }
   }
 
+  const generateImageSrc = (): string => {
+    if (unitQueryResult && unitQueryResult.unitId) {
+      if (unitQueryResult.hingeOptions.includes('right')) {
+        return `https://project-static.wrenkitchens.com/planner/images/units/${formatRoomTypeHandle(unitQueryResult.roomTypeHandle)}/new/${unitQueryResult.unitDefinitionId}-rh.png`;
+      } else if (unitQueryResult.hingeOptions.includes('left')) {
+        return `https://project-static.wrenkitchens.com/planner/images/units/${formatRoomTypeHandle(unitQueryResult.roomTypeHandle)}/new/${unitQueryResult.unitDefinitionId}-lh.png`;
+      }
+      return `https://project-static.wrenkitchens.com/planner/images/units/${formatRoomTypeHandle(unitQueryResult.roomTypeHandle)}/new/${unitQueryResult.unitDefinitionId}.png`;
+    }
+    return '';
+  };
+
+
+  const imageSrc = generateImageSrc();
+
   function displayUnitQueryResults(): JSX.Element {
     if (unitQueryResult) {
       return (
           <div className="unitQueryResults">
             <div className="ProductQueryTopSection">
               <div className="productQueryImageContainer">
-                {unitQueryResult && unitQueryResult.unitId ? (
-                    <img
-                        src={`https://project-static.wrenkitchens.com/planner/images/units/${formatRoomTypeHandle(unitQueryResult.roomTypeHandle)}/new/${unitQueryResult.unitDefinitionId}.png`}
-                        alt="Unit" />
+                {imageSrc ? (
+                    <img src={imageSrc} alt="Unit" />
                 ) : null}
               </div>
               <div className="flex-col">
-                <p><b>Unit Name: </b>{unitQueryResult?.unitDescription || "N/a"}</p>
+                <p><b>Unit Description: </b>{unitQueryResult?.unitDescription || "N/a"}</p>
                 <p><b>Unit Type: </b>{unitQueryResult?.unitType || "N/a"}</p>
                 <p><b>Unit ID: </b>{unitQueryResult?.unitId || "N/a"}</p>
                 <p><b>Unit Definition: </b>{unitQueryResult?.unitDefinitionId || "N/a"}</p>
@@ -243,7 +265,46 @@ export default function ProductQuery({ hidden, onHiddenChange }: Props): JSX.Ele
                 <p><b>Category: </b>{unitQueryResult?.category || "N/a"}</p>
                 <p><b>Sub-Category: </b>{unitQueryResult?.subCategory || "N/a"}</p>
                 <p><b>Unit Configuration: </b>{unitQueryResult?.unitConfiguration || "N/a"}</p>
+                <p><b>Hinge Options: </b>{unitQueryResult.hingeOptions.join(', ')} </p>
                 <p><b>PIM Link: </b> <a className="link link-accent" target="_blank" href={generatePimLinkUnit()}>Click Here</a></p>
+              </div>
+            </div>
+            <div className ="ProductQueryMiddleSection">
+              <div className="flex flex-row ">
+                <div className="ProductAttributesSection productAttributeBorderRight">
+                  <h1><b>Unit Attributes: </b></h1>
+                  {unitQueryResult && Object.keys(unitQueryResult?.attributes)
+                      .sort((a, b) => a.localeCompare(b)) // Sort keys alphabetically
+                      .map((key, index) => (
+                          <p key={index}>
+                            <b>{key}:</b> {unitQueryResult?.attributes[key]}
+                          </p>
+                      ))}
+                </div>
+                <div className="ProductAttributesSection">
+                  <h1><b>Availiable Collections: </b></h1>
+                  {unitQueryResult?.availableCollections &&
+                      [...unitQueryResult.availableCollections]
+                          .sort((a, b) => a.localeCompare(b))
+                          .map((item, index) => (
+                              <div key={index}>
+                                <p><b>{item}</b></p>
+                              </div>
+                          ))}
+                </div>
+              </div>
+            </div>
+            <div className="ProductQueryBottomSection">
+              <div className="ProductAttributesSection">
+                <h1><b>Unit Hidden In Showrooms: </b></h1>
+                {unitQueryResult?.showroomVisibility &&
+                    [...unitQueryResult.showroomVisibility]
+                        .sort((a, b) => a.name.localeCompare(b.name))
+                        .map((item, index) => (
+                            <div key={index}>
+                              <p><b>{item.name}:</b> {item.availability}</p>
+                            </div>
+                        ))}
               </div>
             </div>
           </div>

@@ -38,6 +38,12 @@ export enum regions {
 	US = "us",
 }
 
+export enum FeederQueryType {
+	Units = "units",
+	Products = "products",
+	Ranges = "ranges",
+}
+
 export enum projectTier{
 	live = "live",
 	project0 = "project0",

@@ -663,12 +663,12 @@ z-index: 1;
 }
 .ProductQueryMiddleSection {
     width: 100%;
-    height: 150px;
+    height: 155px;
     overflow: auto;
     padding: 10px;
 }
 .ProductQueryBottomSection{
-    height: 310px;
+    height: 305px;
     display: flex;
     flex-direction: row;
     box-sizing: border-box;
@@ -680,7 +680,7 @@ z-index: 1;
     display: flex;
     flex-direction: column;
     gap: 5px;
-    width: 50%;
+    width: 49%;
     height: 100%;
     padding: 10px;
 }
