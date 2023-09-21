@@ -26,6 +26,60 @@
 * {
     overscroll-behavior: contain;
 }
+
+/*</editor-fold>*/
+
+/*<editor-fold desc="Global">*/
+.tabContentContainer {
+    position: relative;
+    width: 100%;
+}
+
+.tabContent {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+}
+
+.tabContent.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.handle:hover{
+    cursor: grab;
+}
+
+.handle:active{
+    cursor: grabbing;
+}
+
+.modalTabs{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px;
+
+}
+.modalTab{
+    flex-grow: 1;
+    border-color: hsl(var(--b3));
+}
+.modalTab.tab-active{
+    flex-grow: 1;
+    border-color: hsl(var(--a));
+}
+.pane{
+z-index: 1;
+}
+* {
+    font-family: Poppins, sans-serif;
+}
 /*</editor-fold>*/
 
 /*<editor-fold desc="Options">*/
@@ -234,7 +288,7 @@
 
 /*</editor-fold>*/
 
-/*<editor-fold desc="JsonTools">*/
+/*<editor-fold desc="ToolSets">*/
 .jsonContainer {
     display: flex;
     flex-direction: column;
@@ -390,14 +444,12 @@
     border-radius: var(--rounded-btn, 0.5rem);
     border: 1px solid hsl(var(--pf));
     position: fixed;
-    top: 10vh; /* center panel vertically in viewport */
-    left: 10vw; /* center panel horizontally in viewport */
-    transform: translate(-50%, -50%);
+    top: 10vh;
+    left: 10vw;
     width: 60svw;
     height: 1000px;
     max-width: 1000px;
     min-width: 300px;
-    z-index: 1;
     padding: 0 1em 1em 1em;
 }
 .jsonEditorHeaderBar {
@@ -407,12 +459,7 @@
     background-color: hsl(var(--p));
     border-radius: var(--rounded-btn, 0.5rem) var(--rounded-btn, 0.5rem) 0 0;
 }
-.jsonEditorHeaderBar:hover{
-    cursor: grab;
-}
-.jsonEditorHeaderBar:active{
-    cursor: grabbing;
-}
+
 .jsonEditorHeaderLabel{
     color: hsl(var(--pc));
     font-size: 1.2rem;
@@ -424,12 +471,6 @@
     display: inline-block;
     vertical-align: middle;
 }
-.jsonEditorHeaderLabel:hover{
-    cursor: grab;
-}
-.jsonEditorHeaderLabel:active{
-    cursor: grabbing;
-}
 .jsonEditorPanel.hidden {
     display: none;
 }
@@ -438,41 +479,8 @@
     position: absolute;
     right: 10px;
 }
-.jsonEditTabs{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin: 20px;
 
-}
-.jsonEditTab{
-    flex-grow: 1;
-    border-color: hsl(var(--b3));
-}
-.jsonEditTab.tab-active{
-    flex-grow: 1;
-    border-color: hsl(var(--a));
-}
-.jsonContentContainer {
-    position: relative;
-    width: 100%;
-}
 
-.tabContent {
-    position: absolute;
-    width: 100%;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
-}
-
-.tabContent.active {
-    opacity: 1;
-    visibility: visible;
-}
 /*</editor-fold>*/
 
 /*<editor-fold desc="SNS Panel">*/
@@ -485,7 +493,6 @@
     left: 10vw;
     width: 1200px;
     height: 800px;
-    z-index: 1;
     display: flex;
     flex-direction: column;
 }
@@ -538,7 +545,7 @@
     padding: 10px;
 }
 .SNSRulesBar{
-    height: 100%;
+    height: 95%;
     width: 30%;
     padding: 5px;
     display: flex;
@@ -546,6 +553,7 @@
     border-top: hsl(var(--b2)) solid 1px;
     border-left: hsl(var(--b2)) solid 1px;
     font-size: 0.8rem;
+    overflow: auto;
 }
 .SNSProductImage{
     height: 150px;
@@ -567,6 +575,119 @@
     align-items: center;
 }
 
+/*</editor-fold>*/
+
+/*<editor-fold desc="Product Query Panel">*/
+.ProductQueryPanel {
+    background-color: hsl(var(--b1));
+    border-radius: var(--rounded-btn, 0.5rem);
+    border: 1px solid hsl(var(--pf));
+    position: fixed;
+    top: 10vh;
+    left: 10vw;
+    width: 1200px;
+    height: 800px;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.8rem;
+}
+.ProductQueryPanel.hidden{
+    display: none;
+}
+.ProductQueryHeaderBar {
+    width: 100%;
+    height: 35px;
+    background-color: hsl(var(--p));
+    border-radius: var(--rounded-btn, 0.5rem) var(--rounded-btn, 0.5rem) 0 0;
+    border-bottom: hsl(var(--b2)) solid 1px;
+}
+.productQueryContainer{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+}
+.productQueryContentLeft{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 70%;
+    min-width: 70%;
+    height: 100%;
+    padding: 10px;
+    overflow: auto;
+
+}
+.productQueryContentRight{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 29%;
+    height: 100%;
+    padding: 10px;
+}
+.productQueryImageContainer{
+    height: 170px;
+    width: 200px;
+    display: flex;
+    flex-direction: row;
+}
+.productQueryImageCycleButton{
+    height: 100%;
+    width: 20px;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0,0,0,0.1);
+    color: white;
+}
+.productQueryImageCycleButton:hover{
+    background-color: rgba(0,0,0,0.2);
+    cursor: pointer;
+}
+.productQueryImageCycleButton:active{
+    background-color: rgba(0,0,0,0.3);
+}
+.productQueryImageCycleButtonRight{
+    border-radius: 0 0.5rem 0.5rem 0;
+}
+.productQueryImageCycleButtonLeft{
+    border-radius: 0.5rem 0 0 0.5rem;
+}
+.ProductQueryTopSection{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    height: 200px;
+    overflow: auto;
+    border-bottom: rgba(0,0,0,0.1) 2px solid;
+}
+.ProductQueryMiddleSection {
+    width: 100%;
+    height: 155px;
+    overflow: auto;
+    padding: 10px;
+}
+.ProductQueryBottomSection{
+    height: 305px;
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+    overflow: auto;
+    border-top: rgba(0,0,0,0.1) 2px solid;
+}
+
+.ProductAttributesSection{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 49%;
+    height: 100%;
+    padding: 10px;
+}
+
+.productAttributeBorderRight{
+    border-right: rgba(0,0,0,0.1) 2px solid;
+}
 /*</editor-fold>*/
 
 /*<editor-fold desc="JsonViewer">*/

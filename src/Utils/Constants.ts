@@ -1,3 +1,8 @@
+export enum ModalTypes {
+	JsonEditor = "JSONEditor",
+	SwitchAndSave= "SwitchAndSave",
+	ProductQuery = "ProductQuery",
+}
 export enum ProductTypes {
 	Frontals = "Frontals",
 	CoffeeMachines = "CoffeeMachines",
@@ -28,9 +33,15 @@ export enum oven_sub_categories {
 	'SingleWallOvens' = "Single Wall Ovens",
 }
 
-export enum Regions {
-	UK = "UK",
-	US = "US",
+export enum regions {
+	UK = "com",
+	US = "us",
+}
+
+export enum FeederQueryType {
+	Units = "units",
+	Products = "products",
+	Ranges = "ranges",
 }
 
 export enum projectTier{
@@ -173,6 +184,48 @@ export interface ProductInterface {
 		gross: number;
 	};
 }
+
+export interface UnitInterface {
+	id: number;
+	unitId: number;
+	unitDefinitionId: number;
+	unitType: string;
+	unitDescription: string;
+	unitConfiguration: string;
+	handleCount: number;
+	handleCountDoors: number;
+	handleCountDrawers: number;
+	frontalCount: number;
+	drawerCount: number;
+	availability: string;
+	category: string;
+	subCategory: string;
+	depthMm: number;
+	widthMm: number;
+	heightMm: number;
+	packagedDepthMm: number;
+	packagedWidthMm: number;
+	packagedHeightMm: number;
+	carcaseHeightMm: number;
+	order: number;
+	door: string;
+	attributes: {
+		[key: string]: string;
+	};
+	hingeOptions: string[];
+	showroomVisibility: any[];
+	availableCollections: string[];
+	availableFrontalRangeCollectionHandles: string[];
+	ignoreCarcaseSelection: boolean;
+	plannerAttributes: {
+		baseTowerUnitHeightFilters: any[];
+		wallUnitHeightFilters: any[];
+		baseTowerUnitDepthFilters: any[];
+		wallUnitDepthFilters: any[];
+	};
+	roomTypeHandle: string;
+}
+
 
 
 export interface ProductApiResponse {

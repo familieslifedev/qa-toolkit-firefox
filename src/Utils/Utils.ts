@@ -1,4 +1,7 @@
-import { Request as BackgroundRequest, RequestType } from '../Services/Background/Request';
+import { Request as BackgroundRequest, RequestType } from "../Services/Background/Request";
+import { stringify } from "query-string/base";
+import { FeederQueryType, projectTier, regions } from "~Utils/Constants";
+
 
 //Verify Link and open url - setting currentTab will open in the current tab, otherwise it will open in a new tab.
 export async function openURL(url: string, tabId: number, newTab: boolean): Promise<void> {
@@ -105,7 +108,7 @@ export async function get3DJson(): Promise<any> {
 	if (!result) {
 		throw new Error("get3DJson: Failed to get 3D JSON");
 	}
-	
+
 	return result;
 }
 
@@ -159,4 +162,49 @@ export async function save2dJsonToFeeder(args:any) {
 
 
 }
+
+export const feederQuery = async (
+	queryType: FeederQueryType,
+	environment: projectTier,
+	region: regions,
+	input?: string,
+	campaignPhaseId?: number
+): Promise<any> => {
+	const url = `https://feeder.${environment === projectTier.live ? '' : `${environment}.`}wrenkitchens.${region}/${queryType}`;
+
+	let query: any = {};
+
+	if (queryType === FeederQueryType.Products) {
+		query.campaignPhaseId = campaignPhaseId;
+	}
+
+	const isSKU = (input || '').includes('.');
+	const isID = /^\d+$/.test(input || '');
+
+	if (isSKU) {
+		if (queryType === FeederQueryType.Products) {
+			query.productCode = input;
+		} else {
+			query.unitDefinitionId = input;
+		}
+	} else if (isID) {
+		if (queryType === FeederQueryType.Products) {
+			query.productId = input;
+		} else {
+			query.unitDefinitionId = input;
+		}
+	}
+
+	const response = await fetch(`${url}?${stringify(query)}`);
+	try {
+		const result = await response.json();
+		if (result) {
+			console.log(result);
+			return result;
+		}
+	} catch (error) {
+		return error;
+	}
+};
+
 

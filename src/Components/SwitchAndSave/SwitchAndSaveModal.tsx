@@ -6,6 +6,7 @@ import { useStorage } from "@plasmohq/storage/dist/hook";
 import { environmentArray, regionArray } from "~Utils/componentArrays";
 import { getPrice, isCheaperByPercentage, rules, RuleStatuses }
 	from "~Components/SwitchAndSave/SwitchAndSaveRules";
+import Draggable from "react-draggable";
 
 interface Props {
 	hidden: boolean;
@@ -30,8 +31,9 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 		isDifferentBrand: { isActive: false, isHard: false, priority: 2 },
 		isSameColour: { isActive: true, isHard: false, priority: 3 },
 		isWithinWidthRange: { isActive: true, isHard: true, priority: 4 },
-		isSameFuelType: { isActive: false, isHard: false, priority: 5 },
-
+		isWithinHeightRange: { isActive: true, isHard: true, priority: 5 },
+		isSameFuelType: { isActive: false, isHard: false, priority: 6 },
+		isSameDoorSplit: { isActive: false, isHard: false, priority: 7 },
 	});
 
 	const [ruleStatusesAlt2, setRuleStatusesAlt2] = useStorage('ruleStatusesAlt2', {
@@ -39,8 +41,9 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 		isDifferentBrand: { isActive: true, isHard: false, priority: 2 },
 		isSameColour: { isActive: true, isHard: false, priority: 3 },
 		isWithinWidthRange: { isActive: true, isHard: true, priority: 4 },
-		isSameFuelType: { isActive: false, isHard: false, priority: 5 },
-
+		isWithinHeightRange: { isActive: true, isHard: true, priority: 5 },
+		isSameFuelType: { isActive: false, isHard: false, priority: 6 },
+		isSameDoorSplit: { isActive: false, isHard: false, priority: 7 },
 	});
 
 
@@ -217,8 +220,9 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 	}
 
 	return (
-		<div className={`SNSEditorPanel ${hidden ? 'hidden' : ''}`}>
-			<div className="SNSHeaderBar">
+		<Draggable handle="#SNSHeaderBar">
+		<div className={`SNSEditorPanel pane ${hidden ? 'hidden' : ''}`}>
+			<div id="SNSHeaderBar" className="SNSHeaderBar handle">
 				<button className="btn btn-xs btn-circle absolute right-1.5 top-1.5" onClick={handleHidePanel}>✕</button>
 				<label className="jsonEditorHeaderLabel">Switch and Save Comparator</label>
 			</div>
@@ -331,7 +335,6 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 
 						</div>
 					</div>
-
 				</div>
 				<div className="SNSRulesBar">
 					<div className="flex-col space-y-0.5 alignItemsCenter ">
@@ -381,6 +384,7 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 							</div>
 						</div>
 					</div>
+					<button className="btn btn-sm btn-primary w-full mt-2" onClick={getCurrentProduct}> Compare </button>
 					<label className="label label-text self-center font-bold"> Alt 1 Rules </label>
 					<form className="form-control">
 						{Object.entries(ruleStatusesAlt1).map(([ruleName, { isActive, isHard, priority }]) => (
@@ -426,10 +430,11 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 						))}
 					</form>
 					<div className="flex-col space-y-0.5 alignItemsCenter mt-4 w-full">
-						<button className="btn btn-sm btn-primary w-full" onClick={getCurrentProduct}> Compare </button>
+
 					</div>
 				</div>
 			</div>
 		</div>
+		</Draggable>
 	);
 }

@@ -1,18 +1,22 @@
 import { Request as BackgroundRequest, RequestType } from "~/Services/Background/Request";
 import { FeedbackContext } from "~Utils/sidebarContext";
 import JsonEditorModal from "~Components/JsonTools/JsonEditor/JsonEditorModal";
-import { useContext, useEffect, useState, useRef } from "react";
+import { useContext, useEffect, useState } from "react";
 import { JsonFixer } from "~/Services/JsonFixer";
 import SwitchAndSaveModal from "~Components/SwitchAndSave/SwitchAndSaveModal";
+import { ModalTypes } from "~Utils/Constants";
+import ProductQuery from "~Components/ProductQuery/ProductQuery";
 
 //TODO create a better way to access the JSON editor.
-export default function JsonTools(): JSX.Element {
+export default function ToolSets(): JSX.Element {
 	const { setFeedbackText } = useContext(FeedbackContext);
 	const [isJsonEditorVisible, setIsJsonEditorVisible] = useState<boolean>(false);
 	const [isSNSVisible, setIsSNSVisible] = useState<boolean>(false);
+	const [isProductQueryVisible, setIsProductQueryVisible] = useState<boolean>(false);
 	const [jsonFixer, setJsonFixer] = useState<JsonFixer>(new JsonFixer());
 	const [leadNames, setLeadNames] = useState<Array<string>>(new Array<string>());
 	const [selectedLeadName, setSelectedLeadName] = useState<string>("");
+	
 
 	// Load the lead names
 	useEffect(() => {
@@ -83,17 +87,39 @@ export default function JsonTools(): JSX.Element {
 		setSelectedLeadName(event.target.value);
 	}
 
+	function handlePanelVisibility(setVisibility: ModalTypes): void {
+		switch (setVisibility) {
+			case ModalTypes.JsonEditor:
+				setIsJsonEditorVisible(!isJsonEditorVisible);
+				break;
+			case ModalTypes.SwitchAndSave:
+				setIsSNSVisible(!isSNSVisible);
+				break;
+			case ModalTypes.ProductQuery:
+				setIsProductQueryVisible(!isProductQueryVisible);
+				break;
+			default:
+				console.warn(`Unknown ModalType: ${setVisibility}`);
+		}
+	}
+
+
+
 	return (
 		<div className="jsonContainer">
-			<button className="btn btn-sm btn-wide btn-primary" title={"Open Switch and Save Modal"} onClick={handleSNSPanel}>Switch and Save</button>
-			<button className="btn btn-sm btn-wide btn-primary" title={"Open Json Viewer/Editor"} onClick={handleJsonEditorPanel}>Open Json Edit</button>
+			<button className="btn btn-sm btn-wide btn-primary" title={"Open Json Viewer/Editor"} onClick={ () => handlePanelVisibility(ModalTypes.JsonEditor)}>Open Json Edit</button>
+			<button className="btn btn-sm btn-wide btn-primary" title={"Open Switch and Save Modal"} onClick={ () => handlePanelVisibility(ModalTypes.SwitchAndSave)}>Switch and Save</button>
+			<button className="btn btn-sm btn-wide btn-primary" title={"Open Product Query"} onClick={ () => handlePanelVisibility(ModalTypes.ProductQuery)}>Feeder Query</button>
 			<div>
-				<JsonEditorModal hidden={!isJsonEditorVisible} onHiddenChange={handleJsonEditorPanel} />
+				<JsonEditorModal hidden={!isJsonEditorVisible} onHiddenChange={ () => handlePanelVisibility(ModalTypes.JsonEditor)} />
 			</div>
 			<div>
-				<SwitchAndSaveModal hidden={!isSNSVisible} onHiddenChange={handleSNSPanel} />
+				<SwitchAndSaveModal hidden={!isSNSVisible} onHiddenChange={ () => handlePanelVisibility(ModalTypes.SwitchAndSave)} />
 			</div>
-			
+			<div>
+				<ProductQuery hidden={!isProductQueryVisible} onHiddenChange={ () => handlePanelVisibility(ModalTypes.ProductQuery)} />
+			</div>
+
 			<div className="form-control w-full max-w-xs">
 				<label className="label">
 					<span className="label-text">Selected Lead:</span>
@@ -106,10 +132,10 @@ export default function JsonTools(): JSX.Element {
 					))}
 				</select>
 			</div>
-			
+
 			<button className="btn btn-sm btn-wide btn-primary"
-				title={"Requires: active frontend account page & JSON in clipboard - applies accountId, email, and leadId values to JSON"}
-				onClick={handleJsonFixer}>Write account info to JSON</button>
+					title={"Requires: active frontend account page & JSON in clipboard - applies accountId, email, and leadId values to JSON"}
+					onClick={handleJsonFixer}>Write account info to JSON</button>
 		</div>
 	);
 }
