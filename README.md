@@ -9,6 +9,8 @@ QA testing of Wren applications.
 To install the application, firstly you will need a local copy. To do this, you will need to set up git and bitbucket.
 See:
 https://wrenkitchens.atlassian.net/wiki/spaces/DEV/pages/9226271/Set+Up+Git+Bitbucket
+And
+https://wrenkitchens.atlassian.net/wiki/spaces/DEV/pages/9233369/Setting+Up+Your+Dev+Environment
 
 Further, you will need to install `pnpm`: https://pnpm.io/installation
 
