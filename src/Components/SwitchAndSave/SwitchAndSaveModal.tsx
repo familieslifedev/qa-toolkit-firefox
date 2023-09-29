@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { stringify } from 'query-string/base';
 import { convertPenceToPounds, get2DJson, isWithinRangeComparison } from "~Utils/Utils";
-import { ProductInterface, ProductStatuses, ProductApiResponse } from "~Utils/Constants";
+import { ProductInterface, ProductStatuses, ProductApiResponse, ProductBrand } from "~Utils/Constants";
 import { useStorage } from "@plasmohq/storage/dist/hook";
 import { environmentArray, regionArray } from "~Utils/componentArrays";
 import { getPrice, isCheaperByPercentage, rules, RuleStatuses }
@@ -24,6 +24,8 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 	const [alternative2PriceDifference, setAlternative2PriceDifference] = useState<number>(10);
 	const [currentAlternativeComparison, setCurrentAlternativeComparison] = useState<boolean>(true);
 	const [campaignPhaseId, setCampaignPhaseId] = useStorage<number>("SNSCampaignID",null);
+	const [selectedBrand, setSelectedBrand] = useState<ProductBrand | string | null>(null);
+
 
 
 	const [ruleStatusesAlt1, setRuleStatusesAlt1] = useStorage('ruleStatusesAlt1', {
@@ -190,10 +192,17 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 		const response = await fetch(`${url}?${stringify(query)}`);
 		const allSameTypeProducts = await response.json();
 
+		if (selectedBrand !== "Any" && selectedBrand !== null) {
+			allSameTypeProducts.items = allSameTypeProducts.items.filter(
+				(product) => product.manufacturer === selectedBrand
+			);
+		}
+
 		if (!results || !results.items || results.items.length === 0) {
 			console.log("No current product found");
 			return;
 		}
+
 		const currentProduct = results.items[0];
 		let alternative1Products = await getFilteredProducts(allSameTypeProducts, currentProduct, alternative1PriceDifference, ruleStatusesAlt1);
 		let alternative1 = (alternative1Products).length > 0 ? alternative1Products[0] : null;
@@ -385,6 +394,20 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 						</div>
 					</div>
 					<button className="btn btn-sm btn-primary w-full mt-2" onClick={getCurrentProduct}> Compare </button>
+					<div>
+						<label className="label label-text self-center font-bold"> Brand Alternatives </label>
+						<select
+							className="select select-bordered select-sm w-full"
+							value={selectedBrand || ''}
+							onChange={(e) => setSelectedBrand(e.target.value)}
+						>
+							{Object.values(ProductBrand).map((brand) => (
+								<option key={brand} value={brand}>
+									{brand}
+								</option>
+							))}
+						</select>
+					</div>
 					<label className="label label-text self-center font-bold"> Alt 1 Rules </label>
 					<form className="form-control">
 						{Object.entries(ruleStatusesAlt1).map(([ruleName, { isActive, isHard, priority }]) => (
