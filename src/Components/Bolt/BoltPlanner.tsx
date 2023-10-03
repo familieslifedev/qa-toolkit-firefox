@@ -78,7 +78,7 @@ export default function BoltSurveyorTab(): JSX.Element {
 					<span className="label-text">PlannerRoomType:</span>
 				</label>
 				<select onChange={handleRoomTypeChange} value={roomType}  className="select select-primary select-xs select-bordered">
-					{regionArray.map(roomType => (
+					{roomTypeArray.map(roomType => (
 						<option key={roomType.Name} value={roomType.Code}>
 							{roomType.Name}
 						</option>
