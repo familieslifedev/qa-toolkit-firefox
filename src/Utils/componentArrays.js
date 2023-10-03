@@ -45,6 +45,11 @@ export const emissaryJobsArray = [
 
 ]
 
+export const roomTypeArray = [
+	{Code: 'kitchen', Name: 'Kitchen'},
+	{Code: 'bedroom', Name: 'Bedroom'},
+]
+
 
 // export function environmentArray() {
 //   //setup arrays first, then they can be used for initial values.

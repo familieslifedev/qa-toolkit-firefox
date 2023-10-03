@@ -1,5 +1,5 @@
 import { useStorage } from "@plasmohq/storage/dist/hook";
-import { regionArray, environmentArray } from "../../Utils/componentArrays";
+import { regionArray, environmentArray, roomTypeArray } from "../../Utils/componentArrays";
 import { useContext, useState } from "react";
 import { FeedbackContext } from "~Utils/sidebarContext";
 import { Request as BackgroundRequest, RequestType } from "../../Services/Background/Request";
@@ -8,6 +8,7 @@ export default function BoltSurveyorTab(): JSX.Element {
 	const { setFeedbackText } = useContext(FeedbackContext);
 	const [environment, setEnvironment] = useStorage("plannerEnvironment", environmentArray[0].Code);
 	const [region, setRegion] = useStorage("plannerRegion", regionArray[0].Code);
+	const [roomType, setRoomType] = useStorage('plannerRoomType', roomTypeArray[0].Code);
     const [isPlannerToggle, setIsPlannerToggle] = useState(false)
 
 	function handleEnvChange(event) {
@@ -24,7 +25,9 @@ export default function BoltSurveyorTab(): JSX.Element {
 
 	async function plannerHandleNavigate(newTab: boolean) {
 		const envCode = environment ? `${environment.trim()}.` : "";
-        let currentUrl = isPlannerToggle ? `https://planner2d.${envCode}wrenkitchens.${region.trim()}/surveyor` : `https://planner2d.${envCode}wrenkitchens.${region.trim()}/showroom/kitchen?debug&features=planner-specialist-worktops-add-feature-removal,new-room-profile&planUrl=`;
+        let currentUrl = isPlannerToggle
+			? `https://planner2d.${envCode}wrenkitchens.${region.trim()}/surveyor`
+			: `https://planner2d.${envCode}wrenkitchens.${region.trim()}/showroom/${roomType}?debug&features=planner-specialist-worktops-add-feature-removal,new-room-profile&planUrl=`;
 		console.log(currentUrl);
 
 		const request: BackgroundRequest = {
@@ -62,6 +65,18 @@ export default function BoltSurveyorTab(): JSX.Element {
 					{regionArray.map(region => (
 						<option key={region.Name} value={region.Code}>
 							{region.Name}
+						</option>
+					))}
+				</select>
+			</div>
+			<div className="form-control w-full max-w-xs">
+				<label className="label">
+					<span className="label-text">PlannerRoomType:</span>
+				</label>
+				<select onChange={handleRegionChange} value={roomType}  className="select select-primary select-xs select-bordered">
+					{regionArray.map(roomType => (
+						<option key={roomType.Name} value={roomType.Code}>
+							{roomType.Name}
 						</option>
 					))}
 				</select>
