@@ -19,6 +19,10 @@ export default function BoltSurveyorTab(): JSX.Element {
 		setRegion(event.target.value);
 	}
 
+	function handleRoomTypeChange(event) {
+		setRoomType(event.target.value)
+	}
+
     function toggleEnv(event) {
         setIsPlannerToggle(currentToggle => event.target.checked)
     }
@@ -73,7 +77,7 @@ export default function BoltSurveyorTab(): JSX.Element {
 				<label className="label">
 					<span className="label-text">PlannerRoomType:</span>
 				</label>
-				<select onChange={handleRegionChange} value={roomType}  className="select select-primary select-xs select-bordered">
+				<select onChange={handleRoomTypeChange} value={roomType}  className="select select-primary select-xs select-bordered">
 					{regionArray.map(roomType => (
 						<option key={roomType.Name} value={roomType.Code}>
 							{roomType.Name}
