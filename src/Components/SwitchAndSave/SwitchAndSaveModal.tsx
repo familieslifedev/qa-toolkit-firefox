@@ -147,6 +147,7 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 
 		console.log("All Products Before Filtering:", allSameTypeProducts.items);
 
+
 		let filteredProducts = allSameTypeProducts.items
 			.filter((product) => {
 				// Price comparison product could be either previous alternative or the current product
@@ -194,7 +195,7 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 
 		if (selectedBrand !== "Any" && selectedBrand !== null) {
 			allSameTypeProducts.items = allSameTypeProducts.items.filter(
-				(product) => product.manufacturer === selectedBrand
+				(product: { manufacturer: string; }) => product.manufacturer === selectedBrand
 			);
 		}
 
@@ -205,26 +206,39 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 
 		const currentProduct = results.items[0];
 		let alternative1Products = await getFilteredProducts(allSameTypeProducts, currentProduct, alternative1PriceDifference, ruleStatusesAlt1);
-		let alternative1 = (alternative1Products).length > 0 ? alternative1Products[0] : null;
 
+		// Sort by price
+		alternative1Products.sort((a: any, b: any) => getPrice(a) - getPrice(b));
+
+		let alternative1 = null;
 		let alternative2 = null;
-		if (!(currentAlternativeComparison && alternative1 === null)) {
-			let alternative2Products = await getFilteredProducts(allSameTypeProducts, currentProduct, alternative2PriceDifference, ruleStatusesAlt2, alternative1);
-			alternative2 = alternative2Products.length > 0 ? alternative2Products[0] : null;
+
+		// If a brand is selected, pick the 2nd cheapest for alternative1 and the cheapest for alternative2 or null if none avail.
+		if (selectedBrand !== "Any" && selectedBrand !== null) {
+			const [cheapest, secondCheapest] = alternative1Products;
+			alternative1 = secondCheapest || cheapest || null;
+			alternative2 = secondCheapest ? cheapest : null;
+		} else {
+			// Existing logic for picking alternative1 and alternative2
+			alternative1 = alternative1Products.length > 0 ? alternative1Products[0] : null;
+			if (!(currentAlternativeComparison && alternative1 === null)) {
+				let alternative2Products = await getFilteredProducts(allSameTypeProducts, currentProduct, alternative2PriceDifference, ruleStatusesAlt2, alternative1);
+				alternative2 = alternative2Products.length > 0 ? alternative2Products[0] : null;
+			}
 		}
 
-		await setAlternativeProduct1(alternative1);
-		await setAlternativeProduct2(alternative2);
+		setAlternativeProduct1(alternative1);
+		setAlternativeProduct2(alternative2);
 	}
 
-	function handleCheckChange (event) {
+	function handleCheckChange (event: { target: { checked: boolean | ((prevState: boolean) => boolean); }; }) {
 		setCurrentAlternativeComparison(event.target.checked)
 	}
 
-	function handleEnvChange(event) {
+	function handleEnvChange(event: { target: { value: string | ((v?: string, isHydrating?: boolean) => string); }; }) {
 		setEnvironment(event.target.value)
 	}
-	function handleRegionChange(event) {
+	function handleRegionChange(event: { target: { value: React.SetStateAction<string>; }; }) {
 		setRegion(event.target.value)
 	}
 
