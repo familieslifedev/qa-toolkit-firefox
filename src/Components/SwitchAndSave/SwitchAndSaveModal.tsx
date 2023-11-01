@@ -429,6 +429,31 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 							<label className="label-text">Current/Alt</label>
 						</div>
 					</div>
+						<div className="flex-col space-y-0.5 alignItemsCenter">
+							<label className="label-text font-bold">Alternative 1 Price %</label>
+							<input className="input input-xs input-bordered w-14" type="number" value={alternative1PriceDifference} onChange={(e) => handleInputChange(e, inputEvents.alternative1Price)}/>
+						</div>
+						<div className="flex-col space-y-0.5 alignItemsCenter">
+							<label className="label-text font-bold">Alternative 2 Price %</label>
+							<input className="input input-xs input-bordered w-14" type="number" value={alternative2PriceDifference} onChange={(e) => handleInputChange(e, inputEvents.alternative2Price)}/>
+							<div className="flex space-x-0.5 alignItemsCenter">
+								<input type="checkbox" className="toggle toggle-sm toggle-success" onChange={handleCheckChange} checked={currentAlternativeComparison} />
+								<label className="label-text">Current/Alt</label>
+							</div>
+						</div>
+						<br/>
+						<div className="flex-col space-y-0.5 alignItemsCenter">
+							<label className="label-text font-bold">Alternative 3 Price %</label>
+							<input className="input input-xs input-bordered w-14" type="number" value={alternative3PriceDifference} onChange={(e) => handleInputChange(e, inputEvents.alternative3Price)}/>
+						</div>
+						<div className="flex-col space-y-0.5 alignItemsCenter">
+							<label className="label-text font-bold">Alternative 4 Price %</label>
+							<input className="input input-xs input-bordered w-14" type="number" value={alternative4PriceDifference} onChange={(e) => handleInputChange(e, inputEvents.alternative4Price)}/>
+							<div className="flex space-x-0.5 alignItemsCenter">
+								<input type="checkbox" className="toggle toggle-sm toggle-success" onChange={handleCheckChange} checked={currentAlternativeComparison} />
+								<label className="label-text">Current/Alt</label>
+							</div>
+						</div>
 					</div>
 					<div className="flex flex-row alignItemsCenter">
 						<div className="flex-col space-y-0.5 alignItemsCenter">
