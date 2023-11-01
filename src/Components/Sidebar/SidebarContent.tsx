@@ -6,9 +6,6 @@ import Calc from "~Components/Calc/Calc";
 import DebugCommands from "~Components/DebugCommands/DebugCommands";
 import { Request as BackgroundRequest, RequestType } from "../../Services/Background/Request";
 import MiscTools from "~Components/MiscTools/MiscTools";
-import { convertPenceToPounds } from "~Utils/Utils";
-import { getPrice } from "~Components/SwitchAndSave/SwitchAndSaveRules";
-import React from "react";
 
 const SidebarContent = (): JSX.Element => {
 
