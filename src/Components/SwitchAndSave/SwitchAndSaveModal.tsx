@@ -27,7 +27,6 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 	const [alternativeProduct4, setAlternativeProduct4] = useState<ProductInterface>(null);
 	const [alternative4PriceDifference, setAlternative4PriceDifference] = useState<number>(20);
 
-	const [currentAlternativeComparison, setCurrentAlternativeComparison] = useState<boolean>(true);
 	const [campaignPhaseId, setCampaignPhaseId] = useStorage<number>("SNSCampaignID",null);
 
 
@@ -212,20 +211,20 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 		let alternative1 = (alternative1Products).length > 0 ? alternative1Products[0] : null;
 
 		let alternative2 = null;
-		if (!(currentAlternativeComparison && alternative1 === null)) {
+		if (!(alternative1 === null)) {
 			let alternative2Products = await getFilteredProducts(allSameTypeProducts, currentProduct, alternative2PriceDifference, ruleStatusesAlt2, alternative1);
 			alternative2 = alternative2Products.length > 0 ? alternative2Products[0] : null;
 		}
 
 		let alternative3 = null;
-		if (!(currentAlternativeComparison && alternative2 === null)) {
-			let alternative3Products = await getFilteredProducts(allSameTypeProducts, currentProduct, alternative3PriceDifference, ruleStatusesAlt2, alternative1);
+		if (!(alternative2 === null)) {
+			let alternative3Products = await getFilteredProducts(allSameTypeProducts, currentProduct, alternative3PriceDifference, ruleStatusesAlt2, alternative2);
 			alternative3 = alternative3Products.length > 0 ? alternative3Products[0] : null;
 		}
 
 		let alternative4 = null;
-		if (!(currentAlternativeComparison && alternative3 === null)) {
-			let alternative4Products = await getFilteredProducts(allSameTypeProducts, currentProduct, alternative4PriceDifference, ruleStatusesAlt2, alternative1);
+		if (!(alternative3 === null)) {
+			let alternative4Products = await getFilteredProducts(allSameTypeProducts, currentProduct, alternative4PriceDifference, ruleStatusesAlt2, alternative3);
 			alternative3 = alternative4Products.length > 0 ? alternative4Products[0] : null;
 		}
 
@@ -233,10 +232,6 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 		await setAlternativeProduct2(alternative2);
 		await setAlternativeProduct3(alternative3);
 		await setAlternativeProduct4(alternative4);
-	}
-
-	function handleCheckChange (event) {
-		setCurrentAlternativeComparison(event.target.checked)
 	}
 
 	function handleEnvChange(event) {
@@ -337,8 +332,8 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 							</p>
 							<p>
 								<b>Percent Difference: </b>
-								{alternativeProduct2 && (currentAlternativeComparison ? alternativeProduct1 : currentProduct?.items[0])
-									? `${(Math.abs(getPrice(currentAlternativeComparison ? alternativeProduct1 : currentProduct.items[0]) - getPrice(alternativeProduct2)) / getPrice(currentAlternativeComparison ? alternativeProduct1 : currentProduct.items[0]) * 100).toFixed(2)}%`
+								{alternativeProduct2 && alternativeProduct1
+									? `${(Math.abs(getPrice(alternativeProduct1) - getPrice(alternativeProduct2)) / getPrice(alternativeProduct1) * 100).toFixed(2)}%`
 									: ""}
 							</p>
 
@@ -370,8 +365,8 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 							</p>
 							<p>
 								<b>Percent Difference: </b>
-								{alternativeProduct3 && (currentAlternativeComparison ? alternativeProduct1 : currentProduct?.items[0])
-									? `${(Math.abs(getPrice(currentAlternativeComparison ? alternativeProduct1 : currentProduct.items[0]) - getPrice(alternativeProduct2)) / getPrice(currentAlternativeComparison ? alternativeProduct1 : currentProduct.items[0]) * 100).toFixed(2)}%`
+								{alternativeProduct3 && (alternativeProduct1)
+									? `${(Math.abs(getPrice(alternativeProduct1) - getPrice(alternativeProduct2)) / getPrice(alternativeProduct1) * 100).toFixed(2)}%`
 									: ""}
 							</p>
 							<br>
@@ -402,8 +397,8 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 							</p>
 							<p>
 								<b>Percent Difference: </b>
-								{alternativeProduct4 && (currentAlternativeComparison ? alternativeProduct1 : currentProduct?.items[0])
-									? `${(Math.abs(getPrice(currentAlternativeComparison ? alternativeProduct1 : currentProduct.items[0]) - getPrice(alternativeProduct4)) / getPrice(currentAlternativeComparison ? alternativeProduct1 : currentProduct.items[0]) * 100).toFixed(2)}%`
+								{alternativeProduct4 && (alternativeProduct1)
+									? `${(Math.abs(getPrice(alternativeProduct1) - getPrice(alternativeProduct4)) / getPrice(alternativeProduct1) * 100).toFixed(2)}%`
 									: ""}
 							</p>
 
@@ -424,24 +419,9 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 					<div className="flex-col space-y-0.5 alignItemsCenter">
 						<label className="label-text font-bold">Alternative 2 Price %</label>
 						<input className="input input-xs input-bordered w-14" type="number" value={alternative2PriceDifference} onChange={(e) => handleInputChange(e, inputEvents.alternative2Price)}/>
-						<div className="flex space-x-0.5 alignItemsCenter">
-							<input type="checkbox" className="toggle toggle-sm toggle-success" onChange={handleCheckChange} checked={currentAlternativeComparison} />
-							<label className="label-text">Current/Alt</label>
-						</div>
 					</div>
-						<div className="flex-col space-y-0.5 alignItemsCenter">
-							<label className="label-text font-bold">Alternative 1 Price %</label>
-							<input className="input input-xs input-bordered w-14" type="number" value={alternative1PriceDifference} onChange={(e) => handleInputChange(e, inputEvents.alternative1Price)}/>
-						</div>
-						<div className="flex-col space-y-0.5 alignItemsCenter">
-							<label className="label-text font-bold">Alternative 2 Price %</label>
-							<input className="input input-xs input-bordered w-14" type="number" value={alternative2PriceDifference} onChange={(e) => handleInputChange(e, inputEvents.alternative2Price)}/>
-							<div className="flex space-x-0.5 alignItemsCenter">
-								<input type="checkbox" className="toggle toggle-sm toggle-success" onChange={handleCheckChange} checked={currentAlternativeComparison} />
-								<label className="label-text">Current/Alt</label>
-							</div>
-						</div>
-						<br/>
+					</div>
+					<div className="flex flex-row alignItemsCenter">
 						<div className="flex-col space-y-0.5 alignItemsCenter">
 							<label className="label-text font-bold">Alternative 3 Price %</label>
 							<input className="input input-xs input-bordered w-14" type="number" value={alternative3PriceDifference} onChange={(e) => handleInputChange(e, inputEvents.alternative3Price)}/>
@@ -449,10 +429,6 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 						<div className="flex-col space-y-0.5 alignItemsCenter">
 							<label className="label-text font-bold">Alternative 4 Price %</label>
 							<input className="input input-xs input-bordered w-14" type="number" value={alternative4PriceDifference} onChange={(e) => handleInputChange(e, inputEvents.alternative4Price)}/>
-							<div className="flex space-x-0.5 alignItemsCenter">
-								<input type="checkbox" className="toggle toggle-sm toggle-success" onChange={handleCheckChange} checked={currentAlternativeComparison} />
-								<label className="label-text">Current/Alt</label>
-							</div>
 						</div>
 					</div>
 					<div className="flex flex-row alignItemsCenter">
