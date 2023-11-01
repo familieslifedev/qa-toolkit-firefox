@@ -21,11 +21,11 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 	const [alternativeProduct1, setAlternativeProduct1] = useState<ProductInterface>(null);
 	const [alternative1PriceDifference, setAlternative1PriceDifference] = useState<number>(5);
 	const [alternativeProduct2, setAlternativeProduct2] = useState<ProductInterface>(null);
-	const [alternative2PriceDifference, setAlternative2PriceDifference] = useState<number>(10);
+	const [alternative2PriceDifference, setAlternative2PriceDifference] = useState<number>(5);
 	const [alternativeProduct3, setAlternativeProduct3] = useState<ProductInterface>(null);
-	const [alternative3PriceDifference, setAlternative3PriceDifference] = useState<number>(15);
+	const [alternative3PriceDifference, setAlternative3PriceDifference] = useState<number>(5);
 	const [alternativeProduct4, setAlternativeProduct4] = useState<ProductInterface>(null);
-	const [alternative4PriceDifference, setAlternative4PriceDifference] = useState<number>(20);
+	const [alternative4PriceDifference, setAlternative4PriceDifference] = useState<number>(5);
 
 	const [campaignPhaseId, setCampaignPhaseId] = useStorage<number>("SNSCampaignID",null);
 
