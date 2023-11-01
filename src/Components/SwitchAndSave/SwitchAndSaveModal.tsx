@@ -225,7 +225,7 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 		let alternative4 = null;
 		if (!(alternative3 === null)) {
 			let alternative4Products = await getFilteredProducts(allSameTypeProducts, currentProduct, alternative4PriceDifference, ruleStatusesAlt2, alternative3);
-			alternative3 = alternative4Products.length > 0 ? alternative4Products[0] : null;
+			alternative4 = alternative4Products.length > 0 ? alternative4Products[0] : null;
 		}
 
 		await setAlternativeProduct1(alternative1);
