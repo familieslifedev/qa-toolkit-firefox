@@ -309,6 +309,7 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 									? `${(Math.abs(getPrice(currentProduct.items[0]) - getPrice(alternativeProduct1)) / getPrice(currentProduct.items[0]) * 100).toFixed(2)}%`
 									: ""}
 							</p>
+							<br>
 							<h1><b>Alternative Two</b></h1>
 							<p><b>Product:</b> {alternativeProduct2?.productName}</p>
 							<p><b>Status:</b> {alternativeProduct2?.productStateHandle}</p>
@@ -372,6 +373,7 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 									? `${(Math.abs(getPrice(currentAlternativeComparison ? alternativeProduct1 : currentProduct.items[0]) - getPrice(alternativeProduct2)) / getPrice(currentAlternativeComparison ? alternativeProduct1 : currentProduct.items[0]) * 100).toFixed(2)}%`
 									: ""}
 							</p>
+							<br>
 							<h1><b>Alternative Four</b></h1>
 							<p><b>Product:</b> {alternativeProduct4?.productName}</p>
 							<p><b>Status:</b> {alternativeProduct4?.productStateHandle}</p>
