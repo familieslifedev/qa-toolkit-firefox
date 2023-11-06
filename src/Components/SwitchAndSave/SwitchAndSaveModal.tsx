@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { stringify } from 'query-string/base';
 import { convertPenceToPounds, get2DJson, isWithinRangeComparison } from "~Utils/Utils";
-import { ProductInterface, ProductStatuses, ProductApiResponse } from "~Utils/Constants";
+import { ProductInterface, ProductStatuses, ProductApiResponse, ProductBrand } from "~Utils/Constants";
 import { useStorage } from "@plasmohq/storage/dist/hook";
 import { environmentArray, regionArray } from "~Utils/componentArrays";
 import { getPrice, isCheaperByPercentage, rules, RuleStatuses }
@@ -28,6 +28,8 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 	const [alternative4PriceDifference, setAlternative4PriceDifference] = useState<number>(5);
 
 	const [campaignPhaseId, setCampaignPhaseId] = useStorage<number>("SNSCampaignID",null);
+	const [selectedBrand, setSelectedBrand] = useState<ProductBrand | string | null>(null);
+
 
 
 	const [ruleStatusesAlt1, setRuleStatusesAlt1] = useStorage('ruleStatusesAlt1', {
@@ -131,7 +133,6 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 		const response = await fetch(`${url}?${stringify(query)}`);
 		const result = await response.json();
 		if(result){
-			await setCurrentProduct(result);
 			console.log(result);
 			await getAllSameTypeProducts(result);
 		}
@@ -187,7 +188,7 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 		filteredProducts.sort((a, b) => getPrice(b) - getPrice(a));
 
 		return filteredProducts;
-	}
+	};
 
 	const getAllSameTypeProducts = async (results): Promise<any> => {
 		const url = `https://feeder.${environment ? `${environment}.` : ''}wrenkitchens.${region}/products`;
@@ -202,18 +203,38 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 		const response = await fetch(`${url}?${stringify(query)}`);
 		const allSameTypeProducts = await response.json();
 
+		if (selectedBrand !== "Any" && selectedBrand !== null) {
+			allSameTypeProducts.items = allSameTypeProducts.items.filter(
+				(product: { manufacturer: string; }) => product.manufacturer === selectedBrand
+			);
+		}
+
 		if (!results || !results.items || results.items.length === 0) {
 			console.log("No current product found");
 			return;
 		}
+
 		const currentProduct = results.items[0];
 		let alternative1Products = await getFilteredProducts(allSameTypeProducts, currentProduct, alternative1PriceDifference, ruleStatusesAlt1);
-		let alternative1 = (alternative1Products).length > 0 ? alternative1Products[0] : null;
 
+		// Sort by price
+		alternative1Products.sort((a: any, b: any) => getPrice(a) - getPrice(b));
+
+		let alternative1;
 		let alternative2 = null;
-		if (!(alternative1 === null)) {
-			let alternative2Products = await getFilteredProducts(allSameTypeProducts, currentProduct, alternative2PriceDifference, ruleStatusesAlt2, alternative1);
-			alternative2 = alternative2Products.length > 0 ? alternative2Products[0] : null;
+
+		// If a brand is selected, pick the 2nd cheapest for alternative1 and the cheapest for alternative2 or null if none avail.
+		if (selectedBrand !== "Any" && selectedBrand !== null) {
+			const [cheapest, secondCheapest] = alternative1Products;
+			alternative1 = secondCheapest || cheapest || null;
+			alternative2 = secondCheapest ? cheapest : null;
+		} else {
+			// Existing logic for picking alternative1 and alternative2
+			alternative1 = alternative1Products.length > 0 ? alternative1Products[0] : null;
+			if (!(alternative1 === null)) {
+				let alternative2Products = await getFilteredProducts(allSameTypeProducts, currentProduct, alternative2PriceDifference, ruleStatusesAlt2, alternative1);
+				alternative2 = alternative2Products.length > 0 ? alternative2Products[0] : null;
+			}
 		}
 
 		let alternative3 = null;
@@ -234,10 +255,10 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 		await setAlternativeProduct4(alternative4);
 	}
 
-	function handleEnvChange(event) {
+	function handleEnvChange(event: { target: { value: string | ((v?: string, isHydrating?: boolean) => string); }; }) {
 		setEnvironment(event.target.value)
 	}
-	function handleRegionChange(event) {
+	function handleRegionChange(event: { target: { value: React.SetStateAction<string>; }; }) {
 		setRegion(event.target.value)
 	}
 
@@ -461,6 +482,20 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 						</div>
 					</div>
 					<button className="btn btn-sm btn-primary w-full mt-2" onClick={getCurrentProduct}> Compare </button>
+					<div>
+						<label className="label label-text self-center font-bold"> Brand Alternatives </label>
+						<select
+							className="select select-bordered select-sm w-full"
+							value={selectedBrand || ''}
+							onChange={(e) => setSelectedBrand(e.target.value)}
+						>
+							{Object.values(ProductBrand).map((brand) => (
+								<option key={brand} value={brand}>
+									{brand}
+								</option>
+							))}
+						</select>
+					</div>
 					<label className="label label-text self-center font-bold"> Alt 1 Rules </label>
 					<form className="form-control">
 						{Object.entries(ruleStatusesAlt1).map(([ruleName, { isActive, isHard, priority }]) => (
