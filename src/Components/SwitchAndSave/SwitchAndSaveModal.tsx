@@ -219,10 +219,10 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 		let alternative1Products = await getFilteredProducts(allSameTypeProducts, currentProduct, alternative1PriceDifference, ruleStatusesAlt1);
 
 		// Sort by price
-		alternative1Products.sort((a: any, b: any) => getPrice(a) - getPrice(b));
+		alternative1Products.sort((a: any, b: any) => getPrice(b) - getPrice(a));
 
 		let alternative1;
-		let alternative2 = null;
+		let alternative2;
 
 		// If a brand is selected, pick the 2nd cheapest for alternative1 and the cheapest for alternative2 or null if none avail.
 		if (selectedBrand !== "Any" && selectedBrand !== null) {

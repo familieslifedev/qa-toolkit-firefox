@@ -29,6 +29,7 @@ export enum ProductBrand{
 	Wren = "Wren",
 	Zanussi = "Zanussi",
 	AEG = "AEG",
+	CDA= 'CDA',
 	Neff = "Neff",
 	Miele = "Miele",
 	Matrix = "Matrix",
