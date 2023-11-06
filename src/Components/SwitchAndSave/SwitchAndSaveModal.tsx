@@ -133,6 +133,7 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 		const response = await fetch(`${url}?${stringify(query)}`);
 		const result = await response.json();
 		if(result){
+			await setCurrentProduct(result);
 			console.log(result);
 			await getAllSameTypeProducts(result);
 		}
