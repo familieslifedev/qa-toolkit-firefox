@@ -217,25 +217,12 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 
 		const currentProduct = results.items[0];
 		let alternative1Products = await getFilteredProducts(allSameTypeProducts, currentProduct, alternative1PriceDifference, ruleStatusesAlt1);
+		let alternative1 = alternative1Products.length > 0 ? alternative1Products[0] : null;
 
-		// Sort by price
-		alternative1Products.sort((a: any, b: any) => getPrice(b) - getPrice(a));
-
-		let alternative1;
 		let alternative2;
-
-		// If a brand is selected, pick the 2nd cheapest for alternative1 and the cheapest for alternative2 or null if none avail.
-		if (selectedBrand !== "Any" && selectedBrand !== null) {
-			const [cheapest, secondCheapest] = alternative1Products;
-			alternative1 = secondCheapest || cheapest || null;
-			alternative2 = secondCheapest ? cheapest : null;
-		} else {
-			// Existing logic for picking alternative1 and alternative2
-			alternative1 = alternative1Products.length > 0 ? alternative1Products[0] : null;
-			if (!(alternative1 === null)) {
-				let alternative2Products = await getFilteredProducts(allSameTypeProducts, currentProduct, alternative2PriceDifference, ruleStatusesAlt2, alternative1);
-				alternative2 = alternative2Products.length > 0 ? alternative2Products[0] : null;
-			}
+		if (!(alternative1 === null)) {
+			let alternative2Products = await getFilteredProducts(allSameTypeProducts, currentProduct, alternative2PriceDifference, ruleStatusesAlt2, alternative1);
+			alternative2 = alternative2Products.length > 0 ? alternative2Products[0] : null;
 		}
 
 		let alternative3 = null;
