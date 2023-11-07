@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { stringify } from 'query-string/base';
 import { convertPenceToPounds, get2DJson, isWithinRangeComparison } from "~Utils/Utils";
-import { ProductInterface, ProductStatuses, ProductApiResponse } from "~Utils/Constants";
+import { ProductInterface, ProductStatuses, ProductApiResponse, ProductBrand } from "~Utils/Constants";
 import { useStorage } from "@plasmohq/storage/dist/hook";
 import { environmentArray, regionArray } from "~Utils/componentArrays";
 import { getPrice, isCheaperByPercentage, rules, RuleStatuses }
@@ -21,9 +21,15 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 	const [alternativeProduct1, setAlternativeProduct1] = useState<ProductInterface>(null);
 	const [alternative1PriceDifference, setAlternative1PriceDifference] = useState<number>(5);
 	const [alternativeProduct2, setAlternativeProduct2] = useState<ProductInterface>(null);
-	const [alternative2PriceDifference, setAlternative2PriceDifference] = useState<number>(10);
-	const [currentAlternativeComparison, setCurrentAlternativeComparison] = useState<boolean>(true);
+	const [alternative2PriceDifference, setAlternative2PriceDifference] = useState<number>(5);
+	const [alternativeProduct3, setAlternativeProduct3] = useState<ProductInterface>(null);
+	const [alternative3PriceDifference, setAlternative3PriceDifference] = useState<number>(5);
+	const [alternativeProduct4, setAlternativeProduct4] = useState<ProductInterface>(null);
+	const [alternative4PriceDifference, setAlternative4PriceDifference] = useState<number>(5);
+
 	const [campaignPhaseId, setCampaignPhaseId] = useStorage<number>("SNSCampaignID",null);
+	const [selectedBrand, setSelectedBrand] = useState<ProductBrand | string | null>(null);
+
 
 
 	const [ruleStatusesAlt1, setRuleStatusesAlt1] = useStorage('ruleStatusesAlt1', {
@@ -72,6 +78,8 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 		productSKU = 'productSKU',
 		alternative1Price = 'alternative1Price',
 		alternative2Price = 'alternative2Price',
+		alternative3Price = 'alternative3Price',
+		alternative4Price = 'alternative4Price',
 		campaignPhaseId = 'campaignPhaseId'
 	}
 
@@ -89,6 +97,12 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 				break;
 			case inputEvents.alternative2Price:
 				setAlternative2PriceDifference(e.target.valueAsNumber);
+				break;
+			case inputEvents.alternative3Price:
+				setAlternative3PriceDifference(e.target.valueAsNumber);
+				break;
+			case inputEvents.alternative4Price:
+				setAlternative4PriceDifference(e.target.valueAsNumber);
 				break;
 			case inputEvents.campaignPhaseId:
 				setCampaignPhaseId(e.target.valueAsNumber);
@@ -175,7 +189,7 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 		filteredProducts.sort((a, b) => getPrice(b) - getPrice(a));
 
 		return filteredProducts;
-	}
+	};
 
 	const getAllSameTypeProducts = async (results): Promise<any> => {
 		const url = `https://feeder.${environment ? `${environment}.` : ''}wrenkitchens.${region}/products`;
@@ -190,32 +204,49 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 		const response = await fetch(`${url}?${stringify(query)}`);
 		const allSameTypeProducts = await response.json();
 
+		if (selectedBrand !== "Any" && selectedBrand !== null) {
+			allSameTypeProducts.items = allSameTypeProducts.items.filter(
+				(product: { manufacturer: string; }) => product.manufacturer === selectedBrand
+			);
+		}
+
 		if (!results || !results.items || results.items.length === 0) {
 			console.log("No current product found");
 			return;
 		}
+
 		const currentProduct = results.items[0];
 		let alternative1Products = await getFilteredProducts(allSameTypeProducts, currentProduct, alternative1PriceDifference, ruleStatusesAlt1);
-		let alternative1 = (alternative1Products).length > 0 ? alternative1Products[0] : null;
+		let alternative1 = alternative1Products.length > 0 ? alternative1Products[0] : null;
 
-		let alternative2 = null;
-		if (!(currentAlternativeComparison && alternative1 === null)) {
+		let alternative2;
+		if (!(alternative1 === null)) {
 			let alternative2Products = await getFilteredProducts(allSameTypeProducts, currentProduct, alternative2PriceDifference, ruleStatusesAlt2, alternative1);
 			alternative2 = alternative2Products.length > 0 ? alternative2Products[0] : null;
 		}
 
+		let alternative3 = null;
+		if (!(alternative2 === null)) {
+			let alternative3Products = await getFilteredProducts(allSameTypeProducts, currentProduct, alternative3PriceDifference, ruleStatusesAlt2, alternative2);
+			alternative3 = alternative3Products.length > 0 ? alternative3Products[0] : null;
+		}
+
+		let alternative4 = null;
+		if (!(alternative3 === null)) {
+			let alternative4Products = await getFilteredProducts(allSameTypeProducts, currentProduct, alternative4PriceDifference, ruleStatusesAlt2, alternative3);
+			alternative4 = alternative4Products.length > 0 ? alternative4Products[0] : null;
+		}
+
 		await setAlternativeProduct1(alternative1);
 		await setAlternativeProduct2(alternative2);
+		await setAlternativeProduct3(alternative3);
+		await setAlternativeProduct4(alternative4);
 	}
 
-	function handleCheckChange (event) {
-		setCurrentAlternativeComparison(event.target.checked)
-	}
-
-	function handleEnvChange(event) {
+	function handleEnvChange(event: { target: { value: string | ((v?: string, isHydrating?: boolean) => string); }; }) {
 		setEnvironment(event.target.value)
 	}
-	function handleRegionChange(event) {
+	function handleRegionChange(event: { target: { value: React.SetStateAction<string>; }; }) {
 		setRegion(event.target.value)
 	}
 
@@ -229,12 +260,6 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 			<div className="SNSComparePanel">
 				<div className="SNSMainContent">
 					<div className="SNSCurrentProduct">
-						<div>
-							<img  src={currentProduct?.items[0]?.defaultImageUrl}
-								  alt={currentProduct?.items[0]?.defaultImageId}
-								  className = "SNSProductImage"
-							/>
-						</div>
 						<div className={"SNSInnerRight"}>
 							<h1><b>Current Product</b></h1>
 							<p><b>Product:</b>  {currentProduct?.items[0]?.productName}</p>
@@ -258,10 +283,6 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 					</div>
 					<div className="SNSAlternativeProducts">
 						<div className="SNSInnerLeft">
-							<img  src={alternativeProduct1?.defaultImageUrl}
-								  alt={alternativeProduct1?.defaultImageId}
-								  className = "SNSProductImage"
-							/>
 							<h1><b>Alternative One</b></h1>
 							<p><b>Product:</b> {alternativeProduct1?.productName}</p>
 							<p><b>Status:</b> {alternativeProduct1?.productStateHandle}</p>
@@ -292,15 +313,8 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 									? `${(Math.abs(getPrice(currentProduct.items[0]) - getPrice(alternativeProduct1)) / getPrice(currentProduct.items[0]) * 100).toFixed(2)}%`
 									: ""}
 							</p>
-
-
-						</div>
-						<div className="SNSInnerRight">
-							<img  src={alternativeProduct2?.defaultImageUrl}
-								  alt={alternativeProduct2?.defaultImageId}
-								  className = "SNSProductImage"
-
-							/>
+							<br>
+							</br>
 							<h1><b>Alternative Two</b></h1>
 							<p><b>Product:</b> {alternativeProduct2?.productName}</p>
 							<p><b>Status:</b> {alternativeProduct2?.productStateHandle}</p>
@@ -327,8 +341,73 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 							</p>
 							<p>
 								<b>Percent Difference: </b>
-								{alternativeProduct2 && (currentAlternativeComparison ? alternativeProduct1 : currentProduct?.items[0])
-									? `${(Math.abs(getPrice(currentAlternativeComparison ? alternativeProduct1 : currentProduct.items[0]) - getPrice(alternativeProduct2)) / getPrice(currentAlternativeComparison ? alternativeProduct1 : currentProduct.items[0]) * 100).toFixed(2)}%`
+								{alternativeProduct2 && alternativeProduct1
+									? `${(Math.abs(getPrice(alternativeProduct1) - getPrice(alternativeProduct2)) / getPrice(alternativeProduct1) * 100).toFixed(2)}%`
+									: ""}
+							</p>
+
+						</div>
+						<div className="SNSInnerRight">
+							<h1><b>Alternative Three</b></h1>
+							<p><b>Product:</b> {alternativeProduct3?.productName}</p>
+							<p><b>Status:</b> {alternativeProduct3?.productStateHandle}</p>
+							<p><b>Brand:</b> {alternativeProduct3?.manufacturer}</p>
+							<p><b>SKU:</b> {alternativeProduct3?.productCode}</p>
+							<p><b>Category:</b> {alternativeProduct3?.retailCategory.name}</p>
+							<p><b>Sub Category:</b> {alternativeProduct3?.retailSubCategory.name}</p>
+							<p>
+								<b>Price:</b>{" "}
+								{alternativeProduct3 && alternativeProduct3.promoPrice?.gross && alternativeProduct3.discountedOrderPrice?.gross
+									? <>
+										<s>£{convertPenceToPounds(alternativeProduct3.promoPrice.gross)}</s>{" "}
+										£{convertPenceToPounds(getPrice(alternativeProduct3))}
+									</>
+									: alternativeProduct1
+										? `£${convertPenceToPounds(getPrice(alternativeProduct3))}`
+										: ""}
+							</p>
+							<p>
+								<b>Save:  </b>
+								{alternativeProduct3 && currentProduct?.items[0]
+									? `£${convertPenceToPounds(Math.abs(getPrice(currentProduct.items[0]) - getPrice(alternativeProduct3)))}`
+									: ""}
+							</p>
+							<p>
+								<b>Percent Difference: </b>
+								{alternativeProduct3 && (alternativeProduct1)
+									? `${(Math.abs(getPrice(alternativeProduct1) - getPrice(alternativeProduct2)) / getPrice(alternativeProduct1) * 100).toFixed(2)}%`
+									: ""}
+							</p>
+							<br>
+							</br>
+							<h1><b>Alternative Four</b></h1>
+							<p><b>Product:</b> {alternativeProduct4?.productName}</p>
+							<p><b>Status:</b> {alternativeProduct4?.productStateHandle}</p>
+							<p><b>Brand:</b> {alternativeProduct4?.manufacturer}</p>
+							<p><b>SKU:</b> {alternativeProduct4?.productCode}</p>
+							<p><b>Category:</b> {alternativeProduct4?.retailCategory.name}</p>
+							<p><b>Sub Category:</b> {alternativeProduct4?.retailSubCategory.name}</p>
+							<p>
+								<b>Price:</b>{" "}
+								{alternativeProduct4 && alternativeProduct4.promoPrice?.gross && alternativeProduct4.discountedOrderPrice?.gross
+									? <>
+										<s>£{convertPenceToPounds(alternativeProduct4.promoPrice.gross)}</s>{" "}
+										£{convertPenceToPounds(getPrice(alternativeProduct4))}
+									</>
+									: alternativeProduct1
+										? `£${convertPenceToPounds(getPrice(alternativeProduct4))}`
+										: ""}
+							</p>
+							<p>
+								<b>Save:  </b>
+								{alternativeProduct4 && currentProduct?.items[0]
+									? `£${convertPenceToPounds(Math.abs(getPrice(currentProduct.items[0]) - getPrice(alternativeProduct4)))}`
+									: ""}
+							</p>
+							<p>
+								<b>Percent Difference: </b>
+								{alternativeProduct4 && (alternativeProduct1)
+									? `${(Math.abs(getPrice(alternativeProduct1) - getPrice(alternativeProduct4)) / getPrice(alternativeProduct1) * 100).toFixed(2)}%`
 									: ""}
 							</p>
 
@@ -349,11 +428,17 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 					<div className="flex-col space-y-0.5 alignItemsCenter">
 						<label className="label-text font-bold">Alternative 2 Price %</label>
 						<input className="input input-xs input-bordered w-14" type="number" value={alternative2PriceDifference} onChange={(e) => handleInputChange(e, inputEvents.alternative2Price)}/>
-						<div className="flex space-x-0.5 alignItemsCenter">
-							<input type="checkbox" className="toggle toggle-sm toggle-success" onChange={handleCheckChange} checked={currentAlternativeComparison} />
-							<label className="label-text">Current/Alt</label>
-						</div>
 					</div>
+					</div>
+					<div className="flex flex-row alignItemsCenter">
+						<div className="flex-col space-y-0.5 alignItemsCenter">
+							<label className="label-text font-bold">Alternative 3 Price %</label>
+							<input className="input input-xs input-bordered w-14" type="number" value={alternative3PriceDifference} onChange={(e) => handleInputChange(e, inputEvents.alternative3Price)}/>
+						</div>
+						<div className="flex-col space-y-0.5 alignItemsCenter">
+							<label className="label-text font-bold">Alternative 4 Price %</label>
+							<input className="input input-xs input-bordered w-14" type="number" value={alternative4PriceDifference} onChange={(e) => handleInputChange(e, inputEvents.alternative4Price)}/>
+						</div>
 					</div>
 					<div className="flex flex-row alignItemsCenter">
 						<div className="flex-col space-y-0.5 alignItemsCenter">
@@ -385,6 +470,20 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 						</div>
 					</div>
 					<button className="btn btn-sm btn-primary w-full mt-2" onClick={getCurrentProduct}> Compare </button>
+					<div>
+						<label className="label label-text self-center font-bold"> Brand Alternatives </label>
+						<select
+							className="select select-bordered select-sm w-full"
+							value={selectedBrand || ''}
+							onChange={(e) => setSelectedBrand(e.target.value)}
+						>
+							{Object.values(ProductBrand).map((brand) => (
+								<option key={brand} value={brand}>
+									{brand}
+								</option>
+							))}
+						</select>
+					</div>
 					<label className="label label-text self-center font-bold"> Alt 1 Rules </label>
 					<form className="form-control">
 						{Object.entries(ruleStatusesAlt1).map(([ruleName, { isActive, isHard, priority }]) => (

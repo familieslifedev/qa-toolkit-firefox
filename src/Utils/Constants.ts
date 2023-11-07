@@ -23,6 +23,26 @@ export enum ProductStatuses{
 	Semiretired = "Semiretired",
 	Retired = "Retired",
 }
+
+export enum ProductBrand{
+	Any = "Any",
+	Wren = "Wren",
+	Zanussi = "Zanussi",
+	AEG = "AEG",
+	CDA= 'CDA',
+	Neff = "Neff",
+	Miele = "Miele",
+	Matrix = "Matrix",
+	Hotpoint = "Hotpoint",
+	Indesit = "Indesit",
+	Whirlpool = "Whirlpool",
+	Smeg = "Smeg",
+	Rangemaster = "Rangemaster",
+	Leisure = "Leisure",
+	Samsung = "Samsung",
+	LG = "LG",
+	Blanco = "Blanco",
+}
 export enum oven_sub_categories {
 	'BuiltUnderDoubleOvens'= "Built Under Double Ovens",
 	'CompactOvens' = "Compact Ovens",
