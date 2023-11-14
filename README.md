@@ -1,7 +1,6 @@
 # QA Toolkit
 
-The QA toolkit is a Chrome extension that are designed to help facilitate
-QA testing of Wren applications. 
+This QA toolkit port is a Firefox add-on that is designed to help facilitate QA testing of Wren applications. 
 
 ## Installation
 ### Preliminary Setup
@@ -18,18 +17,17 @@ Further, you will need to install `pnpm`: https://pnpm.io/installation
 
 Clone the repo from bitbucket.
 
-Once it has successfully been cloned, open a CLI window and navigate into the QA Toolkit folder.
-This is done via the `cd` command on Mac/Linux; `dir` on Windows, followed by the folder path you're trying to follow on either system.
+Once it has successfully been cloned, open a terminal window and navigate into the qa-toolkit-firefox folder.
+This is done via `cd ~/git/qa-toolkit-firefox` on Mac.
 
-Once in the QA Toolkit directory, run `pnpm i` then run `pnpm build`.
+Once in the directory, run `pnpm i` then run `pnpm build`.
 
-Once this has been done successfully, open Chrome, then the manage plugins page.
-Turn on developer mode and click `load unpacked`.
-This will open your system's file explorer, select chrome-mv3-prod.
+Once this has been done successfully, open Firefox, then about:addons
+// Need to add extra steps once done
 
 ## Using the application
 
-Once the application is built and loaded as an active plugin in Chrome, open a Wren application.
+Once the application is built and loaded as an active addon, open a Wren application.
 You should see a symbol on the right hand side of your browser displaying a spanner and a screwdriver.
 
 Click this to open the overlay and menu for the application.
