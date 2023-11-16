@@ -1,9 +1,9 @@
 {
   "name": "qatoolkit",
   "displayName": "Qa Toolkit",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Qa toolkit",
-  "author": "Chris",
+  "author": "Harrison",
   "scripts": {
     "dev": "plasmo dev",
     "build": "plasmo build",
@@ -48,9 +48,7 @@
       "storage",
       "notifications",
       "contextMenus",
-      "downloads",
-      "desktopCapture",
-      "tabCapture"
+      "downloads"
     ]
-  }
-}
+      }
+    }
