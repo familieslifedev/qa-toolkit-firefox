@@ -19,10 +19,17 @@ export abstract class BaseMessageHandler implements BackgroundMessageHandler {
         this.queryOptions = { active: true, lastFocusedWindow: true };
         this.errorMessage = errorMessage ?? "Error";
     }
-
     public async handle(request: BackgroundRequest, sendResponse: HandlerResponse): Promise<void> {
+        console.log("Query Options:", this.queryOptions); // Debugging line
         this.currentTab = await chrome.tabs.query(this.queryOptions);
-        this.currentTabId = this.currentTab[0].id;
+        console.log("Current Tab:", this.currentTab); // Debugging line
+        this.currentTabId = this.currentTab[0]?.id;
+        if (this.currentTabId === undefined) {
+            console.log("Tab undefined!")
+        }
+        else {
+            console.log("Current Tab ID:", this.currentTabId); // Debugging line
+        }
     }
 
     protected async execute(request: BackgroundRequest, sendResponse: HandlerResponse): Promise<void> {
