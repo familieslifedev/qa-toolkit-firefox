@@ -1,5 +1,5 @@
 {
-  "action": {
+  "browser_action": {
     "default_icon": {
       "16": "icon16.plasmo.00ac8b83.png",
       "32": "icon32.plasmo.9ad0c5b6.png",
@@ -10,7 +10,9 @@
   },
   "author": "Harrison",
   "background": {
-    "service_worker": "background.5fadff2f.js"
+    "scripts": [
+      "build/firefox-mv3-prod/background.d07ea401.js"
+    ]
   },
   "content_scripts": [
     {
@@ -24,11 +26,6 @@
     }
   ],
   "description": "Qa toolkit",
-  "host_permissions": [
-    "http://*/*",
-    "https://*/*",
-    "<all_urls>"
-  ],
   "icons": {
     "16": "icon16.plasmo.00ac8b83.png",
     "32": "icon32.plasmo.9ad0c5b6.png",
@@ -36,7 +33,7 @@
     "64": "icon64.plasmo.e4b604fc.png",
     "128": "icon128.plasmo.b89b7dfa.png"
   },
-  "manifest_version": 3,
+  "manifest_version": 2,
   "name": "Qa Toolkit",
   "options_ui": {
     "page": "options.html",
@@ -51,17 +48,18 @@
     "scripting",
     "notifications",
     "contextMenus",
-    "downloads"
+    "downloads",
+    "https://*/*",
+    "https://*/*",
+    "<all_urls>"
   ],
   "version": "0.0.2",
   "web_accessible_resources": [
-    {
-      "matches": [
-        "<all_urls>"
-      ],
-      "resources": [
-        "content.98ee31a0.css"
-      ]
+    "content.98ee31a0.css"
+  ],
+  "applications": {
+    "gecko": {
+      "id": "your-addon-id@example.com"
     }
-  ]
+  }
 }
