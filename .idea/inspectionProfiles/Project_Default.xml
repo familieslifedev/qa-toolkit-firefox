@@ -11,23 +11,101 @@
         <option value="manifest" />
       </list>
     </option>
-    <inspection_tool class="Json5StandardCompliance" enabled="true" level="ERROR" enabled_by_default="true">
-      <scope name="manifest" level="ERROR" enabled="true" />
+    <inspection_tool class="AngularAmbiguousComponentTag" enabled="true" level="ERROR" enabled_by_default="false">
+      <scope name="Project Files" level="ERROR" enabled="false" />
+      <scope name="manifest" level="ERROR" enabled="true" editorAttributes="ERRORS_ATTRIBUTES" />
     </inspection_tool>
-    <inspection_tool class="JsonDuplicatePropertyKeys" enabled="false" level="WARNING" enabled_by_default="false">
+    <inspection_tool class="AngularCliAddDependency" enabled="true" level="WARNING" enabled_by_default="false">
+      <scope name="Project Files" level="WARNING" enabled="false" />
+      <scope name="manifest" level="ERROR" enabled="true" editorAttributes="ERRORS_ATTRIBUTES" />
+    </inspection_tool>
+    <inspection_tool class="AngularInaccessibleComponentMemberInAotMode" enabled="true" level="WARNING" enabled_by_default="false">
+      <scope name="Project Files" level="WARNING" enabled="false" />
+      <scope name="manifest" level="ERROR" enabled="true" editorAttributes="ERRORS_ATTRIBUTES" />
+    </inspection_tool>
+    <inspection_tool class="AngularIncorrectTemplateDefinition" enabled="true" level="ERROR" enabled_by_default="false">
+      <scope name="Project Files" level="ERROR" enabled="false" />
+      <scope name="manifest" level="ERROR" enabled="true" editorAttributes="ERRORS_ATTRIBUTES" />
+    </inspection_tool>
+    <inspection_tool class="AngularInsecureBindingToEvent" enabled="true" level="WARNING" enabled_by_default="false">
+      <scope name="Project Files" level="WARNING" enabled="false" />
+      <scope name="manifest" level="ERROR" enabled="true" editorAttributes="ERRORS_ATTRIBUTES" />
+    </inspection_tool>
+    <inspection_tool class="AngularInvalidAnimationTriggerAssignment" enabled="true" level="ERROR" enabled_by_default="false">
+      <scope name="Project Files" level="ERROR" enabled="false" />
+      <scope name="manifest" level="ERROR" enabled="true" editorAttributes="ERRORS_ATTRIBUTES" />
+    </inspection_tool>
+    <inspection_tool class="AngularInvalidEntryComponent" enabled="true" level="ERROR" enabled_by_default="false">
+      <scope name="Project Files" level="ERROR" enabled="false" />
+      <scope name="manifest" level="ERROR" enabled="true" editorAttributes="ERRORS_ATTRIBUTES" />
+    </inspection_tool>
+    <inspection_tool class="AngularInvalidI18nAttribute" enabled="true" level="WARNING" enabled_by_default="false">
+      <scope name="Project Files" level="WARNING" enabled="false" />
+      <scope name="manifest" level="ERROR" enabled="true" editorAttributes="ERRORS_ATTRIBUTES" />
+    </inspection_tool>
+    <inspection_tool class="AngularInvalidImportedOrDeclaredSymbol" enabled="true" level="ERROR" enabled_by_default="false">
+      <scope name="Project Files" level="ERROR" enabled="false" />
+      <scope name="manifest" level="ERROR" enabled="true" editorAttributes="ERRORS_ATTRIBUTES" />
+    </inspection_tool>
+    <inspection_tool class="AngularInvalidSelector" enabled="true" level="ERROR" enabled_by_default="false">
+      <scope name="Project Files" level="ERROR" enabled="false" />
+      <scope name="manifest" level="ERROR" enabled="true" editorAttributes="ERRORS_ATTRIBUTES" />
+    </inspection_tool>
+    <inspection_tool class="AngularInvalidTemplateReferenceVariable" enabled="true" level="ERROR" enabled_by_default="false">
+      <scope name="Project Files" level="ERROR" enabled="false" />
+      <scope name="manifest" level="ERROR" enabled="true" editorAttributes="ERRORS_ATTRIBUTES" />
+    </inspection_tool>
+    <inspection_tool class="AngularMissingEventHandler" enabled="true" level="ERROR" enabled_by_default="false">
+      <scope name="Project Files" level="ERROR" enabled="false" />
+      <scope name="manifest" level="ERROR" enabled="true" editorAttributes="ERRORS_ATTRIBUTES" />
+    </inspection_tool>
+    <inspection_tool class="AngularMissingOrInvalidDeclarationInModule" enabled="true" level="ERROR" enabled_by_default="false">
+      <scope name="Project Files" level="ERROR" enabled="false" />
+      <scope name="manifest" level="ERROR" enabled="true" editorAttributes="ERRORS_ATTRIBUTES" />
+    </inspection_tool>
+    <inspection_tool class="AngularMissingRequiredDirectiveInputBinding" enabled="true" level="ERROR" enabled_by_default="false">
+      <scope name="Project Files" level="ERROR" enabled="false" />
+      <scope name="manifest" level="ERROR" enabled="true" editorAttributes="ERRORS_ATTRIBUTES" />
+    </inspection_tool>
+    <inspection_tool class="AngularMultipleStructuralDirectives" enabled="true" level="ERROR" enabled_by_default="false">
+      <scope name="Project Files" level="ERROR" enabled="false" />
+      <scope name="manifest" level="ERROR" enabled="true" editorAttributes="ERRORS_ATTRIBUTES" />
+    </inspection_tool>
+    <inspection_tool class="AngularNgOptimizedImage" enabled="true" level="WEAK WARNING" enabled_by_default="false">
+      <scope name="Project Files" level="WEAK WARNING" enabled="false" />
+      <scope name="manifest" level="ERROR" enabled="true" editorAttributes="ERRORS_ATTRIBUTES" />
+    </inspection_tool>
+    <inspection_tool class="AngularNonEmptyNgContent" enabled="true" level="ERROR" enabled_by_default="false">
+      <scope name="Project Files" level="ERROR" enabled="false" />
+      <scope name="manifest" level="ERROR" enabled="true" editorAttributes="ERRORS_ATTRIBUTES" />
+    </inspection_tool>
+    <inspection_tool class="AngularRecursiveModuleImportExport" enabled="true" level="ERROR" enabled_by_default="false">
+      <scope name="Project Files" level="ERROR" enabled="false" />
+      <scope name="manifest" level="ERROR" enabled="true" editorAttributes="ERRORS_ATTRIBUTES" />
+    </inspection_tool>
+    <inspection_tool class="AngularUndefinedBinding" enabled="true" level="ERROR" enabled_by_default="false">
+      <scope name="Project Files" level="ERROR" enabled="false" />
+      <scope name="manifest" level="ERROR" enabled="true" editorAttributes="ERRORS_ATTRIBUTES" />
+    </inspection_tool>
+    <inspection_tool class="AngularUndefinedModuleExport" enabled="true" level="ERROR" enabled_by_default="false">
+      <scope name="Project Files" level="ERROR" enabled="false" />
+      <scope name="manifest" level="ERROR" enabled="true" editorAttributes="ERRORS_ATTRIBUTES" />
+    </inspection_tool>
+    <inspection_tool class="AngularUndefinedTag" enabled="true" level="ERROR" enabled_by_default="false">
+      <scope name="Project Files" level="ERROR" enabled="false" />
+      <scope name="manifest" level="ERROR" enabled="true" editorAttributes="ERRORS_ATTRIBUTES" />
+    </inspection_tool>
+    <inspection_tool class="JsonDuplicatePropertyKeys" enabled="true" level="WARNING" enabled_by_default="true">
       <scope name="manifest" level="WARNING" enabled="false" />
     </inspection_tool>
-    <inspection_tool class="JsonSchemaCompliance" enabled="false" level="WARNING" enabled_by_default="false">
+    <inspection_tool class="JsonSchemaCompliance" enabled="true" level="WARNING" enabled_by_default="true">
       <scope name="manifest" level="WARNING" enabled="false" />
     </inspection_tool>
-    <inspection_tool class="JsonSchemaDeprecation" enabled="false" level="WEAK WARNING" enabled_by_default="false">
+    <inspection_tool class="JsonSchemaDeprecation" enabled="true" level="WEAK WARNING" enabled_by_default="true">
       <scope name="manifest" level="WEAK WARNING" enabled="false" />
     </inspection_tool>
-    <inspection_tool class="JsonSchemaRefReference" enabled="false" level="WARNING" enabled_by_default="false">
+    <inspection_tool class="JsonSchemaRefReference" enabled="true" level="WARNING" enabled_by_default="true">
       <scope name="manifest" level="WARNING" enabled="false" />
-    </inspection_tool>
-    <inspection_tool class="JsonStandardCompliance" enabled="true" level="ERROR" enabled_by_default="true">
-      <scope name="manifest" level="ERROR" enabled="true" />
     </inspection_tool>
     <inspection_tool class="RequiredAttributes" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myAdditionalRequiredHtmlAttributes" value="placeholder" />

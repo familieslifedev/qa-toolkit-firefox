@@ -19,7 +19,8 @@
     "react": "18.2.0",
     "react-colorful": "^5.6.1",
     "react-dom": "18.2.0",
-    "react-draggable": "^4.4.5"
+    "react-draggable": "^4.4.5",
+    "webextension-polyfill": "^0.10.0"
   },
   "devDependencies": {
     "@plasmohq/prettier-plugin-sort-imports": "3.6.1",
@@ -27,6 +28,7 @@
     "@types/node": "18.11.18",
     "@types/react": "18.0.27",
     "@types/react-dom": "18.0.10",
+    "@types/webextension-polyfill": "^0.10.6",
     "autoprefixer": "^10.4.13",
     "postcss": "8.4.21",
     "prettier": "2.8.3",
@@ -34,11 +36,6 @@
     "typescript": "4.9.4"
   },
   "manifest": {
-    "host_permissions": [
-      "http://*/*",
-      "https://*/*",
-      "<all_urls>"
-    ],
     "permissions": [
       "clipboardRead",
       "clipboardWrite",
@@ -48,7 +45,10 @@
       "storage",
       "notifications",
       "contextMenus",
-      "downloads"
+      "downloads",
+      "http://*/*",
+      "https://*/*",
+      "<all_urls>"
     ]
-      }
-    }
+  }
+}
