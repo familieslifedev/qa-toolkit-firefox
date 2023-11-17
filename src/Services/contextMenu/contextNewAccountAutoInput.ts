@@ -1,18 +1,19 @@
 import { Storage } from "@plasmohq/storage";
 import type { FrontendAccount } from "~Utils/UtilInterfaces";
 import { ContentRequest, ContentRequestType } from "~Services/Content/Request";
+import browser from "webextension-polyfill";
 
 const frontendAccountStorage = new Storage();
 const frontendAccountStorageUS = new Storage();
 export async function createAccountContextMenu() {
-	chrome.contextMenus.create({
+	browser.contextMenus.create({
 		id: "accountContextMenu",
 		title: "Frontend Accounts",
 		contexts: ["all"],
 		parentId: "parentContextMenu",
 		documentUrlPatterns: ["https://*.wrenkitchens.com/accounts/account/new"],
 	});
-	chrome.contextMenus.create({
+	browser.contextMenus.create({
 		id: "usAccountContextMenu",
 		title: "US Frontend Accounts",
 		contexts: ["all"],
@@ -31,7 +32,7 @@ async function PopulateAccountContextMenu() {
 	} else {
 		// Iterate over the UK accounts array
 		accounts.forEach((account) => {
-			chrome.contextMenus.create({
+			browser.contextMenus.create({
 				id: "uk-" + account.id.toString(),
 				title: account.emailAddress,
 				contexts: ["all"],
@@ -45,7 +46,7 @@ async function PopulateAccountContextMenu() {
 	} else {
 		// Iterate over the US accounts array
 		accountsUS.forEach((account) => {
-			chrome.contextMenus.create({
+			browser.contextMenus.create({
 				id: "us-" + account.id.toString(),
 				title: account.emailAddress,
 				contexts: ["all"],
@@ -55,7 +56,7 @@ async function PopulateAccountContextMenu() {
 	}
 }
 
-chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+browser.contextMenus.onClicked.addListener(async (info, tab) => {
 	if (info.menuItemId === "parentContextMenu") {
 		return;
 	}
@@ -84,7 +85,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 				arguments: [accountRegion, selectedAccount]
 			}
 
-			await chrome.tabs.sendMessage(tab.id, request);
+			await browser.tabs.sendMessage(tab.id, request);
 
 		} else {
 			console.error("Could not find account with id: " + info.menuItemId);
@@ -93,10 +94,12 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 });
 
 function updateContextMenu() {
-	chrome.contextMenus.remove("accountContextMenu", async () => {
-		chrome.contextMenus.remove("usAccountContextMenu", async () => {
-			await createAccountContextMenu();
-		});
+	browser.contextMenus.remove("accountContextMenu").then(() => {
+		return browser.contextMenus.remove("usAccountContextMenu");
+	}).then(() => {
+		return createAccountContextMenu();
+	}).catch((error) => {
+		console.error("Error updating context menu:", error);
 	});
 }
 

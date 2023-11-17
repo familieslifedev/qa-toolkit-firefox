@@ -5,17 +5,18 @@ import SidebarMainContent from "~Components/Sidebar/SidebarContent";
 import { useEffect, useState } from "react";
 import FeedbackPanel from "~Components/Sidebar/FeedbackPanel";
 import {FeedbackContext} from "~Utils/sidebarContext";
-import type { BaseMessageHandler } from "./Services/Content/Handlers/BaseMessageHandler";
+import type { BaseMessageHandler } from "~Services/Content/Handlers/BaseMessageHandler";
 import type { HandlerResponse } from "~/Services/Background/Handlers/BaseMessageHandler";
 import type { ContentRequest } from "~Services/Content/Request";
 import { MakeHandler } from "~Services/Content/contentMessageHandler";
+import browser from "webextension-polyfill";
 export const getStyle = () => {
   const style = document.createElement("style")
   style.textContent = cssText
   return style
 }
 
-chrome.runtime.onMessage.addListener((request: ContentRequest, sender, sendResponse: HandlerResponse) => {
+browser.runtime.onMessage.addListener((request: ContentRequest, sender, sendResponse: HandlerResponse) => {
   const handler: BaseMessageHandler = MakeHandler(request);
   handler.handle(request, sendResponse);
 

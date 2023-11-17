@@ -1,4 +1,7 @@
 {
+  "author": "Harrison",
+  "background": {
+  },
   "browser_action": {
     "default_icon": {
       "16": "icon16.plasmo.00ac8b83.png",
@@ -8,24 +11,20 @@
       "128": "icon128.plasmo.b89b7dfa.png"
     }
   },
-  "author": "Harrison",
-  "background": {
-    "scripts": [
-      "build/firefox-mv2-prod/background.806a2724.js"
-    ]
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "qa-toolkit@charlotte.example"
+    }
   },
   "content_scripts": [
     {
       "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "build/firefox-mv2-prod/content.5290d0e2.js"
-      ],
-      "css": []
+        "*://*.wrenkitchens.com/*",
+        "*://*.wrenkitchens.us/*"
+      ]
     }
   ],
-  "description": "Qa toolkit",
+  "description": "A QA Toolkit for Wren testers.",
   "icons": {
     "16": "icon16.plasmo.00ac8b83.png",
     "32": "icon32.plasmo.9ad0c5b6.png",
@@ -34,7 +33,7 @@
     "128": "icon128.plasmo.b89b7dfa.png"
   },
   "manifest_version": 2,
-  "name": "Qa Toolkit",
+  "name": "Wren QA Toolkit",
   "options_ui": {
     "page": "options.html",
     "open_in_tab": true
@@ -48,18 +47,10 @@
     "scripting",
     "notifications",
     "contextMenus",
-    "downloads",
-    "https://*/*",
-    "https://*/*",
-    "<all_urls>"
+    "downloads"
   ],
-  "version": "0.0.2",
+  "version": "0.0.3",
   "web_accessible_resources": [
-    "content.98ee31a0.css"
-  ],
-  "applications": {
-    "gecko": {
-      "id": "qa-toolkit@charlotte.example"
-    }
-  }
+    "src/style.css"
+  ]
 }

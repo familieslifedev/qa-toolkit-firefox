@@ -1,5 +1,6 @@
 import React from "react";
 import { Request as BackgroundRequest, RequestType } from "../../Services/Background/Request";
+import browser from "webextension-polyfill";
 
 export default function ComplianceTools() {
 
@@ -10,7 +11,7 @@ export default function ComplianceTools() {
       arguments: null
     };
 
-    await chrome.runtime.sendMessage(request);
+    await browser.runtime.sendMessage(request);
   }
 
   async function handlePelmetLoad(): Promise<void> {
@@ -20,7 +21,7 @@ export default function ComplianceTools() {
       arguments: null
     };
 
-    await chrome.runtime.sendMessage(request);
+    await browser.runtime.sendMessage(request);
   }
 
   async function handlePlinthLoad() {
@@ -30,10 +31,10 @@ export default function ComplianceTools() {
       arguments: null
     };
 
-    await chrome.runtime.sendMessage(request);
+    await browser.runtime.sendMessage(request);
   }
 
-  function handleAnnotationBtnClicked(accept : boolean) {
+  function handleAnnotationBtnClicked(accept: boolean) {
     const annotationPopup = document.querySelector('.check-notes-popup-wrapper')
     if (annotationPopup) {
       // annotation popup already open just accept and save
@@ -67,7 +68,8 @@ export default function ComplianceTools() {
         });
       }
     }
-    function openAnnotationPopup(accept:boolean) {
+
+    function openAnnotationPopup(accept: boolean) {
       const annotationPopupBtn = document.querySelector('.check-notes');
       if (annotationPopupBtn) {
         (annotationPopupBtn as HTMLElement)?.click();
@@ -90,7 +92,8 @@ export default function ComplianceTools() {
         });
       }
     }
-    function changeAnnotations(accept:boolean) {
+
+    function changeAnnotations(accept: boolean) {
       const tabMenuItems = document.querySelectorAll('.tabs-menu-item > a');
       tabMenuItems.forEach((t) => {
         if (t) {
@@ -103,8 +106,7 @@ export default function ComplianceTools() {
             if (!inputElement?.checked) {
               (i as HTMLElement)?.click();
             }
-          }
-          else {
+          } else {
             if (inputElement?.checked) {
               (i as HTMLElement)?.click();
             }
@@ -117,23 +119,23 @@ export default function ComplianceTools() {
       if (saveButton) {
         (saveButton as HTMLElement)?.click();
       }
-    };
+    }
   }
 
 
-
-
   return (
-    <div className="complianceContainer">
-      <div className={"btn-group btn-group-horizontal"}>
-        <button className="btn btn-sm btn-primary" onClick={() => handleAnnotationBtnClicked(true)}>☑ Annotations</button>
-        <button className="btn btn-sm btn-primary" onClick={() => handleAnnotationBtnClicked(false)}>☐ Annotations</button>
+      <div className="complianceContainer">
+        <div className={"btn-group btn-group-horizontal"}>
+          <button className="btn btn-sm btn-primary" onClick={() => handleAnnotationBtnClicked(true)}>☑ Annotations
+          </button>
+          <button className="btn btn-sm btn-primary" onClick={() => handleAnnotationBtnClicked(false)}>☐ Annotations
+          </button>
+        </div>
+
+        <button className="btn btn-sm btn-wide btn-primary" onClick={handleCorniceLoad}>Show Cornice</button>
+        <button className="btn btn-sm btn-wide btn-primary" onClick={handlePelmetLoad}>Show Pelmet</button>
+        <button className="btn btn-sm btn-wide btn-primary" onClick={handlePlinthLoad}>Show Plinth</button>
+
       </div>
-
-      <button className="btn btn-sm btn-wide btn-primary" onClick={handleCorniceLoad}>Show Cornice</button>
-      <button className="btn btn-sm btn-wide btn-primary" onClick={handlePelmetLoad}>Show Pelmet</button>
-      <button className="btn btn-sm btn-wide btn-primary" onClick={handlePlinthLoad}>Show Plinth</button>
-
-    </div>
   );
 }

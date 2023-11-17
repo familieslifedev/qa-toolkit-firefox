@@ -6,6 +6,7 @@ import { JsonFixer } from "~/Services/JsonFixer";
 import SwitchAndSaveModal from "~Components/SwitchAndSave/SwitchAndSaveModal";
 import { ModalTypes } from "~Utils/Constants";
 import ProductQuery from "~Components/ProductQuery/ProductQuery";
+import browser from "webextension-polyfill";
 
 //TODO create a better way to access the JSON editor.
 export default function ToolSets(): JSX.Element {
@@ -58,7 +59,7 @@ export default function ToolSets(): JSX.Element {
 			arguments: null,
 			type: RequestType.GetCurrentUrl
 		};
-		const currentTabUrl: string = await chrome.runtime.sendMessage(request);
+		const currentTabUrl: string = await browser.runtime.sendMessage(request);
 		if (!currentTabUrl) {
 			console.error("Missing current tab URL when handling JSON fixer.");
 		}

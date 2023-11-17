@@ -1,4 +1,5 @@
 import { Request as BackgroundRequest, RequestType } from "../../Services/Background/Request";
+import browser from "webextension-polyfill";
 
 const SidebarNav = (): JSX.Element => {
   function openOptions() {
@@ -7,7 +8,7 @@ const SidebarNav = (): JSX.Element => {
       functionName: null,
       arguments: null
     }
-    chrome.runtime.sendMessage(request);
+    browser.runtime.sendMessage(request);
   }
 
   return (

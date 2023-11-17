@@ -1,8 +1,8 @@
 {
   "name": "qatoolkit",
-  "displayName": "Qa Toolkit",
-  "version": "0.0.2",
-  "description": "Qa toolkit",
+  "displayName": "Wren QA Toolkit",
+  "version": "0.0.3",
+  "description": "A QA Toolkit for Wren testers.",
   "author": "Harrison",
   "scripts": {
     "dev": "plasmo dev",
@@ -24,7 +24,6 @@
   },
   "devDependencies": {
     "@plasmohq/prettier-plugin-sort-imports": "3.6.1",
-    "@types/chrome": "0.0.210",
     "@types/node": "18.11.18",
     "@types/react": "18.0.27",
     "@types/react-dom": "18.0.10",
@@ -46,9 +45,13 @@
       "notifications",
       "contextMenus",
       "downloads",
-      "http://*/*",
-      "https://*/*",
-      "<all_urls>"
-    ]
+      "*://*.wrenkitchens.com/*",
+      "*://*.wrenkitchens.us/*"
+    ],
+    "browser_specific_settings": {
+      "gecko": {
+        "id": "qa-toolkit@charlotte.example"
+      }
+    }
   }
 }

@@ -1,8 +1,9 @@
 import { useStorage } from "@plasmohq/storage/dist/hook";
-import { regionArray, environmentArray, rundeckJobsArray } from "../../Utils/componentArrays";
+import { regionArray, rundeckJobsArray } from "~Utils/componentArrays";
 import { useContext } from "react";
 import { FeedbackContext } from "~Utils/sidebarContext";
 import { Request as BackgroundRequest, RequestType } from "../../Services/Background/Request";
+import browser from "webextension-polyfill";
 
 
 export default function BoltRundeck() {
@@ -34,7 +35,7 @@ export default function BoltRundeck() {
 			arguments: [url]
 		}
 
-		const response = await chrome.runtime.sendMessage(request);
+		const response = await browser.runtime.sendMessage(request);
 		if (response) {
 			setFeedbackText(response);
 		}

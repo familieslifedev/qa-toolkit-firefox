@@ -2,9 +2,10 @@ import type { BaseMessageHandler, HandlerResponse } from "~Services/Background/H
 import * as backgroundMessageHandler from "~Services/Background/backgroundMessageHandler";
 import { initialiseContextMenu } from "~Services/contextMenu/contextMenuController";
 import type { Request as BackgroundRequest } from "~Services/Background/Request";
+import  browser from 'webextension-polyfill';
 
 export const initializeMessageListener = () => {
-	chrome.runtime.onMessage.addListener((request: BackgroundRequest, sender, sendResponse: HandlerResponse) => {
+	browser.runtime.onMessage.addListener((request: BackgroundRequest, sender, sendResponse: HandlerResponse) => {
 		const handler: BaseMessageHandler = backgroundMessageHandler.MakeHandler(request);
 		handler.handle(request, sendResponse);
 		return true;
@@ -12,7 +13,7 @@ export const initializeMessageListener = () => {
 };
 
 export const initializeInstallListener = () => {
-	chrome.runtime.onInstalled.addListener(() => {
+	browser.runtime.onInstalled.addListener(() => {
 		initialiseContextMenu();
 	});
 };
