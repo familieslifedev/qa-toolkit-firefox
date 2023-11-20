@@ -24,7 +24,7 @@ export async function create2dJsonToFeeder() {
 	});
 }
 
-browser.contextMenus.onClicked.addListener(async (info, tab) => {
+browser.contextMenus.onClicked.addListener(async (info) => {
 	if (info.menuItemId === 'save2dJsonFeeder') {
 		const tab = await browser.tabs.query({active: true, currentWindow: true});
 		const currentTab = tab[0];

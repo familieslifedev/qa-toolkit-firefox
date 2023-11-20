@@ -40,6 +40,7 @@ async function PopulateAccountContextMenu() {
 			});
 		});
 	}
+	console.info(accounts)
 
 	if (!accountsUS) {
 		console.error("Failed to find US accounts");
@@ -54,6 +55,7 @@ async function PopulateAccountContextMenu() {
 			});
 		});
 	}
+	console.info(accountsUS)
 }
 
 browser.contextMenus.onClicked.addListener(async (info, tab) => {

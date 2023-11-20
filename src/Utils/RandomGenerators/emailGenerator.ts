@@ -1,5 +1,3 @@
-
-
 export function generateRandomEmail(firstName: string | null, surname: string | null) :string {
 	const randomDomain = domains[Math.floor(Math.random() * domains.length)];
 	let randomNumber = Math.floor(Math.random() * 1000);
@@ -11,8 +9,6 @@ export function generateRandomEmail(firstName: string | null, surname: string | 
 		return randomEmail + randomDomain;
 	}
 }
-
-
 
 // Arrays
 

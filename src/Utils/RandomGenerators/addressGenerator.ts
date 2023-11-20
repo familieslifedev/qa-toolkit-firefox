@@ -1,10 +1,8 @@
-
-
 export function generateHouseNumber():string{
 	const houseNumber = 1+ Math.floor(Math.random() * 200);
 	return String(houseNumber);
 }
-
+// TODO: Make this better or something, make valid for tax, make array
 export function generatePostcode():string{
 	const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	const numbers = "0123456789";
@@ -18,9 +16,9 @@ export function generateCounty():string{
 }
 
 export function generateStreetName():string{
-	const randomStreenPrefix = ukStreetPrefixes[Math.floor(Math.random() * ukStreetPrefixes.length)];
-	const randomStreenSuffix = ukStreetSuffixes[Math.floor(Math.random() * ukStreetSuffixes.length)];
-	return `${randomStreenPrefix} ${randomStreenSuffix}`;
+	const randomStreetPrefix = ukStreetPrefixes[Math.floor(Math.random() * ukStreetPrefixes.length)];
+	const randomStreetSuffix = ukStreetSuffixes[Math.floor(Math.random() * ukStreetSuffixes.length)];
+	return `${randomStreetPrefix} ${randomStreetSuffix}`;
 }
 
 export function generateRandomVillage():string{

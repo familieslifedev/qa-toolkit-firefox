@@ -1,5 +1,5 @@
 import { copyFromClipboard, writeToClipboard } from "~Utils/Utils";
-import { isJsonUrl, getJsonFromUrl } from "~Utils/JsonHelper";
+import { getJsonFromUrl, isJsonUrl } from "~Utils/JsonHelper";
 import { isAccountPage } from "~Utils/urlHelper";
 
 type FrontendDetails = {
@@ -16,11 +16,9 @@ export class JsonFixer {
         const json = await copyFromClipboard();
         
         try {
-            const parsedJson = isJsonUrl(json) ? getJsonFromUrl(json) : JSON.parse(json);
-            this.json = parsedJson;
+            this.json = isJsonUrl(json) ? await getJsonFromUrl(json) : JSON.parse(json);
 
         } catch(err) {
-            // TODO - this error should be hooked up to whatever notification system gets implemented
             console.warn("JsonFixer: Parsing JSON failed. Are you sure you have one in the clipboard?");
             return;
         }
@@ -62,31 +60,26 @@ export class JsonFixer {
             console.log("No leads");
             return new Array<string>();
         }
-    
-        const leadNames: Array<string> = leads.map(lead => {
-            return lead.outerText.trim().replace(/^\s\n+|\s\n+$/g,'');
-        });
 
-        return leadNames;
+    return leads.map(lead => {
+            return lead.outerText.trim().replace(/^\s\n+|\s\n+$/g, '');
+        });
     }
 
     private scrapeAccountId(): string {
         const accountView: HTMLElement = document.getElementById("account-view");
-        const accountId: string = accountView.childNodes[1].textContent.split(" ").pop();
-        return accountId;
+        return accountView.childNodes[1].textContent.split(" ").pop();
     }
 
     private scrapeEmail(): string {
-        const email: string = document.getElementById("account-info-bar-email-link-value").textContent.trim();
-        return email;
+        return document.getElementById("account-info-bar-email-link-value").textContent.trim();
     }
 
     private scrapeLeadId(leadName: string): string {
         const leads: Array<HTMLElement> = Array.from(document.querySelectorAll(".account-view-lead-description"));
         const chosenLead: HTMLElement = this.selectLead(leads, leadName);
 
-        const leadId = this.getLeadIdFromElement(chosenLead);
-        return leadId;
+        return this.getLeadIdFromElement(chosenLead);
     }
 
     private selectLead(leads: Array<HTMLElement>, leadName: string): HTMLElement {
@@ -105,9 +98,7 @@ export class JsonFixer {
 
         let rawLead = l[0]?.replace(/^\s\n+|\s\n+$/g,'');
 
-        const leadId = rawLead.startsWith("L") ? rawLead.substring(1) : rawLead;
-
-        return leadId;
+        return rawLead.startsWith("L") ? rawLead.substring(1) : rawLead;
     }
 
     private resetData(): void {
