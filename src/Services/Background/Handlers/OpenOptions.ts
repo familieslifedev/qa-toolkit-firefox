@@ -1,5 +1,6 @@
 import { BaseMessageHandler, HandlerResponse } from "./BaseMessageHandler";
 import type { Request as BackgroundRequest } from '../Request';
+import browser from "webextension-polyfill";
 
 export class OpenOptions extends BaseMessageHandler {
 
@@ -7,8 +8,8 @@ export class OpenOptions extends BaseMessageHandler {
         super(errorMessage);
     }
 
-    public override async handle(request: BackgroundRequest, sendResponse: HandlerResponse): Promise<void> {
-        chrome.runtime.openOptionsPage();
+    public override async handle(_request: BackgroundRequest, sendResponse: HandlerResponse): Promise<void> {
+        await browser.runtime.openOptionsPage();
         sendResponse();
     }
 }

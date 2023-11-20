@@ -1,6 +1,7 @@
 import { commandMap } from '~Utils/consoleCommandMap';
 import type { Request as BackgroundRequest } from '../Request';
 import { BaseMessageHandler, HandlerResponse } from './BaseMessageHandler';
+import browser from "webextension-polyfill";
 
 
 export class MainScriptExecutor extends BaseMessageHandler {
@@ -21,14 +22,13 @@ export class MainScriptExecutor extends BaseMessageHandler {
         try {
             await super.handle(request, sendResponse);
 
-            this.result = await chrome.scripting.executeScript({
+            [this.result] = await Promise.all([browser.scripting.executeScript({
                 target: { tabId: this.currentTabId },
                 // @ts-ignore
-                world: chrome.scripting.ExecutionWorld.MAIN,
+                world: browser.scripting.ExecutionWorld.MAIN,
                 args: request.arguments,
                 func: this.callback,
-            });
-
+            })]);
             if (!this.result) {
                 sendResponse(this.errorMessage);
                 throw new Error(this.errorMessage);

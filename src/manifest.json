@@ -11,7 +11,7 @@
   "author": "Harrison",
   "background": {
     "scripts": [
-      "build/firefox-mv3-prod/background.d07ea401.js"
+      "build/firefox-mv2-prod/background.806a2724.js"
     ]
   },
   "content_scripts": [
@@ -20,7 +20,7 @@
         "<all_urls>"
       ],
       "js": [
-        "content.1d473d26.js"
+        "build/firefox-mv2-prod/content.5290d0e2.js"
       ],
       "css": []
     }
@@ -59,7 +59,7 @@
   ],
   "applications": {
     "gecko": {
-      "id": "your-addon-id@example.com"
+      "id": "qa-toolkit@charlotte.example"
     }
   }
 }

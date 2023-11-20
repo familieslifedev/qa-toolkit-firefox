@@ -1,4 +1,3 @@
-import { useState } from "react"
 import "./style.css"
 import { useStorage } from "@plasmohq/storage/dist/hook";
 import { themes } from "~Utils/themes";
