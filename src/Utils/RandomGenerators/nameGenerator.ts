@@ -1,29 +1,28 @@
 export function generateRandomFirstName(gender: string): string {
 	let names: string[];
 
-	switch (gender){
-		case 'male':
-			names= maleFirstNames;
+	switch (gender) {
+		case "male":
+			names = maleFirstNames;
 			break;
-		case 'female':
-			names= femaleFirstNames;
+		case "female":
+			names = femaleFirstNames;
 			break;
-		case 'any':
+		case "any":
 		default:
-			names=maleFirstNames.concat(femaleFirstNames);
+			names = maleFirstNames.concat(femaleFirstNames);
 			break;
 	}
 	const randomIndex: number = Math.floor(Math.random() * names.length);
 	return names[randomIndex];
 }
 
-export function generateRandomSurname():string {
+export function generateRandomSurname(): string {
 	const randomIndex: number = Math.floor(Math.random() * surnames.length);
 	return surnames[randomIndex];
 }
 
-
-const femaleFirstNames:string[] = [
+const femaleFirstNames: string[] = [
 	"Sophie", "Emily", "Amelia", "Olivia", "Jessica", "Lucy", "Chloe", "Emma", "Mia", "Charlotte",
 	"Grace", "Lily", "Ella", "Holly", "Eleanor", "Harriet", "Molly", "Rosie", "Georgia", "Eva",
 	"Isla", "Hannah", "Alice", "Abigail", "Freya", "Phoebe", "Poppy", "Isabelle", "Daisy", "Layla",
@@ -43,7 +42,7 @@ const femaleFirstNames:string[] = [
 	"Samara", "Esther", "Aurelia", "Zoey", "Astrid", "Thalia", "Miriam", "Iona", "Darcie", "Margo"
 ];
 
-const maleFirstNames:string[] = [
+const maleFirstNames: string[] = [
 	"Jack", "Oliver", "Harry", "George", "Noah", "Charlie", "Jacob", "William", "Thomas", "Joshua",
 	"James", "Ethan", "Daniel", "Samuel", "Benjamin", "Joseph", "Henry", "Alexander", "Mason", "Leo",
 	"Max", "Logan", "Lucas", "Oscar", "Matthew", "Adam", "David", "Ryan", "Isaac", "Dylan",
@@ -61,7 +60,7 @@ const maleFirstNames:string[] = [
 	"Eduardo", "Gustavo", "Sebastián", "Cristian", "Ariel", "Lionel", "Hector", "Jose", "Julio", "Maximiliano"
 ];
 
-const surnames:string[] = [
+const surnames: string[] = [
 	"Smith", "Jones", "Taylor", "Brown", "Williams", "Wilson", "Johnson", "Davies", "Robinson", "Wright",
 	"Thompson", "White", "Walker", "Hall", "Green", "Lewis", "Harris", "Clarke", "Cooper", "Jackson",
 	"Hill", "Morgan", "Hughes", "Edwards", "Turner", "Parker", "Collins", "Baker", "King", "Carter",
@@ -80,9 +79,9 @@ const surnames:string[] = [
 	"Cooke", "Osborne", "Paterson", "Todd", "Christie", "Sutherland", "Horton", "Davidson", "Macdonald", "Sinclair",
 	"Cameron", "Mcgregor", "Kerr", "Stanton", "Maclean", "Mcintosh", "Hendry", "Macmillan", "Kirk", "Gibbons",
 	"Chadwick", "Hume", "Muir", "Ramsay", "Archer", "Mcintyre", "Kaur", "Gill", "Gupta", "Patel", "Singh", "Chauhan",
-	"Pandey", "Kumar", "Sharma",  "Shah", "Bhatia", "Chowdhury", "Sinha", "Chakraborty", "Saxena", "Sarkar",
-	"Khan", "Ali", "Ahmed",  "Khattak", "Hussain", "Hussaini", "Hassan", "Mohammed", "Saleem", "Rehman", "Mirza",
-	"Abbasi", "Raza",  "Kamal", "Kazmi", "Memon", "Shaikh", "Malik", "Akhtar", "Farooq", "Awan", "Baig", "Bashir",
+	"Pandey", "Kumar", "Sharma", "Shah", "Bhatia", "Chowdhury", "Sinha", "Chakraborty", "Saxena", "Sarkar",
+	"Khan", "Ali", "Ahmed", "Khattak", "Hussain", "Hussaini", "Hassan", "Mohammed", "Saleem", "Rehman", "Mirza",
+	"Abbasi", "Raza", "Kamal", "Kazmi", "Memon", "Shaikh", "Malik", "Akhtar", "Farooq", "Awan", "Baig", "Bashir",
 	"Chaudhry", "Dogar", "Javed", "Khokhar", "Nadeem", "Nazir", "Qureshi", "Tariq", "Waseem", "Gillani",
 	"Hameed", "Iqbal", "Mahmood", "Rashid", "Saeed", "Sattar", "Usman", "Younas", "Zaman", "Zia",
 	"Bhatti", "Farooqi", "Haidar", "Hashmi", "Ilyas", "Jamil", "Khalid", "Mahmood", "Malik", "Masood",

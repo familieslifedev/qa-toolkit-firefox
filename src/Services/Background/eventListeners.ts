@@ -2,7 +2,7 @@ import type { BaseMessageHandler, HandlerResponse } from "~Services/Background/H
 import * as backgroundMessageHandler from "~Services/Background/backgroundMessageHandler";
 import { initialiseContextMenu } from "~Services/contextMenu/contextMenuController";
 import type { Request as BackgroundRequest } from "~Services/Background/Request";
-import  browser from 'webextension-polyfill';
+import browser from "webextension-polyfill";
 
 export const initializeMessageListener = () => {
 	browser.runtime.onMessage.addListener((request: BackgroundRequest, sender, sendResponse: HandlerResponse) => {

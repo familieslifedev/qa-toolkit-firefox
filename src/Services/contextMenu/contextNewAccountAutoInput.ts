@@ -5,20 +5,21 @@ import browser from "webextension-polyfill";
 
 const frontendAccountStorage = new Storage();
 const frontendAccountStorageUS = new Storage();
+
 export async function createAccountContextMenu() {
 	browser.contextMenus.create({
 		id: "accountContextMenu",
 		title: "Frontend Accounts",
 		contexts: ["all"],
 		parentId: "parentContextMenu",
-		documentUrlPatterns: ["https://*.wrenkitchens.com/accounts/account/new"],
+		documentUrlPatterns: ["https://*.wrenkitchens.com/accounts/account/new"]
 	});
 	browser.contextMenus.create({
 		id: "usAccountContextMenu",
 		title: "US Frontend Accounts",
 		contexts: ["all"],
 		parentId: "parentContextMenu",
-		documentUrlPatterns: ["https://*.wrenkitchens.us/accounts/account/new"],
+		documentUrlPatterns: ["https://*.wrenkitchens.us/accounts/account/new"]
 	});
 	await PopulateAccountContextMenu();
 }
@@ -36,11 +37,11 @@ async function PopulateAccountContextMenu() {
 				id: "uk-" + account.id.toString(),
 				title: account.emailAddress,
 				contexts: ["all"],
-				parentId: "accountContextMenu",
+				parentId: "accountContextMenu"
 			});
 		});
 	}
-	console.info(accounts)
+	console.info(accounts);
 
 	if (!accountsUS) {
 		console.error("Failed to find US accounts");
@@ -51,11 +52,11 @@ async function PopulateAccountContextMenu() {
 				id: "us-" + account.id.toString(),
 				title: account.emailAddress,
 				contexts: ["all"],
-				parentId: "usAccountContextMenu",
+				parentId: "usAccountContextMenu"
 			});
 		});
 	}
-	console.info(accountsUS)
+	console.info(accountsUS);
 }
 
 browser.contextMenus.onClicked.addListener(async (info, tab) => {
@@ -85,7 +86,7 @@ browser.contextMenus.onClicked.addListener(async (info, tab) => {
 				type: ContentRequestType.AutofillAccount,
 				functionName: null,
 				arguments: [accountRegion, selectedAccount]
-			}
+			};
 
 			await browser.tabs.sendMessage(tab.id, request);
 
