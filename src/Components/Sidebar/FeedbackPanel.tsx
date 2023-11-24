@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Request as BackgroundRequest, RequestType } from "../../Services/Background/Request";
+import browser from "webextension-polyfill";
 
 const FeedbackPanel = ({ feedbackText, feedbackProgress }): JSX.Element => {
   const [autoConsume, setAutoConsume] = useState<boolean>(false);
@@ -11,7 +12,7 @@ const FeedbackPanel = ({ feedbackText, feedbackProgress }): JSX.Element => {
       arguments: null
     };
 
-    const _ = await chrome.runtime.sendMessage(request);
+    const _ = await browser.runtime.sendMessage(request);
   }
 
   useEffect(() => {

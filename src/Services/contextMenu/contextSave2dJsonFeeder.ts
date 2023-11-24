@@ -1,9 +1,10 @@
 import { ContentRequest, ContentRequestType } from "../Content/Request";
 import { sendJsonToFeeder } from "~/Utils/JsonHelper";
 import { executeBackground } from "~/Utils/scripts";
+import browser from "webextension-polyfill";
 
 export async function create2dJsonToFeeder() {
-	chrome.contextMenus.create({
+	browser.contextMenus.create({
 		id: 'save2dJsonFeeder',
 		title: 'Save 2D JSON As Feeder',
 		contexts: ['all'],
@@ -23,9 +24,9 @@ export async function create2dJsonToFeeder() {
 	});
 }
 
-chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+browser.contextMenus.onClicked.addListener(async (info) => {
 	if (info.menuItemId === 'save2dJsonFeeder') {
-		const tab = await chrome.tabs.query({active: true, currentWindow: true});
+		const tab = await browser.tabs.query({active: true, currentWindow: true});
 		const currentTab = tab[0];
 		const currentTabUrl = currentTab.url;
 
@@ -39,6 +40,6 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 			arguments: [urlText],
 			functionName: null
 		};
-		await chrome.tabs.sendMessage(currentTab.id, clipboardRequest);
+		await browser.tabs.sendMessage(currentTab.id, clipboardRequest);
 	}
 });

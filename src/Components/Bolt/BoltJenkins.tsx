@@ -1,8 +1,9 @@
 import { useStorage } from "@plasmohq/storage/dist/hook";
-import { regionArray, environmentArray, jenkinsJobsArray } from "../../Utils/componentArrays";
+import { regionArray, environmentArray, jenkinsJobsArray } from "~Utils/componentArrays";
 import { useContext } from "react";
 import { FeedbackContext } from "~Utils/sidebarContext";
 import { Request as BackgroundRequest, RequestType } from "../../Services/Background/Request";
+import browser from "webextension-polyfill";
 
 export default function BoltJenkinsTab(): JSX.Element {
 	const { setFeedbackText } = useContext(FeedbackContext);
@@ -31,7 +32,7 @@ export default function BoltJenkinsTab(): JSX.Element {
 			arguments: [currentUrl]
 		}
 
-		const response = await chrome.runtime.sendMessage(request);
+		const response = await browser.runtime.sendMessage(request);
 		if (response) {
 			setFeedbackText(response);
 		}

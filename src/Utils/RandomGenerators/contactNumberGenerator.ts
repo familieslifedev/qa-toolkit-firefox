@@ -1,6 +1,4 @@
 import { randomInt } from "mathjs";
-
-
 export function generateMobileNumber(isUK): string {
 
 	if (isUK) {

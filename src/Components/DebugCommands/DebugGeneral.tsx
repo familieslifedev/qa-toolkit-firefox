@@ -1,10 +1,10 @@
-import { copyFromClipboard, get2DJson, get3DJson, load2DJson, openURL, writeToClipboard } from "~Utils/Utils";
+import { copyFromClipboard, get2DJson, get3DJson, load2DJson, writeToClipboard } from "~Utils/Utils";
 import { FeedbackContext } from "~Utils/sidebarContext";
-import JsonEditorModal from "~Components/JsonTools/JsonEditor/JsonEditorModal";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import type { Request as BackgroundRequest } from "../../Services/Background/Request";
-import { RequestType } from "../../Services/Background/Request";
+import { RequestType } from "~Services/Background/Request";
 import DebugSingleButton from "./DebugComponents/DebugSingleButtonComp";
+import browser from "webextension-polyfill";
 
 export default function DebugGeneral(): JSX.Element {
 	const { setFeedbackText } = useContext(FeedbackContext);
@@ -38,7 +38,7 @@ export default function DebugGeneral(): JSX.Element {
 					type: RequestType.OpenInNewTab,
 					arguments: [feederPlanImageUrl, null]
 				};
-				await chrome.runtime.sendMessage(request);
+				await browser.runtime.sendMessage(request);
 
 			}
 			else {
@@ -71,7 +71,7 @@ export default function DebugGeneral(): JSX.Element {
 			arguments: null
 		};
 
-		const response = await chrome.runtime.sendMessage(request);
+		const response = await browser.runtime.sendMessage(request);
 		if (response) await writeToClipboard(response);
 	}
 

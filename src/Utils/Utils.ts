@@ -1,7 +1,7 @@
 import { Request as BackgroundRequest, RequestType } from "../Services/Background/Request";
 import { stringify } from "query-string/base";
 import { FeederQueryType, projectTier, regions } from "~Utils/Constants";
-
+import browser from 'webextension-polyfill';
 
 //Verify Link and open url - setting currentTab will open in the current tab, otherwise it will open in a new tab.
 export async function openURL(url: string, tabId: number, newTab: boolean): Promise<void> {
@@ -9,9 +9,9 @@ export async function openURL(url: string, tabId: number, newTab: boolean): Prom
 		const response = await fetch(url);
 		if (response.status === 200) {
 			if (newTab){
-				await chrome.tabs.create({ url: url })
+				await browser.tabs.create({ url: url })
 			} else {
-				await chrome.tabs.update(tabId, { url: url });
+				await browser.tabs.update(tabId, { url: url });
 			}
 		} else {
 			throw new Error(`Failed to fetch URL: ${url}`)
@@ -74,7 +74,7 @@ export async function injectDebugCommand(command: string, argsArray: any[]): Pro
 		arguments: argsArray
 	}
 
-	let result = await chrome.runtime.sendMessage(request);
+	let result = await browser.runtime.sendMessage(request);
 	if (!result) {
 		throw new Error("injectDebugCommand: Failed get result");
 	}
@@ -89,7 +89,7 @@ export async function get2DJson(): Promise<any> {
 		arguments: null
 	};
 
-	let result = await chrome.runtime.sendMessage(request);
+	let result = await browser.runtime.sendMessage(request);
 	if (!result) {
 		throw new Error("get2DJson: Failed to get 2D JSON");
 	}
@@ -104,7 +104,7 @@ export async function get3DJson(): Promise<any> {
 		arguments: null
 	}
 
-	const result = await chrome.runtime.sendMessage(request);
+	const result = await browser.runtime.sendMessage(request);
 	if (!result) {
 		throw new Error("get3DJson: Failed to get 3D JSON");
 	}
@@ -126,7 +126,7 @@ export async function load2DJson(arg: any): Promise<void> {
 		arguments: argsArray
 	};
 
-	await chrome.runtime.sendMessage(request);
+	await browser.runtime.sendMessage(request);
 }
 
 export function convertPenceToPounds(int: number | null): string {
@@ -152,7 +152,7 @@ export async function save2dJsonToFeeder(args:any) {
 		arguments: args
 	}
 
-	let res = await chrome.runtime.sendMessage(request);
+	let res = await browser.runtime.sendMessage(request);
 	if (!res) {
 		throw new Error("save2dJsonToFeeder: Failed to save 2D JSON");
 	}

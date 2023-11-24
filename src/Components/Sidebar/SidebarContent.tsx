@@ -6,6 +6,7 @@ import Calc from "~Components/Calc/Calc";
 import DebugCommands from "~Components/DebugCommands/DebugCommands";
 import { Request as BackgroundRequest, RequestType } from "../../Services/Background/Request";
 import MiscTools from "~Components/MiscTools/MiscTools";
+import browser from "webextension-polyfill";
 
 const SidebarContent = (): JSX.Element => {
 
@@ -17,7 +18,7 @@ const SidebarContent = (): JSX.Element => {
       arguments: null
     };
 
-    chrome.runtime.sendMessage(request);
+    browser.runtime.sendMessage(request);
   }
 
   return (
