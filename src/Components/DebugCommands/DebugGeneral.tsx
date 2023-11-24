@@ -19,13 +19,13 @@ export default function DebugGeneral(): JSX.Element {
 	}
 
 	async function handleGetPlanImages(): Promise<void> {
-		try{
+		try {
 			let clipText: string = await copyFromClipboard();
 			if (!clipText) {
 				return;
 			}
 
-			if(clipText.startsWith("https://feeder")) {
+			if (clipText.startsWith("https://feeder")) {
 				const parts: string[] = clipText.split("/");
 				const domain: string = parts[2]; // should output the feederURL.
 				const orderNumberPart: string = parts[5]; // should output order number with all extra details.
@@ -40,26 +40,26 @@ export default function DebugGeneral(): JSX.Element {
 				};
 				await browser.runtime.sendMessage(request);
 
-			}
-			else {
+			} else {
 				setFeedbackText("Not a valid plan link");
 			}
-		}catch (error) {
+		} catch (error) {
 			setFeedbackText(error.message);
-		}}
+		}
+	}
 
 	async function handleGet2DJson(): Promise<void> {
-		let res = await get2DJson()
-		if(res){
-			let writeString: string = JSON.stringify(res, null, 3)
+		let res = await get2DJson();
+		if (res) {
+			let writeString: string = JSON.stringify(res, null, 3);
 			await writeToClipboard(writeString);
 		}
 	}
 
 	async function handleGet3DJson(): Promise<void> {
-		let res = await get3DJson()
-		if(res){
-			let writeString: string = JSON.stringify(res, null,3)
+		let res = await get3DJson();
+		if (res) {
+			let writeString: string = JSON.stringify(res, null, 3);
 			await writeToClipboard(writeString);
 		}
 	}
@@ -78,12 +78,25 @@ export default function DebugGeneral(): JSX.Element {
 	return (
 		<div className="DebugCompContainer">
 
-			<button className="btn btn-xs btn-primary debugSingleButton" title={"Loads 2d Plan from feeder link or Json in clipboard"} onClick={handleLoadJson}>Load Plan Json</button>
-			<button className="btn btn-xs btn-primary debugSingleButton" title={"Stores current 2d Json in s3 and writes link to clipboard"} onClick={handleGet2dJsonFeeder}>Get 2d Json Feeder link</button>
-			<button className="btn btn-xs btn-primary debugSingleButton" title={"Gets the current plan 2d Json and write to clipboard"} onClick={handleGet2DJson}>Get 2D Json</button>
-			<button className="btn btn-xs btn-primary debugSingleButton" title={"Gets the current plan 3d Json and write to clipboard"} onClick={handleGet3DJson}>Get 3D Json</button>
-			<button className="btn btn-xs btn-primary debugSingleButton" title={"Preview Image from Feeder"} onClick={handleGetPlanImages}>Get Preview Image</button>
-			<DebugSingleButton prettyName="Render Plan Images" hoverTip="Generates plan images" onClickFunction='renderPlanImages'/>
+			<button className="btn btn-xs btn-primary debugSingleButton"
+					title={"Loads 2d Plan from feeder link or Json in clipboard"} onClick={handleLoadJson}>Load Plan
+				Json
+			</button>
+			<button className="btn btn-xs btn-primary debugSingleButton"
+					title={"Stores current 2d Json in s3 and writes link to clipboard"}
+					onClick={handleGet2dJsonFeeder}>Get 2d Json Feeder link
+			</button>
+			<button className="btn btn-xs btn-primary debugSingleButton"
+					title={"Gets the current plan 2d Json and write to clipboard"} onClick={handleGet2DJson}>Get 2D Json
+			</button>
+			<button className="btn btn-xs btn-primary debugSingleButton"
+					title={"Gets the current plan 3d Json and write to clipboard"} onClick={handleGet3DJson}>Get 3D Json
+			</button>
+			<button className="btn btn-xs btn-primary debugSingleButton" title={"Preview Image from Feeder"}
+					onClick={handleGetPlanImages}>Get Preview Image
+			</button>
+			<DebugSingleButton prettyName="Render Plan Images" hoverTip="Generates plan images"
+							   onClickFunction="renderPlanImages" />
 		</div>
 	);
 }

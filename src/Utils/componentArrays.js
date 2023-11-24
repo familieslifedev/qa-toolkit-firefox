@@ -40,8 +40,8 @@ export const rundeckJobsArray = [
 
 export const emissaryJobsArray = [
 	{Job: 'redis-clear-doctrine-result-cache', Name: "Clear Redis Cache"},
-	{Job: "refresh-wwhcache", Name: "Refresh WWH Cache"},
-	{Job: "refresh-product-unit-range-combination", Name: "Refresh Unit Range Combi"},
+	{Job: "refresh-wwhcache", Name: "Refresh wwhcache"},
+	{Job: "refresh-product-unit-range-combination", Name: "Refresh unit range combination"},
 
 ]
 
@@ -49,14 +49,3 @@ export const roomTypeArray = [
 	{Code: 'kitchen', Name: 'Kitchen'},
 	{Code: 'bedroom', Name: 'Bedroom'},
 ]
-
-
-// export function environmentArray() {
-//   //setup arrays first, then they can be used for initial values.
-//   const environmentArray = Array(9).fill( 9).map((_, i) => {
-//     return {Code: `project${i}.`, Name: `Project ${i}`, Jenkins: `project${i}`}
-//   })
-//   // Append Live into the array at the beginning.
-//   environmentArray.unshift({Code: '', Name: "Live", Jenkins: "master"})
-//   return environmentArray;
-// }

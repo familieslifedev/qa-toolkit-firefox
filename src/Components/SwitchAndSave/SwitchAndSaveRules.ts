@@ -24,7 +24,7 @@ export const rules = {
 		}
 
 		return product.attributes["Fuel type"] === currentProduct.attributes["Fuel type"];
-	},
+	}
 
 };
 
@@ -40,9 +40,6 @@ export function isCheaperByPercentage(product: any, comparisonProduct: any, perc
 	return productPrice < comparisonPrice * (1 - percentageDifference / 100);
 }
 
-
-
-
 export function getPrice(product) {
 	if (!product) {
 		return null;
@@ -50,9 +47,3 @@ export function getPrice(product) {
 
 	return product.discountedOrderPrice?.gross ?? product.promoPrice.gross;
 }
-
-
-
-
-
-

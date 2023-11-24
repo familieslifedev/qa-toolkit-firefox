@@ -6,7 +6,6 @@ import browser from "webextension-polyfill";
 
 export default function MiscTools() {
 
-
 	const autoLayoutTriggered = () => {
 		const observer = new MutationObserver((mutationsList, observer) => {
 			const LayoutMenuTab: HTMLLIElement | null = document.querySelector("li.layout-step");
@@ -26,7 +25,6 @@ export default function MiscTools() {
 
 		observer.observe(document, { childList: true, subtree: true });
 	};
-
 
 	const autoGeneratingLayoutDetectCompletion = () => {
 		const observer = new MutationObserver(async (mutationsList, observer) => {
@@ -93,7 +91,6 @@ export default function MiscTools() {
 			}));
 		});
 	};
-
 
 	return (
 		<div className="jsonContainer">

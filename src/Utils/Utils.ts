@@ -206,5 +206,3 @@ export const feederQuery = async (
 		return error;
 	}
 };
-
-

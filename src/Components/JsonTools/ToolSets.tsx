@@ -8,7 +8,6 @@ import { ModalTypes } from "~Utils/Constants";
 import ProductQuery from "~Components/ProductQuery/ProductQuery";
 import browser from "webextension-polyfill";
 
-//TODO create a better way to access the JSON editor.
 export default function ToolSets(): JSX.Element {
 	const { setFeedbackText } = useContext(FeedbackContext);
 	const [isJsonEditorVisible, setIsJsonEditorVisible] = useState<boolean>(false);
@@ -17,11 +16,11 @@ export default function ToolSets(): JSX.Element {
 	const [jsonFixer, setJsonFixer] = useState<JsonFixer>(new JsonFixer());
 	const [leadNames, setLeadNames] = useState<Array<string>>(new Array<string>());
 	const [selectedLeadName, setSelectedLeadName] = useState<string>("");
-	
+
 
 	// Load the lead names
 	useEffect(() => {
-		(async() => {
+		(async () => {
 			const leads = await prepareLeadNames();
 			setLeadNames(() => leads);
 		})();
@@ -37,11 +36,11 @@ export default function ToolSets(): JSX.Element {
 			}
 		}
 
-		document.addEventListener('keydown', handleKeyDown);
+		document.addEventListener("keydown", handleKeyDown);
 
 		// Clean up the event listener when the component unmounts
 		return () => {
-			document.removeEventListener('keydown', handleKeyDown);
+			document.removeEventListener("keydown", handleKeyDown);
 		};
 	}, [isJsonEditorVisible]);
 
@@ -65,7 +64,7 @@ export default function ToolSets(): JSX.Element {
 		}
 
 		return currentTabUrl ?? null;
-	}
+	};
 
 	const handleJsonFixer = async (): Promise<void> => {
 		const currentTabUrl = await getCurrentUrl();
@@ -73,7 +72,7 @@ export default function ToolSets(): JSX.Element {
 		await jsonFixer.registerJson();
 		jsonFixer.scrapeFrontendDetails(currentTabUrl, selectedLeadName);
 		await jsonFixer.fix();
-	}
+	};
 
 	const prepareLeadNames = async (): Promise<Array<string>> => {
 		const currentTabUrl = await getCurrentUrl();
@@ -82,11 +81,11 @@ export default function ToolSets(): JSX.Element {
 		}
 
 		return jsonFixer.getLeads(currentTabUrl) ?? new Array<string>();
-	}
+	};
 
 	const selectLeadName = (event): void => {
 		setSelectedLeadName(event.target.value);
-	}
+	};
 
 	function handlePanelVisibility(setVisibility: ModalTypes): void {
 		switch (setVisibility) {
@@ -104,28 +103,36 @@ export default function ToolSets(): JSX.Element {
 		}
 	}
 
-
-
 	return (
 		<div className="jsonContainer">
-			<button className="btn btn-sm btn-wide btn-primary" title={"Open Json Viewer/Editor"} onClick={ () => handlePanelVisibility(ModalTypes.JsonEditor)}>Open Json Edit</button>
-			<button className="btn btn-sm btn-wide btn-primary" title={"Open Switch and Save Modal"} onClick={ () => handlePanelVisibility(ModalTypes.SwitchAndSave)}>Switch and Save</button>
-			<button className="btn btn-sm btn-wide btn-primary" title={"Open Product Query"} onClick={ () => handlePanelVisibility(ModalTypes.ProductQuery)}>Feeder Query</button>
+			<button className="btn btn-sm btn-wide btn-primary" title={"Open Json Viewer/Editor"}
+					onClick={() => handlePanelVisibility(ModalTypes.JsonEditor)}>Open Json Edit
+			</button>
+			<button className="btn btn-sm btn-wide btn-primary" title={"Open Switch and Save Modal"}
+					onClick={() => handlePanelVisibility(ModalTypes.SwitchAndSave)}>Switch and Save
+			</button>
+			<button className="btn btn-sm btn-wide btn-primary" title={"Open Product Query"}
+					onClick={() => handlePanelVisibility(ModalTypes.ProductQuery)}>Feeder Query
+			</button>
 			<div>
-				<JsonEditorModal hidden={!isJsonEditorVisible} onHiddenChange={ () => handlePanelVisibility(ModalTypes.JsonEditor)} />
+				<JsonEditorModal hidden={!isJsonEditorVisible}
+								 onHiddenChange={() => handlePanelVisibility(ModalTypes.JsonEditor)} />
 			</div>
 			<div>
-				<SwitchAndSaveModal hidden={!isSNSVisible} onHiddenChange={ () => handlePanelVisibility(ModalTypes.SwitchAndSave)} />
+				<SwitchAndSaveModal hidden={!isSNSVisible}
+									onHiddenChange={() => handlePanelVisibility(ModalTypes.SwitchAndSave)} />
 			</div>
 			<div>
-				<ProductQuery hidden={!isProductQueryVisible} onHiddenChange={ () => handlePanelVisibility(ModalTypes.ProductQuery)} />
+				<ProductQuery hidden={!isProductQueryVisible}
+							  onHiddenChange={() => handlePanelVisibility(ModalTypes.ProductQuery)} />
 			</div>
 
 			<div className="form-control w-full max-w-xs">
 				<label className="label">
 					<span className="label-text">Selected Lead:</span>
 				</label>
-				<select onChange={selectLeadName} value={selectedLeadName} className="select select-primary select-xs select-bordered">
+				<select onChange={selectLeadName} value={selectedLeadName}
+						className="select select-primary select-xs select-bordered">
 					{leadNames.map(leadName => (
 						<option key={leadName} value={leadName}>
 							{leadName}
@@ -136,7 +143,8 @@ export default function ToolSets(): JSX.Element {
 
 			<button className="btn btn-sm btn-wide btn-primary"
 					title={"Requires: active frontend account page & JSON in clipboard - applies accountId, email, and leadId values to JSON"}
-					onClick={handleJsonFixer}>Write account info to JSON</button>
+					onClick={handleJsonFixer}>Write account info to JSON
+			</button>
 		</div>
 	);
 }

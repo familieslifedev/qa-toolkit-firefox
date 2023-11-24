@@ -5,7 +5,6 @@ import { FeedbackContext } from "~Utils/sidebarContext";
 import { Request as BackgroundRequest, RequestType } from "../../Services/Background/Request";
 import browser from "webextension-polyfill";
 
-
 export default function BoltRundeck() {
 	const { setFeedbackText } = useContext(FeedbackContext);
 	const [rundeckJob, setRundeckJob] = useStorage("rundeckJob", rundeckJobsArray[0].Job);
@@ -13,7 +12,7 @@ export default function BoltRundeck() {
 
 	const regionCodeToKey = {
 		com: "UK",
-		us: "US",
+		us: "US"
 	};
 
 	function handleEnvChange(event) {
@@ -33,7 +32,7 @@ export default function BoltRundeck() {
 			type: newTab ? RequestType.OpenInNewTab : RequestType.OpenInCurrentTab,
 			functionName: null,
 			arguments: [url]
-		}
+		};
 
 		const response = await browser.runtime.sendMessage(request);
 		if (response) {
@@ -47,7 +46,8 @@ export default function BoltRundeck() {
 				<label className="label">
 					<span className="label-text">Job:</span>
 				</label>
-				<select onChange={handleEnvChange} value={rundeckJob} className="select select-primary select-xs select-bordered">
+				<select onChange={handleEnvChange} value={rundeckJob}
+						className="select select-primary select-xs select-bordered">
 					{rundeckJobsArray.map(rundeckJobs => (
 						<option key={rundeckJobs.Job} value={rundeckJobs.Job}>
 							{rundeckJobs.Name}
@@ -59,7 +59,8 @@ export default function BoltRundeck() {
 				<label className="label">
 					<span className="label-text">Region:</span>
 				</label>
-				<select onChange={handleRegionChange} value={region} className="select select-primary select-xs select-bordered">
+				<select onChange={handleRegionChange} value={region}
+						className="select select-primary select-xs select-bordered">
 					{regionArray.map(region => (
 						<option key={region.Code} value={region.Code}>
 							{region.Name}
@@ -68,8 +69,11 @@ export default function BoltRundeck() {
 				</select>
 			</div>
 			<div className="btn-group m-5">
-				<button className="btn btn-xs grp-btn btn-primary" onClick={() => rundeckHandleNavigate(true)}>New Tab</button>
-				<button className="btn btn-xs grp-btn btn-primary" onClick={() => rundeckHandleNavigate(false)}>Current Tab</button>
+				<button className="btn btn-xs grp-btn btn-primary" onClick={() => rundeckHandleNavigate(true)}>New Tab
+				</button>
+				<button className="btn btn-xs grp-btn btn-primary" onClick={() => rundeckHandleNavigate(false)}>Current
+					Tab
+				</button>
 			</div>
 		</div>
 	);
