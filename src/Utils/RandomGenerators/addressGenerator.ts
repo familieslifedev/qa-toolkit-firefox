@@ -2,13 +2,9 @@ export function generateHouseNumber():string{
 	const houseNumber = 1+ Math.floor(Math.random() * 200);
 	return String(houseNumber);
 }
-// TODO: Make this better or something, make valid for tax, make array
+
 export function generatePostcode():string{
-	const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	const numbers = "0123456789";
-	const outward = `${letters[Math.floor(Math.random() * 26)]}${letters[Math.floor(Math.random() * 26)]}${numbers[Math.floor(Math.random() * 10)]}`;
-	const inward = `${numbers[Math.floor(Math.random() * 10)]}${letters[Math.floor(Math.random() * 26)]}${letters[Math.floor(Math.random() * 26)]}`;
-	return `${outward} ${inward}`;
+	return ukPostcodes[Math.floor(Math.random() * ukPostcodes.length)];
 }
 
 export function generateCounty():string{
@@ -176,3 +172,24 @@ const usCities: string[] = [
 	"Bellevue", "Miramar", "Hampton", "West Valley City", "Warren", "Olathe", "Columbia"
 ]
 
+const ukPostcodes: string[] = [
+	// London postcodes
+	'EC1A 1BB', 'WC2H 7LT', 'NW1 6XE', 'SE1 9SG',
+	// Birmingham postcodes
+	'B1 1TF', 'B12 9LP', 'B21 9RJ',
+	// Manchester postcodes
+	'M1 2AP', 'M15 4PZ', 'M32 0JG',
+	// Glasgow postcodes
+	'G1 2FF', 'G12 8QQ', 'G31 2UX',
+	// Sheffield postcodes
+	'S1 2AX', 'S10 2PD', 'S36 4GF',
+	// Bristol postcodes
+	'BS1 5UH', 'BS8 1QU', 'BS16 1GW',
+	// Leeds postcodes
+	'LS1 3AJ', 'LS6 3AB', 'LS12 6LN',
+	// Edinburgh postcodes
+	'EH1 1SG', 'EH7 5JA', 'EH12 7XD',
+	// Liverpool postcodes
+	'L1 1JQ', 'L15 0EJ', 'L24 9GB',
+	// ... other districts ...
+];
