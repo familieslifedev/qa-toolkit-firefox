@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import AddAccountModal from "~Components/AccountManagement/AddAccountModal";
 import { useStorage } from "@plasmohq/storage/dist/hook";
 
 function AccountUKTable() {
 	const [showNewAccountModal, setShowNewAccountModal] = useState(false);
-	const [accountData, setAccountData] = useStorage("frontendAccounts",[]);
+	const [accountData, setAccountData] = useStorage("frontendAccounts", []);
 	const handleNewAccountButton = () => {
 		setShowNewAccountModal(true);
 	};
@@ -16,7 +16,6 @@ function AccountUKTable() {
 	const handleDeleteAccount = async (accountId) => {
 		await setAccountData((prevTableData) => prevTableData.filter((account) => account.id !== accountId));
 	};
-
 
 	return (
 		<div className="accountManagementSection">
@@ -93,8 +92,7 @@ function AccountUKTable() {
 
 			<div className="divider"></div>
 		</div>
-	)
-};
-
+	);
+}
 
 export default AccountUKTable;

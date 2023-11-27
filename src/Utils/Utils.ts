@@ -1,20 +1,20 @@
 import { Request as BackgroundRequest, RequestType } from "../Services/Background/Request";
 import { stringify } from "query-string/base";
 import { FeederQueryType, projectTier, regions } from "~Utils/Constants";
-import browser from 'webextension-polyfill';
+import browser from "webextension-polyfill";
 
 //Verify Link and open url - setting currentTab will open in the current tab, otherwise it will open in a new tab.
 export async function openURL(url: string, tabId: number, newTab: boolean): Promise<void> {
 	try {
 		const response = await fetch(url);
 		if (response.status === 200) {
-			if (newTab){
-				await browser.tabs.create({ url: url })
+			if (newTab) {
+				await browser.tabs.create({ url: url });
 			} else {
 				await browser.tabs.update(tabId, { url: url });
 			}
 		} else {
-			throw new Error(`Failed to fetch URL: ${url}`)
+			throw new Error(`Failed to fetch URL: ${url}`);
 		}
 	} catch (error) {
 		throw error;
@@ -23,17 +23,17 @@ export async function openURL(url: string, tabId: number, newTab: boolean): Prom
 
 //Copy from clipboard and return text, has to happen in a content script.
 export async function copyFromClipboard(): Promise<string> {
-  return await navigator.clipboard.readText();
+	return await navigator.clipboard.readText();
 }
 
 //Write into clipboard, has to happen in a content script.
 export async function writeToClipboard(toWrite: string): Promise<void> {
-  if (!toWrite) {
-    console.log("Missing string to write to clipboard");
-    return;
-  }
+	if (!toWrite) {
+		console.log("Missing string to write to clipboard");
+		return;
+	}
 
-  await navigator.clipboard.writeText(toWrite);
+	await navigator.clipboard.writeText(toWrite);
 }
 
 //Convert json to html and formats them in a pretty printable way.
@@ -41,22 +41,22 @@ export const prettyPrintJson = {
 	toHtml: (thing) => {
 		const htmlEntities = (string) => {
 			return string
-				.replace(/&/g,   '&amp;')
-				.replace(/\\"/g, '&bsol;&quot;')
-				.replace(/</g,   '&lt;')
-				.replace(/>/g,   '&gt;');
+				.replace(/&/g, "&amp;")
+				.replace(/\\"/g, "&bsol;&quot;")
+				.replace(/</g, "&lt;")
+				.replace(/>/g, "&gt;");
 		};
 
 		const replacer = (match, p1, p2, p3, p4) => {
 			const part = { indent: p1, key: p2, value: p3, end: p4 };
-			const key = part.key && part.key.replace(/"([^"]+)":\s*/, '<span class="json-key">"$1"</span>: ');
+			const key = part.key && part.key.replace(/"([^"]+)":\s*/, "<span class=\"json-key\">\"$1\"</span>: ");
 			const val = part.value;
-			const isBool = ['true', 'false'].includes(part.value);
-			const valSpan = /^"/.test(part.value) ? '<span class="json-string">' : isBool ? '<span class="json-boolean">' : '<span class="json-value">';
-			const indentHtml = part.indent || '';
-			const keyHtml = part.key ? key : '';
-			const valueHtml = part.value ? valSpan + part.value + '</span>' : '';
-			const endHtml = part.end || '';
+			const isBool = ["true", "false"].includes(part.value);
+			const valSpan = /^"/.test(part.value) ? "<span class=\"json-string\">" : isBool ? "<span class=\"json-boolean\">" : "<span class=\"json-value\">";
+			const indentHtml = part.indent || "";
+			const keyHtml = part.key ? key : "";
+			const valueHtml = part.value ? valSpan + part.value + "</span>" : "";
+			const endHtml = part.end || "";
 			return indentHtml + keyHtml + valueHtml + endHtml;
 		};
 
@@ -72,7 +72,7 @@ export async function injectDebugCommand(command: string, argsArray: any[]): Pro
 		functionName: command,
 		type: RequestType.InjectConsoleCommand,
 		arguments: argsArray
-	}
+	};
 
 	let result = await browser.runtime.sendMessage(request);
 	if (!result) {
@@ -102,7 +102,7 @@ export async function get3DJson(): Promise<any> {
 		functionName: "get3DJson",
 		type: RequestType.Get3dJson,
 		arguments: null
-	}
+	};
 
 	const result = await browser.runtime.sendMessage(request);
 	if (!result) {
@@ -117,7 +117,7 @@ export async function load2DJson(arg: any): Promise<void> {
 	let argsArray: unknown[] = [arg];
 
 	const command = arg?.startsWith("https://feeder") ?
-		"set2DJsonByURL" : "set2DJson"
+		"set2DJsonByURL" : "set2DJson";
 	argsArray[0] = arg;
 
 	const request: BackgroundRequest = {
@@ -130,33 +130,31 @@ export async function load2DJson(arg: any): Promise<void> {
 }
 
 export function convertPenceToPounds(int: number | null): string {
-	return int === null ? '' : (int / 100).toFixed(2);
+	return int === null ? "" : (int / 100).toFixed(2);
 }
 
 export function trimAllWhitespace(str: string): string {
-	return str.replace(/\s/g, '');
+	return str.replace(/\s/g, "");
 }
 
-export function isWithinRangeComparison(value: number, target: number, range: number ): boolean {
+export function isWithinRangeComparison(value: number, target: number, range: number): boolean {
 	const min = target - range;
 	const max = target + range;
 	return value >= min && value <= max;
 }
 
 
-
-export async function save2dJsonToFeeder(args:any) {
+export async function save2dJsonToFeeder(args: any) {
 	const request: BackgroundRequest = {
 		functionName: "SavePlanJson",
 		type: RequestType.SavePlanJson,
 		arguments: args
-	}
+	};
 
 	let res = await browser.runtime.sendMessage(request);
 	if (!res) {
 		throw new Error("save2dJsonToFeeder: Failed to save 2D JSON");
-	}
-	else {
+	} else {
 		return res;
 	}
 
@@ -170,7 +168,7 @@ export const feederQuery = async (
 	input?: string,
 	campaignPhaseId?: number
 ): Promise<any> => {
-	const url = `https://feeder.${environment === projectTier.live ? '' : `${environment}.`}wrenkitchens.${region}/${queryType}`;
+	const url = `https://feeder.${environment === projectTier.live ? "" : `${environment}.`}wrenkitchens.${region}/${queryType}`;
 
 	let query: any = {};
 
@@ -178,8 +176,8 @@ export const feederQuery = async (
 		query.campaignPhaseId = campaignPhaseId;
 	}
 
-	const isSKU = (input || '').includes('.');
-	const isID = /^\d+$/.test(input || '');
+	const isSKU = (input || "").includes(".");
+	const isID = /^\d+$/.test(input || "");
 
 	if (isSKU) {
 		if (queryType === FeederQueryType.Products) {
@@ -206,5 +204,3 @@ export const feederQuery = async (
 		return error;
 	}
 };
-
-

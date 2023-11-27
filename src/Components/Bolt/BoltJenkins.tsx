@@ -22,6 +22,7 @@ export default function BoltJenkinsTab(): JSX.Element {
 	function handleRegionChange(event) {
 		setRegion(event.target.value);
 	}
+
 	async function frontendHandleNavigate(newTab: boolean) {
 		const finalEnvironment = environment.trim() === "" ? "master" : environment.trim();
 		const currentUrl = `https://jenkins.wrenkitchens.com/job/${jenkinsJob}/job/${region}/job/${finalEnvironment.trim()}/`;
@@ -30,7 +31,7 @@ export default function BoltJenkinsTab(): JSX.Element {
 			type: newTab ? RequestType.OpenInNewTab : RequestType.OpenInCurrentTab,
 			functionName: null,
 			arguments: [currentUrl]
-		}
+		};
 
 		const response = await browser.runtime.sendMessage(request);
 		if (response) {
@@ -44,7 +45,8 @@ export default function BoltJenkinsTab(): JSX.Element {
 				<label className="label">
 					<span className="label-text">Job:</span>
 				</label>
-				<select onChange={handleEmissaryJobChange} value={jenkinsJob} className="select select-primary select-xs select-bordered">
+				<select onChange={handleEmissaryJobChange} value={jenkinsJob}
+						className="select select-primary select-xs select-bordered">
 					{jenkinsJobsArray.map(jenkinsJob => (
 						<option key={jenkinsJob.Job} value={jenkinsJob.Job}>
 							{jenkinsJob.Name}
@@ -54,7 +56,8 @@ export default function BoltJenkinsTab(): JSX.Element {
 				<label className="label">
 					<span className="label-text">Environment:</span>
 				</label>
-				<select onChange={handleEnvChange} value={environment}  className="select select-primary select-xs select-bordered">
+				<select onChange={handleEnvChange} value={environment}
+						className="select select-primary select-xs select-bordered">
 					{environmentArray.map(environmentArray => (
 						<option key={environmentArray.Name} value={environmentArray.Code}>
 							{environmentArray.Name}
@@ -67,7 +70,8 @@ export default function BoltJenkinsTab(): JSX.Element {
 				<label className="label">
 					<span className="label-text">Region:</span>
 				</label>
-				<select onChange={handleRegionChange} value={region}  className="select select-primary select-xs select-bordered">
+				<select onChange={handleRegionChange} value={region}
+						className="select select-primary select-xs select-bordered">
 					{regionArray.map(region => (
 						<option key={region.Name} value={region.Jenkins}>
 							{region.Name}
@@ -76,8 +80,12 @@ export default function BoltJenkinsTab(): JSX.Element {
 				</select>
 			</div>
 			<div className="btn-group m-5">
-				<button className="btn btn-xs grp-btn btn-primary" onClick={() => frontendHandleNavigate(true)}>New Tab</button>
-				<button className="btn btn-xs grp-btn btn-primary" onClick={() => frontendHandleNavigate(false)}>Current Tab</button>
+				<button className="btn btn-xs grp-btn btn-primary" onClick={() => frontendHandleNavigate(true)}>New
+					Tab
+				</button>
+				<button className="btn btn-xs grp-btn btn-primary" onClick={() => frontendHandleNavigate(false)}>Current
+					Tab
+				</button>
 			</div>
 		</div>
 	);

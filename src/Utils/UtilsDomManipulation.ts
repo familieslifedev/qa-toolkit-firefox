@@ -1,9 +1,6 @@
 import { Storage } from "@plasmohq/storage";
-import type { FrontendAccount } from "~Utils/UtilInterfaces";
-import { useState } from "react";
 import {usStates} from "~Utils/RandomGenerators/addressGenerator";
-
-const accountStorage = new Storage();
+new Storage();
 export async function autofillUkFrontendAccount(account) {
 
 	// Change Lead Source

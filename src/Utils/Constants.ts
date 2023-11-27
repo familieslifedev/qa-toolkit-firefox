@@ -1,8 +1,9 @@
 export enum ModalTypes {
 	JsonEditor = "JSONEditor",
-	SwitchAndSave= "SwitchAndSave",
+	SwitchAndSave = "SwitchAndSave",
 	ProductQuery = "ProductQuery",
 }
+
 export enum ProductTypes {
 	Frontals = "Frontals",
 	CoffeeMachines = "CoffeeMachines",
@@ -11,11 +12,11 @@ export enum ProductTypes {
 	Laundry = "Laundry",
 	Refrigeration = "Refrigeration",
 	Sinks = "Sinks",
-	'Small Domestic Appliances' = "Small Domestic Appliances",
+	"Small Domestic Appliances" = "Small Domestic Appliances",
 	Dishwashers = "Dishwashers",
 }
 
-export enum ProductStatuses{
+export enum ProductStatuses {
 	Active = "Active",
 	Born = "Born",
 	Conception = "Conception",
@@ -24,12 +25,12 @@ export enum ProductStatuses{
 	Retired = "Retired",
 }
 
-export enum ProductBrand{
+export enum ProductBrand {
 	Any = "Any",
 	Wren = "Wren",
 	Zanussi = "Zanussi",
 	AEG = "AEG",
-	CDA= 'CDA',
+	CDA = "CDA",
 	Neff = "Neff",
 	Miele = "Miele",
 	Matrix = "Matrix",
@@ -43,14 +44,15 @@ export enum ProductBrand{
 	LG = "LG",
 	Blanco = "Blanco",
 }
+
 export enum oven_sub_categories {
-	'BuiltUnderDoubleOvens'= "Built Under Double Ovens",
-	'CompactOvens' = "Compact Ovens",
-	'DoubleOvens' = "Double Ovens",
-	'SingleOvens' = "Single Ovens",
-	'CombinationWallOvens'	= "Combination Wall Ovens",
-	'DoubleWallOvens' = "Double Wall Ovens",
-	'SingleWallOvens' = "Single Wall Ovens",
+	"BuiltUnderDoubleOvens" = "Built Under Double Ovens",
+	"CompactOvens" = "Compact Ovens",
+	"DoubleOvens" = "Double Ovens",
+	"SingleOvens" = "Single Ovens",
+	"CombinationWallOvens" = "Combination Wall Ovens",
+	"DoubleWallOvens" = "Double Wall Ovens",
+	"SingleWallOvens" = "Single Wall Ovens",
 }
 
 export enum regions {
@@ -64,7 +66,7 @@ export enum FeederQueryType {
 	Ranges = "ranges",
 }
 
-export enum projectTier{
+export enum projectTier {
 	live = "live",
 	project0 = "project0",
 	project1 = "project1",
@@ -246,8 +248,6 @@ export interface UnitInterface {
 	roomTypeHandle: string;
 }
 
-
-
 export interface ProductApiResponse {
 	filterCounts: any[];
 	items: ProductInterface[];
@@ -256,5 +256,3 @@ export interface ProductApiResponse {
 	offset: number;
 	limit: number;
 }
-
-

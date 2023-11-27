@@ -4,50 +4,52 @@ import JsonReplacer from "~Components/JsonTools/JsonEditor/JsonReplacer";
 import Draggable from "react-draggable";
 
 enum tabs {
-  Editor,
-  Replace
+	Editor,
+	Replace
 }
 
 interface Props {
-  hidden: boolean;
-  onHiddenChange: (hidden: boolean) => void;
+	hidden: boolean;
+	onHiddenChange: (hidden: boolean) => void;
 }
 
 export default function JsonEditorModal({ hidden, onHiddenChange }: Props): JSX.Element {
-  const [activeTab, setActiveTab] = useState<tabs>(tabs.Editor);
+	const [activeTab, setActiveTab] = useState<tabs>(tabs.Editor);
 
-  const handleHidePanel = () => {
-    onHiddenChange(true);
-  }
+	const handleHidePanel = () => {
+		onHiddenChange(true);
+	};
 
-  const handleTabClick = (tabName: tabs) => {
-    setActiveTab(tabName);
-  }
+	const handleTabClick = (tabName: tabs) => {
+		setActiveTab(tabName);
+	};
 
-  return (
-    <Draggable handle="#jsonEditorHeaderBar">
-      <div className={`jsonEditorPanel pane ${hidden ? 'hidden' : ''}`}>
+	return (
+		<Draggable handle="#jsonEditorHeaderBar">
+			<div className={`jsonEditorPanel pane ${hidden ? "hidden" : ""}`}>
 
-        <div id="jsonEditorHeaderBar" className="jsonEditorHeaderBar handle">
-          <label className="jsonEditorHeaderLabel">Json Edit</label>
-        </div>
+				<div id="jsonEditorHeaderBar" className="jsonEditorHeaderBar handle">
+					<label className="jsonEditorHeaderLabel">Json Edit</label>
+				</div>
 
-        <label className="btn btn-xs btn-circle absolute right-1.5 top-1.5" onClick={handleHidePanel}>✕</label>
-        <div className="modalTabs">
-          <h1 className={`tab tab-bordered modalTab ${activeTab === tabs.Editor ? 'tab-active' : ''}`} onClick={() => handleTabClick(tabs.Editor)}> Editor </h1>
-          <h1 className={`tab tab-bordered modalTab ${activeTab === tabs.Replace ? 'tab-active' : ''}`} onClick={() => handleTabClick(tabs.Replace)}> Replace </h1>
+				<label className="btn btn-xs btn-circle absolute right-1.5 top-1.5" onClick={handleHidePanel}>✕</label>
+				<div className="modalTabs">
+					<h1 className={`tab tab-bordered modalTab ${activeTab === tabs.Editor ? "tab-active" : ""}`}
+						onClick={() => handleTabClick(tabs.Editor)}> Editor </h1>
+					<h1 className={`tab tab-bordered modalTab ${activeTab === tabs.Replace ? "tab-active" : ""}`}
+						onClick={() => handleTabClick(tabs.Replace)}> Replace </h1>
 
-        </div>
+				</div>
 
-        <div className="tabContentContainer">
-          <div className={`tabContent ${activeTab === tabs.Editor ? 'active' : ''}`}>
-            <JsonViewer edit={true} />
-          </div>
-          <div className={`tabContent ${activeTab === tabs.Replace ? 'active' : ''}`}>
-            <JsonReplacer />
-          </div>
-        </div>
-      </div>
-    </Draggable>
-  );
+				<div className="tabContentContainer">
+					<div className={`tabContent ${activeTab === tabs.Editor ? "active" : ""}`}>
+						<JsonViewer edit={true} />
+					</div>
+					<div className={`tabContent ${activeTab === tabs.Replace ? "active" : ""}`}>
+						<JsonReplacer />
+					</div>
+				</div>
+			</div>
+		</Draggable>
+	);
 }

@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import AddAccountModal from "~Components/AccountManagement/AddAccountModal";
 import { useStorage } from "@plasmohq/storage/dist/hook";
 import type { FrontendAccount } from "~Utils/UtilInterfaces";
 
 function AccountUSTable() {
 	const [showNewAccountModal, setShowNewAccountModal] = useState(false);
-	const [accountData, setAccountData] = useStorage("frontendAccountsUS",[]);
+	const [accountData, setAccountData] = useStorage("frontendAccountsUS", []);
 	const handleNewAccountButton = () => {
 		setShowNewAccountModal(true);
 	};
@@ -17,7 +17,6 @@ function AccountUSTable() {
 	const handleDeleteAccount = async (accountId) => {
 		await setAccountData((prevTableData: FrontendAccount[]) => prevTableData.filter((account: FrontendAccount) => account.id !== accountId));
 	};
-
 
 	return (
 		<div className="accountManagementSection">
@@ -94,8 +93,7 @@ function AccountUSTable() {
 
 			<div className="divider"></div>
 		</div>
-	)
-};
-
+	);
+}
 
 export default AccountUSTable;

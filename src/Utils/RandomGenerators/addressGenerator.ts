@@ -1,29 +1,31 @@
-export function generateHouseNumber():string{
-	const houseNumber = 1+ Math.floor(Math.random() * 200);
+export function generateHouseNumber(): string {
+	const houseNumber = 1 + Math.floor(Math.random() * 200);
 	return String(houseNumber);
 }
 
-export function generatePostcode():string{
+export function generatePostcode(): string {
 	return ukPostcodes[Math.floor(Math.random() * ukPostcodes.length)];
 }
 
-export function generateCounty():string{
+export function generateCounty(): string {
 	return ukCounties[Math.floor(Math.random() * ukCounties.length)];
 }
 
-export function generateStreetName():string{
+export function generateStreetName(): string {
 	const randomStreetPrefix = ukStreetPrefixes[Math.floor(Math.random() * ukStreetPrefixes.length)];
 	const randomStreetSuffix = ukStreetSuffixes[Math.floor(Math.random() * ukStreetSuffixes.length)];
 	return `${randomStreetPrefix} ${randomStreetSuffix}`;
 }
 
-export function generateRandomVillage():string{
+export function generateRandomVillage(): string {
 	return ukVillages[Math.floor(Math.random() * ukVillages.length)];
 }
+
 export function generateZipcode(): string {
 	return Math.floor(Math.random() * 100000).toString().padStart(5, "0");
 }
-export function generateTown():string{
+
+export function generateTown(): string {
 	return ukTowns[Math.floor(Math.random() * ukTowns.length)];
 }
 
@@ -108,15 +110,15 @@ const ukTowns: string[] = [
 ];
 
 const ukVillages: string[] = [
-	"Aberlady",	"Aldbourne","Alfriston","Amberley",	"Ashford-in-the-Water",
-	"Askrigg", "Avebury", "Bamburgh", "Barningham",	"Beaulieu",	"Berrynarbor",
-	"Bibury", "Birlingham",	"Blanchland", "Blockley", "Bourton-on-the-Water",
+	"Aberlady", "Aldbourne", "Alfriston", "Amberley", "Ashford-in-the-Water",
+	"Askrigg", "Avebury", "Bamburgh", "Barningham", "Beaulieu", "Berrynarbor",
+	"Bibury", "Birlingham", "Blanchland", "Blockley", "Bourton-on-the-Water",
 	"Branscombe", "Bray", "Broadway", "Brook", "Buckler's Hard", "Burley",
-	"Burnsall",	"Cadgwith",	"Cartmel", "Castle Acre", "Castle Combe", "Cawdor",
-	"Chagford",	"Chilham", "Chipping Campden", "Clare",	"Clovelly",	"Corfe Castle",
-	"Cromford",	"Crosby Ravensworth", "Crowcombe", "Culross", "Dedham",
-	"Dorchester-on-Thames",	"Dovedale",	"Downham", "Easington",	"Easwald",
-	"Edensor", "Egton",	"Elterwater", "Eltisley", "Eynsford", "Falkland",
+	"Burnsall", "Cadgwith", "Cartmel", "Castle Acre", "Castle Combe", "Cawdor",
+	"Chagford", "Chilham", "Chipping Campden", "Clare", "Clovelly", "Corfe Castle",
+	"Cromford", "Crosby Ravensworth", "Crowcombe", "Culross", "Dedham",
+	"Dorchester-on-Thames", "Dovedale", "Downham", "Easington", "Easwald",
+	"Edensor", "Egton", "Elterwater", "Eltisley", "Eynsford", "Falkland",
 	"Farningham", "Fowey", "Framlingham", "Gargrave", "Grasmere", "Great Tew",
 	"Hambledon", "Hawkshead", "Hayfield", "Helford", "Helmsley", "Hovingham",
 	"Ilmington", "Ingleton", "Kettlewell", "Kingsand", "Lacock", "Lavenham",
@@ -137,8 +139,8 @@ export const usStates: string[] = [
 	"Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey",
 	"New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon",
 	"Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas",
-	"Utah", "Vermont", "Virginia", "Washington","West Virginia", "Wisconsin", "Wyoming"
-]
+	"Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"
+];
 
 const usCities: string[] = [
 	"New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio",
@@ -170,26 +172,26 @@ const usCities: string[] = [
 	"Torrance", "Rockford", "Joliet", "Paterson", "Bridgeport", "Naperville", "Savannah",
 	"Mesquite", "Syracuse", "Pasadena", "Orange", "Fullerton", "Killeen", "Dayton", "McAllen",
 	"Bellevue", "Miramar", "Hampton", "West Valley City", "Warren", "Olathe", "Columbia"
-]
+];
 
 const ukPostcodes: string[] = [
 	// London postcodes
-	'EC1A 1BB', 'WC2H 7LT', 'NW1 6XE', 'SE1 9SG',
+	"EC1A 1BB", "WC2H 7LT", "NW1 6XE", "SE1 9SG",
 	// Birmingham postcodes
-	'B1 1TF', 'B12 9LP', 'B21 9RJ',
+	"B1 1TF", "B12 9LP", "B21 9RJ",
 	// Manchester postcodes
-	'M1 2AP', 'M15 4PZ', 'M32 0JG',
+	"M1 2AP", "M15 4PZ", "M32 0JG",
 	// Glasgow postcodes
-	'G1 2FF', 'G12 8QQ', 'G31 2UX',
+	"G1 2FF", "G12 8QQ", "G31 2UX",
 	// Sheffield postcodes
-	'S1 2AX', 'S10 2PD', 'S36 4GF',
+	"S1 2AX", "S10 2PD", "S36 4GF",
 	// Bristol postcodes
-	'BS1 5UH', 'BS8 1QU', 'BS16 1GW',
+	"BS1 5UH", "BS8 1QU", "BS16 1GW",
 	// Leeds postcodes
-	'LS1 3AJ', 'LS6 3AB', 'LS12 6LN',
+	"LS1 3AJ", "LS6 3AB", "LS12 6LN",
 	// Edinburgh postcodes
-	'EH1 1SG', 'EH7 5JA', 'EH12 7XD',
+	"EH1 1SG", "EH7 5JA", "EH12 7XD",
 	// Liverpool postcodes
-	'L1 1JQ', 'L15 0EJ', 'L24 9GB',
+	"L1 1JQ", "L15 0EJ", "L24 9GB"
 	// ... other districts ...
 ];

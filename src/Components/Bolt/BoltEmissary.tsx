@@ -30,7 +30,7 @@ export default function BoltEmissaryTab(): JSX.Element {
 			type: newTab ? RequestType.OpenInNewTab : RequestType.OpenInCurrentTab,
 			functionName: null,
 			arguments: [currentUrl]
-		}
+		};
 
 		const response = await browser.runtime.sendMessage(request);
 		if (response) {
@@ -44,7 +44,8 @@ export default function BoltEmissaryTab(): JSX.Element {
 				<label className="label">
 					<span className="label-text">Job:</span>
 				</label>
-				<select onChange={handleEmissaryJobChange} value={emissaryJob} className="select select-primary select-xs select-bordered">
+				<select onChange={handleEmissaryJobChange} value={emissaryJob}
+						className="select select-primary select-xs select-bordered">
 					{emissaryJobsArray.map(emissaryJob => (
 						<option key={emissaryJob.Job} value={emissaryJob.Job}>
 							{emissaryJob.Name}
@@ -54,7 +55,8 @@ export default function BoltEmissaryTab(): JSX.Element {
 				<label className="label">
 					<span className="label-text">Environment:</span>
 				</label>
-				<select onChange={handleEnvChange} value={environment}  className="select select-primary select-xs select-bordered">
+				<select onChange={handleEnvChange} value={environment}
+						className="select select-primary select-xs select-bordered">
 					{environmentArray.slice(2).map(environmentArray => (
 						<option key={environmentArray.Name} value={environmentArray.Code}>
 							{environmentArray.Name}
@@ -67,7 +69,8 @@ export default function BoltEmissaryTab(): JSX.Element {
 				<label className="label">
 					<span className="label-text">Region:</span>
 				</label>
-				<select onChange={handleRegionChange} value={region}  className="select select-primary select-xs select-bordered">
+				<select onChange={handleRegionChange} value={region}
+						className="select select-primary select-xs select-bordered">
 					{regionArray.map(region => (
 						<option key={region.Name} value={region.Emissary}>
 							{region.Name}
@@ -76,8 +79,12 @@ export default function BoltEmissaryTab(): JSX.Element {
 				</select>
 			</div>
 			<div className="btn-group m-5">
-				<button className="btn btn-xs grp-btn btn-primary" onClick={() => frontendHandleNavigate(true)}>New Tab</button>
-				<button className="btn btn-xs grp-btn btn-primary" onClick={() => frontendHandleNavigate(false)}>Current Tab</button>
+				<button className="btn btn-xs grp-btn btn-primary" onClick={() => frontendHandleNavigate(true)}>New
+					Tab
+				</button>
+				<button className="btn btn-xs grp-btn btn-primary" onClick={() => frontendHandleNavigate(false)}>Current
+					Tab
+				</button>
 			</div>
 		</div>
 	);

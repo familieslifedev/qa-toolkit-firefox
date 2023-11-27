@@ -1,5 +1,4 @@
 import React from "react";
-
 interface AddNewEntryInputComponentProps {
 	prettyName: string;
 	inputName: string;
@@ -7,11 +6,12 @@ interface AddNewEntryInputComponentProps {
 	placeholder?: string | undefined;
 }
 
-const AddNewEntryInputComponent: React.FC<AddNewEntryInputComponentProps> = ({ prettyName,inputName, onClickFunction,placeholder }) => {
+const AddNewEntryInputComponent: React.FC<AddNewEntryInputComponentProps> = ({ prettyName, inputName, onClickFunction, placeholder }) => {
 	return (
 		<label className="input-group input-group-sm">
 			<span className="newAccountEntrySpan">{prettyName}</span>
-			<input type="text" name={inputName} placeholder={placeholder} className="input input-sm input-bordered newAccountEntryInput" />
+			<input type="text" name={inputName} placeholder={placeholder}
+				   className="input input-sm input-bordered newAccountEntryInput" />
 			<button className="btn btn-sm btn-primary" type="button" onClick={onClickFunction}>
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
 					 stroke="currentColor" className="w-6 h-6">
@@ -21,6 +21,6 @@ const AddNewEntryInputComponent: React.FC<AddNewEntryInputComponentProps> = ({ p
 			</button>
 		</label>
 	);
-}
+};
 
 export default AddNewEntryInputComponent;

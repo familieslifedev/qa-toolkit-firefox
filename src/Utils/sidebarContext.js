@@ -1,6 +1,7 @@
-import { createContext } from 'react';
+import { createContext } from "react";
 
 export const FeedbackContext = createContext({
-  feedbackText: '',
-  setFeedbackText: (text) => {},
+	feedbackText: "",
+	setFeedbackText: (text) => {
+	}
 });

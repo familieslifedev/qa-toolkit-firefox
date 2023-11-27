@@ -1,11 +1,10 @@
-
 export enum ContentRequestType {
-    WriteToClipboard,
-    AutofillAccount
+	WriteToClipboard,
+	AutofillAccount
 }
 
 export interface ContentRequest {
-    functionName: string;
-    arguments: any[];
-    type: ContentRequestType;
+	functionName: string;
+	arguments: any[];
+	type: ContentRequestType;
 }

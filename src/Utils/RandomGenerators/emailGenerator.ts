@@ -1,17 +1,15 @@
-export function generateRandomEmail(firstName: string | null, surname: string | null) :string {
+export function generateRandomEmail(firstName: string | null, surname: string | null): string {
 	const randomDomain = domains[Math.floor(Math.random() * domains.length)];
 	let randomNumber = Math.floor(Math.random() * 1000);
 	if (firstName && surname) {
 		return (`${firstName}.${surname}${randomNumber}${randomDomain}`);
-	}
-	else {
+	} else {
 		const randomEmail = emailAddresses[Math.floor(Math.random() * emailAddresses.length)];
 		return randomEmail + randomDomain;
 	}
 }
 
 // Arrays
-
 const domains: string[] = [
 	"@gmail.com",
 	"@yahoo.com",
@@ -33,6 +31,7 @@ const domains: string[] = [
 	"@inbox.com",
 	"@hushmail.com",
 	"@rocketmail.com",
+	"@duck.com"
 ];
 
 const emailAddresses: string[] = [
@@ -59,5 +58,3 @@ const emailAddresses: string[] = [
 	"space_surfer", "tech_trendsetter", "atomic_artist", "lunar_librarian", "meteor_miner",
 	"neon_nightmare", "cyber_celebrity", "galactic_grandmaster"
 ];
-
-

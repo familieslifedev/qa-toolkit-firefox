@@ -35,11 +35,11 @@ import {
 	WorktopType
 } from "~Utils/plannerConsts";
 
-
 type Dictionary<T> = Record<string, T>;
 
 export interface Plan {
 	[property: string]: any;
+
 	accountId: string | number | null;
 	email?: string | null;
 	leadId: string | number | null | undefined;
@@ -88,9 +88,9 @@ export default class WidgetSelectionGroup {
 	}
 }
 
-
 export interface IProductAttributes {
 	[key: string]: any;
+
 	[LightingProductAttributes.DiffuserRequired]: YesOrNo;
 	[LightingProductAttributes.DrawerLighting]?: YesOrNo;
 	[LightingProductAttributes.DriverPorts]: string;
@@ -169,13 +169,13 @@ export interface IProductAttributes {
 	[ProductAttributes.WASTE_HOLES]?: string;
 }
 
-
 export interface UnsuitableBelfastSinkProduct {
 	productName: string;
 	productId: number;
 	itemId?: number;
 	attributes?: IProductAttributes;
 }
+
 export interface ICustomNote {
 	note: string;
 	editable?: boolean;
@@ -183,6 +183,7 @@ export interface ICustomNote {
 	hasWidget?: boolean;
 	noteWidgetId?: number;
 }
+
 export interface BaseNoteBorn extends AcceptableNote, ICustomNote {
 	id: string;
 	note: string;
@@ -219,15 +220,11 @@ export interface WidgetGroupItemModel {
 	skipInUndoModel: boolean;
 }
 
-
 export type PlanItem = WidgetModel & WithItemId;
+
 export interface WithItemId {
 	itemId: number;
 }
-
-
-
-
 
 export interface WidgetModelAttributes {
 	door?: DoorType;
@@ -287,6 +284,7 @@ export interface VoidDimension {
 	width: number;
 	fullWidth: number;
 }
+
 export interface WidgetModel {
 	title?: string;
 	roomLocation?: RoomLocation;
@@ -409,22 +407,23 @@ export interface WidgetModel {
 }
 
 export const WorktopConfigId = {
-	WorktopConfig: Symbol('WorktopConfig'),
-	WorktopMaterialsData: Symbol('WorktopMaterialsData'),
-	ProvenceWorktopMaterialsData: Symbol('ProvenceWorktopMaterialsData'),
-	WindowsillWorktopMaterialsData: Symbol('WindowsillWorktopMaterialsData'),
-	WorktopUnderside: Symbol('WorktopUnderside'),
-	WorktopCornerPrices: Symbol('WorktopPrices'),
-	DeprecatedSpecialistMaterials: Symbol('DeprecatedSpecialistMaterials'),
-	SpecialistIslandMaterialsData: Symbol('SpecialistIslandMaterialsData'),
-	WorktopProfileData: Symbol('WorktopProfileData'),
-	WorktopColoursData: Symbol('WorktopColoursData'),
-	WorktopsOverhangConfig: Symbol('WorktopsOverhangConfig'),
+	WorktopConfig: Symbol("WorktopConfig"),
+	WorktopMaterialsData: Symbol("WorktopMaterialsData"),
+	ProvenceWorktopMaterialsData: Symbol("ProvenceWorktopMaterialsData"),
+	WindowsillWorktopMaterialsData: Symbol("WindowsillWorktopMaterialsData"),
+	WorktopUnderside: Symbol("WorktopUnderside"),
+	WorktopCornerPrices: Symbol("WorktopPrices"),
+	DeprecatedSpecialistMaterials: Symbol("DeprecatedSpecialistMaterials"),
+	SpecialistIslandMaterialsData: Symbol("SpecialistIslandMaterialsData"),
+	WorktopProfileData: Symbol("WorktopProfileData"),
+	WorktopColoursData: Symbol("WorktopColoursData"),
+	WorktopsOverhangConfig: Symbol("WorktopsOverhangConfig")
 };
 
 export interface PlanItemProduct {
 	attributes?: { [key: string]: string | number };
 }
+
 export interface SerializedVector2D {
 	x: number;
 	z: number;
@@ -435,6 +434,7 @@ export interface SerializedVector3D {
 	y: number;
 	z: number;
 }
+
 export interface UpstandWorktopData {
 	title: string;
 	material: string;
@@ -468,6 +468,7 @@ export interface WidgetDimensions {
 	depth: number;
 	height: number;
 }
+
 export interface WindowsillWorktopData extends Partial<WorktopData> {
 	isNotRequired?: boolean;
 	offcutLabelIndex?: number;
@@ -479,6 +480,7 @@ export interface WindowsillWorktopData extends Partial<WorktopData> {
 	selectedHeight?: WorktopThickness | null;
 	depth?: number;
 }
+
 export interface WorktopData {
 	title: string;
 	productId?: number | null;
@@ -501,6 +503,7 @@ export interface WorktopData {
 	disableCornerAdjusments?: boolean;
 	preventInnerSnapping?: boolean;
 }
+
 export interface CooksPantryInteriorConfig {
 	shelvingUnit: BasketUnit;
 	drawingUnit: BasketUnit;
@@ -513,6 +516,7 @@ export interface ListAndPromoPrice {
 	listPrice: number;
 	promoPrice: number;
 }
+
 export interface ColourWithRanges {
 	frontalRangeHandle: string;
 	carcaseRangeHandle: string;
@@ -520,8 +524,10 @@ export interface ColourWithRanges {
 	stateHandle?: SemiRetiredStateHandles | RangeStateHandles;
 }
 
-export type SemiRetiredStateHandles = RangeStateHandles.Active | RangeStateHandles.SemiRetired | RangeStateHandles.BothActiveAndSemiRetired;
-
+export type SemiRetiredStateHandles =
+	RangeStateHandles.Active
+	| RangeStateHandles.SemiRetired
+	| RangeStateHandles.BothActiveAndSemiRetired;
 
 export interface WorktopObject {
 	dimensions: { width: number; depth: number; height: number };
@@ -533,6 +539,7 @@ export interface WorktopObject {
 		edgeColour: string;
 	};
 }
+
 export interface BasketUnit {
 	unitId: number;
 	unitDefId: number;
@@ -613,8 +620,8 @@ export interface SubstepUnitQuery {
 }
 
 export interface Attributes {
-	['Feature Unit']?: YesOrNo;
-	['Bin Unit']?: YesOrNo;
+	["Feature Unit"]?: YesOrNo;
+	["Bin Unit"]?: YesOrNo;
 }
 
 export interface UnitHeightsConfig {
@@ -756,6 +763,7 @@ interface ProductMaterial {
 	name: string;
 	handle: string;
 }
+
 export interface PriceMatches {
 	retailer: string;
 	price: {
@@ -769,29 +777,31 @@ export interface ShowroomVisibility {
 	name: string;
 	availability: ShowroomVisibilityAvailability;
 }
+
 export interface ProductAttributesIntegers {
 	[key: string]: number | undefined;
-	'Backwards Lever Reach'?: number;
+
+	"Backwards Lever Reach"?: number;
 	[ProductAttributes.BURNER_HEIGHT_FROM_FLOOR]?: number;
-	'Capacity (L)'?: number;
-	'Counter Top Appliance Restrictions'?: number;
-	'Cutout Depth (mm)'?: number;
-	'Cutout Width (mm)'?: number;
-	'Downdraft Fascia Depth (mm)'?: number;
-	'Installation Depth'?: number;
-	'Cut Out to Wall Distance'?: number;
-	'Manufacturing Lead Time'?: number;
-	'Minimum Worktop Thickness Required (mm)'?: number;
-	'Number of Zones/Burners'?: number;
-	'Noise Level (dB)'?: number;
-	'Safety Zone A'?: number;
-	'Safety Zone B'?: number;
-	'Safety Zone C'?: number;
-	'Safety Zone D'?: number;
-	'Safety Zone E'?: number;
-	'Sink Cut-Out Depth (mm)'?: number;
-	'Warranty - Labour'?: number;
-	'Warranty - Parts'?: number;
+	"Capacity (L)"?: number;
+	"Counter Top Appliance Restrictions"?: number;
+	"Cutout Depth (mm)"?: number;
+	"Cutout Width (mm)"?: number;
+	"Downdraft Fascia Depth (mm)"?: number;
+	"Installation Depth"?: number;
+	"Cut Out to Wall Distance"?: number;
+	"Manufacturing Lead Time"?: number;
+	"Minimum Worktop Thickness Required (mm)"?: number;
+	"Number of Zones/Burners"?: number;
+	"Noise Level (dB)"?: number;
+	"Safety Zone A"?: number;
+	"Safety Zone B"?: number;
+	"Safety Zone C"?: number;
+	"Safety Zone D"?: number;
+	"Safety Zone E"?: number;
+	"Sink Cut-Out Depth (mm)"?: number;
+	"Warranty - Labour"?: number;
+	"Warranty - Parts"?: number;
 	[LightingProductAttributes.DriverPorts]: number;
 }
 
@@ -810,6 +820,7 @@ export interface IProductImageUrls {
 export interface PastedRecommendedProduct extends BasketWidgetProduct {
 	productId: number;
 }
+
 export interface NotRequiredGroups {
 	legsOnceWereRemovedFromBasket?: boolean;
 	supportLegsNotRequired?: boolean;
@@ -818,6 +829,7 @@ export interface NotRequiredGroups {
 	additionalEdgeBandingNotRequired?: boolean;
 	additionalEdgeBandingProductsChecked?: boolean;
 }
+
 export interface CustomColour {
 	id: number;
 	handle: string;
@@ -828,7 +840,6 @@ export interface CustomColour {
 	colourCode: string;
 	rgb: string;
 }
-
 
 export type SerializedTimeEntry = Array<[Step, SerializedStepTime]>;
 export type SerializedTimeLogs = Array<[PlanState, SerializedTimeEntry]>;
@@ -865,8 +876,8 @@ export interface SubStepTime {
 	time: number;
 }
 
-
 export type PartialWorktopTabChoices = planner.NullablePartial<WorktopTabChoices & LegacyWorktopTabChoices>;
+
 export interface WorktopTabChoices {
 	[WorktopTabKeys.Material]: string;
 	[WorktopTabKeys.SurfaceColour]: string;
@@ -891,8 +902,6 @@ export interface LegacyWorktopTabChoices {
 	timberAreaProfile: ProfileData;
 }
 
-
-
 export interface ProfileData {
 	displayName: string;
 	handle: string;
@@ -903,8 +912,8 @@ export interface WorktopThicknessObject {
 	displayName: string;
 	heightMm: WorktopThickness;
 }
-export type WorktopThickness = number | number[];
 
+export type WorktopThickness = number | number[];
 
 export interface Basket {
 	relatedProducts: BasketRelatedProducts;
@@ -941,8 +950,6 @@ export interface ProductCustomization {
 	quantity: number;
 }
 
-
-
 export interface Customization {
 	displayNumber?: string | number;
 	customColour?: string | null;
@@ -961,11 +968,10 @@ export interface LightingPlanModelData {
 	[LightingPlanModelKeys.RunQuantities]: SavedLightingBlockRun[];
 }
 
-
-
 export type IUnitLighting = {
 	[key in LightingUnitTypes]: LightingToggle;
 };
+
 export interface LightingToggle {
 	checked: boolean;
 }
@@ -1009,8 +1015,6 @@ export type ProductDescriptionsType = {
 
 export type InfoAreaDescriptionType = typeof infoAreaDescriptions[number];
 
-
-
 interface SerializedEdges {
 	[startPointIndex: string]: {
 		[endPointIndex: string]: {
@@ -1018,12 +1022,14 @@ interface SerializedEdges {
 		};
 	};
 }
+
 export interface SerializedMeasurements {
 	confirmedRoomHeight: number | undefined;
 	unconfirmedLengths: SerializedAnchorGroup[];
 	unconfirmedThicknesses: number[];
 	unconfirmedPositions: SerializedAnchorGroupPosition[];
 }
+
 export type SerializedAnchorGroup = number[];
 type SerializedAnchorGroupPosition = [SerializedAnchorGroup, number[]];
 
@@ -1046,7 +1052,6 @@ export interface UserSetRunLengthMeasurements {
 	length: number;
 }
 
-
 export type RangeHandlesByScope = {
 	[key in RangeScope]: RangeHandles;
 };
@@ -1066,34 +1071,5 @@ declare namespace planner {
 				: T[P];
 	};
 	type Merge<T, R> = Omit<T, keyof R> & R;
-	type Required<T> = { [P in keyof T]-?: T[P] };
-
-	// IntersectionValuesOf<['a', 'c'], {
-	//     a: { foo: number },
-	//     b: { bar: number },
-	//     c: { quux: number }
-	// }> = { foo: number } & { quux: number }
-	type IntersectionValuesOf<Keys extends keyof Type, Type extends object> = UnionToIntersection<Type[Keys]>;
-
-	// UnionToIntersection<{ a: string } | { b: number }> = { a: string } & { b: number }
-	type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends ((k: infer I) => void) ? I : never;
-
-	// ValuedKeyOf<{ a: number, b: string, c: number }, number> = 'a' | 'c'
-	// Reimplement with key remapping in TS4.1
-	type ValuedKeyOf<Type, Value, _Picked = PickByValue<Type, Value>> = NonNullable<
-		{
-			[I in keyof _Picked]: _Picked[I] extends never ? never : I;
-		}[keyof _Picked]
-	>;
-	type PickByValue<Type, Value> = { [I in keyof Type]-?: Type[I] extends Value ? Type[I] : never };
-
-	type FunctionKeyOf<T, U = Required<T>> = {
-		[K in keyof U]: U[K] extends ((...args: any[]) => any) ? K : never;
-	}[keyof U];
-
-	// MaybeEmpty<{ foo: string, bar: number }>
-	//     = { foo: undefined, bar: undefined } | { foo: string, bar: number }
-	type MaybeEmpty<T> = T | { [K in keyof T]: undefined };
-	type Constructable<T> = new(...args: any[]) => T;
-	type Mixin<B, M> = <T extends Constructable<B>>(SuperClass: T) => T & Constructable<M>;
+	type Required<T> = { [P in keyof T]-?: T[P] }
 }

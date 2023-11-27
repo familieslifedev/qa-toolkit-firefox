@@ -31,10 +31,8 @@ const consoleCommands = {
 	drawTourEdges: () => __debugApi__.navigation.drawEdges(),
 	drawTourNodes: () => __debugApi__.navigation.drawNodes(),
 	drawTourPrunedNodes: () => __debugApi__.navigation.drawPrunedNodes(),
-	drawTourWidgetBounds: () => __debugApi__.navigation.drawWidgetBounds(),
+	drawTourWidgetBounds: () => __debugApi__.navigation.drawWidgetBounds()
 	//</editor-fold>
+};
 
-
-}
-
-export const commandMap = new Map(Object.entries(consoleCommands))
+export const commandMap = new Map(Object.entries(consoleCommands));
