@@ -13,28 +13,28 @@ export default function BoltEmissaryTab(): JSX.Element {
 
 	function handleEnvChange(event) {
 		setEnvironment(event.target.value).then(response => {
-			console.log("Response received:", response);
+			console.log("BoltEmissary:handleEnvChange - Response received:", response);
 		})
 			.catch(error => {
-				console.error("Error sending message:", error);
+				console.error("BoltEmissary:handleEnvChange - Error sending message:", error);
 			});
 	}
 
 	function handleEmissaryJobChange(event) {
 		setEmissaryJob(event.target.value).then(response => {
-			console.log("Response received:", response);
+			console.log("BoltEmissary:handleEmissaryJobChange - Response received:", response);
 		})
 			.catch(error => {
-				console.error("Error sending message:", error);
+				console.error("BoltEmissary:handleEmissaryJobChange - Error sending message:", error);
 			});
 	}
 
 	function handleRegionChange(event) {
 		setRegion(event.target.value).then(response => {
-			console.log("Response received:", response);
+			console.log("BoltEmissary:handleRegionChange - Response received:", response);
 		})
 			.catch(error => {
-				console.error("Error sending message:", error);
+				console.error("BoltEmissary:handleRegionChange - Error sending message:", error);
 			});
 	}
 

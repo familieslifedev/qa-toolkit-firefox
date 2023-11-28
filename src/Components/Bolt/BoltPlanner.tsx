@@ -14,28 +14,28 @@ export default function BoltSurveyorTab(): JSX.Element {
 
 	function handleEnvChange(event) {
 		setEnvironment(event.target.value).then(response => {
-			console.log("Response received:", response);
+			console.log("BoltPlanner:handleEnvChange - Response received:", response);
 		})
 			.catch(error => {
-				console.error("Error sending message:", error);
+				console.error("BoltPlanner:handleEnvChangeError sending message:", error);
 			});
 	}
 
 	function handleRegionChange(event) {
 		setRegion(event.target.value).then(response => {
-			console.log("Response received:", response);
+			console.log("BoltPlanner:handleRegionChange - Response received:", response);
 		})
 			.catch(error => {
-				console.error("Error sending message:", error);
+				console.error("BoltPlanner:handleRegionChangeError sending message:", error);
 			});
 	}
 
 	function handleRoomTypeChange(event) {
 		setRoomType(event.target.value).then(response => {
-			console.log("Response received:", response);
+			console.log("BoltPlanner:handleRoomTypeChange - Response received:", response);
 		})
 			.catch(error => {
-				console.error("Error sending message:", error);
+				console.error("BoltPlanner:handleRoomTypeChangeError sending message:", error);
 			});
 	}
 

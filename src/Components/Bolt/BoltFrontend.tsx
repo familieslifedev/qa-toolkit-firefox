@@ -12,19 +12,19 @@ export default function BoltFrontendTab(): JSX.Element {
 
 	function handleEnvChange(event) {
 		setEnvironment(event.target.value).then(response => {
-			console.log("Response received:", response);
+			console.log("BoltFrontend:handleEnvChange: - Response received:", response);
 		})
 			.catch(error => {
-				console.error("Error sending message:", error);
+				console.error("BoltFrontend:handleEnvChange - Error sending message:", error);
 			});
 	}
 
 	function handleRegionChange(event) {
 		setRegion(event.target.value).then(response => {
-			console.log("Response received:", response);
+			console.log("BoltFrontend:handleRegionChange: - Response received:", response);
 		})
 			.catch(error => {
-				console.error("Error sending message:", error);
+				console.error("BoltFrontend:handleRegionChange - Error sending message:", error);
 			});
 	}
 

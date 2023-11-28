@@ -9,32 +9,32 @@ export default function BoltJenkinsTab(): JSX.Element {
 	const { setFeedbackText } = useContext(FeedbackContext);
 	const [environment, setEnvironment] = useStorage("jenkinsEnvironment", environmentArray[0].Code);
 	const [region, setRegion] = useStorage("jenkinsRegion", regionArray[0].Jenkins);
-	const [jenkinsJob, setJenkinsJob] = useStorage("jeknkinsJob", jenkinsJobsArray[0].Job);
+	const [jenkinsJob, setJenkinsJob] = useStorage("jenkinsJob", jenkinsJobsArray[0].Job);
 
 	function handleEnvChange(event) {
 		setEnvironment(event.target.value).then(response => {
-			console.log("Response received:", response);
+			console.log("BoltJenkins:handleEnvChange - Response received:", response);
 		})
 			.catch(error => {
-				console.error("Error sending message:", error);
+				console.error("BoltJenkins:handleEnvChange - Error sending message:", error);
 			});
 	}
 
 	function handleEmissaryJobChange(event) {
 		setJenkinsJob(event.target.value).then(response => {
-			console.log("Response received:", response);
+			console.log("BoltJenkins:handleEmissaryJobChange - Response received:", response);
 		})
 			.catch(error => {
-				console.error("Error sending message:", error);
+				console.error("BoltJenkins:handleEmissaryJobChange - Error sending message:", error);
 			});
 	}
 
 	function handleRegionChange(event) {
 		setRegion(event.target.value).then(response => {
-			console.log("Response received:", response);
+			console.log("BoltJenkins:handleRegionChange - Response received:", response);
 		})
 			.catch(error => {
-				console.error("Error sending message:", error);
+				console.error("BoltJenkins:handleRegionChange - Error sending message:", error);
 			});
 	}
 

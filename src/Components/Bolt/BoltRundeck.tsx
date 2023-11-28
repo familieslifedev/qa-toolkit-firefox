@@ -17,19 +17,19 @@ export default function BoltRundeck() {
 
 	function handleEnvChange(event) {
 		setRundeckJob(event.target.value).then(response => {
-			console.log("Response received:", response);
+			console.log("BoltRundeck:handleEnvChange - Response received:", response);
 		})
 			.catch(error => {
-				console.error("Error sending message:", error);
+				console.error("BoltRundeck:handleEnvChange - Error sending message:", error);
 			});
 	}
 
 	function handleRegionChange(event) {
 		setRegion(event.target.value).then(response => {
-			console.log("Response received:", response);
+			console.log("BoltRundeck:handleRegionChange - Response received:", response);
 		})
 			.catch(error => {
-				console.error("Error sending message:", error);
+				console.error("BoltRundeck:handleRegionChange - Error sending message:", error);
 			});
 	}
 

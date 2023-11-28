@@ -8,10 +8,10 @@ export default function ColourPicker() {
 	const colorPickerChange = (color) => {
 		setUpdateColor(color.hex);
 		writeToClipboard(updateColor).then(response => {
-			console.log("Response received:", response);
+			console.log("ColourPicker:colorPickerChange: - Response received:", response);
 		})
 			.catch(error => {
-				console.error("Error sending message:", error);
+				console.error("ColourPicker:colorPickerChange - Error sending message:", error);
 			});
 	};
 
@@ -19,10 +19,10 @@ export default function ColourPicker() {
 		let randomColor = Math.floor(Math.random() * 16777215).toString(16);
 		setUpdateColor("#" + randomColor);
 		writeToClipboard("#" + randomColor).then(response => {
-			console.log("Response received:", response);
+			console.log("ColourPicker:handleRandomColour - Response received:", response);
 		})
 			.catch(error => {
-				console.error("Error sending message:", error);
+				console.error("ColourPicker:handleRandomColour - Error sending message:", error);
 			});
 	}
 

@@ -9,10 +9,10 @@ const SidebarNav = (): JSX.Element => {
 			arguments: null
 		};
 		browser.runtime.sendMessage(request).then(response => {
-			console.log("Response received:", response);
+			console.log("SidebarNav:openOptions - Response received:", response);
 		})
 			.catch(error => {
-				console.error("Error sending message:", error);
+				console.error("SidebarNav:openOptions - Error sending message:", error);
 			});
 	}
 
