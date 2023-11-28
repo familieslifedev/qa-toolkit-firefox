@@ -8,9 +8,21 @@ export class GetCurrentUrl extends BaseMessageHandler {
 	}
 
 	public async handle(request: BackgroundRequest, sendResponse: HandlerResponse): Promise<void> {
-		await super.handle(request, sendResponse);
+		try {
+			await super.handle(request, sendResponse);
 
-		const currentTabUrl: string = this.currentTab[0]?.url;
-		sendResponse(currentTabUrl);
+			const currentTabUrl: string = this.currentTab[0]?.url;
+
+			if (!currentTabUrl) {
+				console.error("GetCurrentUrl: Current tab URL is undefined");
+				sendResponse({ error: "Current tab URL is undefined" });
+				return;
+			}
+
+			sendResponse(currentTabUrl);
+		} catch (error) {
+			console.error("Error in GetCurrentUrl handle:", error);
+			sendResponse({ error: "Error occurred in GetCurrentUrl" });
+		}
 	}
 }

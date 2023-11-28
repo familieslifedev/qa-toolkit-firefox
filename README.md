@@ -6,8 +6,10 @@ This QA Toolkit port is a Firefox add-on that is designed to help facilitate QA 
 ### Preliminary Setup
 
 To install the application, firstly you will need a local copy. To do this, you will need to set up git and bitbucket.
+
 See:
 https://wrenkitchens.atlassian.net/wiki/spaces/DEV/pages/9226271/Set+Up+Git+Bitbucket
+
 And:
 https://wrenkitchens.atlassian.net/wiki/spaces/DEV/pages/9233369/Setting+Up+Your+Dev+Environment
 
@@ -52,5 +54,3 @@ After that, in the file browser, load the `manifest.json` located at `/Users/you
 Once the application is built and loaded as a temporary add-on, open a Wren application.
 You should see a symbol on the right hand side of your browser displaying a spanner and a screwdriver.
 Click this to open the overlay and menu for the application.
-
-That's it! The extension's up and running in Firefox.

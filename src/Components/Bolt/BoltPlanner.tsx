@@ -33,7 +33,7 @@ export default function BoltSurveyorTab(): JSX.Element {
 		let currentUrl = isPlannerToggle
 			? `https://planner2d.${envCode}wrenkitchens.${region.trim()}/surveyor`
 			: `https://planner2d.${envCode}wrenkitchens.${region.trim()}/showroom/${roomType}?debug&features=planner-specialist-worktops-add-feature-removal,new-room-profile&planUrl=`;
-		console.log(currentUrl);
+		console.log("Current URL: " + currentUrl);
 
 		const request: BackgroundRequest = {
 			type: newTab ? RequestType.OpenInNewTab : RequestType.OpenInCurrentTab,

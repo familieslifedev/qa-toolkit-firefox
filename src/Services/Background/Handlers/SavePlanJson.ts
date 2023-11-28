@@ -10,13 +10,24 @@ export class SavePlanJson extends MainScriptExecutor {
 	}
 
 	public async handle(request: BackgroundRequest, sendResponse: HandlerResponse): Promise<void> {
-		await super.handle(request, sendResponse);
+		try {
+			await super.handle(request, sendResponse);
 
-		const currentTabUrl: string = this.currentTab[0]?.url;
-		const planId: number = this.result[0]?.result?.plan?.planId;
-		const jsonResult: any = this.result[0]?.result;
+			const currentTabUrl: string = this.currentTab[0]?.url;
+			const planId: number = this.result[0]?.result?.plan?.planId;
+			const jsonResult: any = this.result[0]?.result;
 
-		const urlText: string = await sendJsonToFeeder(jsonResult, planId, currentTabUrl);
-		sendResponse(urlText);
+			if (!currentTabUrl || !planId || !jsonResult) {
+				console.error("Missing data in SavePlanJson");
+				sendResponse({ error: "Missing data" });
+				return;
+			}
+
+			const urlText: string = await sendJsonToFeeder(jsonResult, planId, currentTabUrl);
+			sendResponse(urlText);
+		} catch (error) {
+			console.error("Error in SavePlanJson handle:", error);
+			sendResponse({ error: "Error occurred in SavePlanJson" });
+		}
 	}
 }

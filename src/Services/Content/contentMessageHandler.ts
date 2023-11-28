@@ -4,6 +4,7 @@ import { WriteToClipboard } from "./Handlers/WriteToClipboard";
 import { AutofillAccount } from "./Handlers/AutofillAccount";
 
 export const MakeHandler = (request: ContentRequest): BaseMessageHandler => {
+	console.log("Request type: ", request.type);
 
 	switch (request.type) {
 
@@ -12,5 +13,9 @@ export const MakeHandler = (request: ContentRequest): BaseMessageHandler => {
 
 		case ContentRequestType.AutofillAccount:
 			return new AutofillAccount("Failed to autofill account");
+
+		default:
+			console.error(`No handler found for request type: ${request.type}`);
+			return null;
 	}
 };

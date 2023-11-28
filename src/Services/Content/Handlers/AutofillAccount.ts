@@ -10,7 +10,7 @@ export class AutofillAccount extends BaseMessageHandler {
 	}
 
 	public async handle(request: ContentRequest, sendResponse: HandlerResponse): Promise<void> {
-		console.log("autofill accounts");
+		console.log("Autofill accounts");
 
 		if (request.arguments.length < 2) throw new Error("AutofillAccount handler requires at least 2 arguments: [0] accountRegion, [1] account");
 		const accountRegion: string = request.arguments[0];

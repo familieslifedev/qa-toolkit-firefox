@@ -14,10 +14,15 @@ export class OpenUrl extends BaseMessageHandler {
 	public async handle(request: BackgroundRequest, sendResponse: HandlerResponse): Promise<void> {
 		try {
 			const url = request.arguments[0];
+			if (!url) {
+				throw new Error("URL is missing");
+			}
 			const tabId = this.currentTabId;
 			await utils.openURL(url, tabId, this.openInNewTab);
+			sendResponse({ success: true, message: "URL opened successfully" });
 		} catch (error) {
-			sendResponse(error.message);
+			console.error("Error in OpenUrl handle:", error);
+			sendResponse({ success: false, error: error.message });
 		}
 	}
 }

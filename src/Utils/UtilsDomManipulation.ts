@@ -172,8 +172,8 @@ export async function autofillUsFrontendAccount(account) {
 	// Set State
 	const stateSelectElement = <HTMLSelectElement>document.getElementById('formCustomerRequirement_Address_State');
 	const stateIndex = usStates.findIndex((state) => state === account.county) +1;
-	console.log(account.county)
-	console.log(stateIndex);
+	console.log("County: " + account.county)
+	console.log("State: " + stateIndex);
 	stateSelectElement.value = String(stateIndex);
 	const changeStateEvent = new Event('change');
 	stateSelectElement.dispatchEvent(changeStateEvent);

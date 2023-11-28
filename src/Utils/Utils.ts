@@ -158,7 +158,6 @@ export async function save2dJsonToFeeder(args: any) {
 		return res;
 	}
 
-
 }
 
 export const feederQuery = async (
@@ -197,7 +196,7 @@ export const feederQuery = async (
 	try {
 		const result = await response.json();
 		if (result) {
-			console.log(result);
+			console.log( "Result: " + result);
 			return result;
 		}
 	} catch (error) {

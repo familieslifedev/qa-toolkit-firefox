@@ -1,6 +1,6 @@
 import { initializeMessageListener, initializeInstallListener } from "~Services/Background/eventListeners";
 
-console.log("background script loaded");
+console.log("Background script loaded successfully.");
 
 // Initialize Background Message Handler
 initializeMessageListener();

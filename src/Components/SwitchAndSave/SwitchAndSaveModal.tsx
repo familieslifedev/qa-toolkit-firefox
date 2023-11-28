@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { stringify } from "query-string/base";
-import { convertPenceToPounds, get2DJson, isWithinRangeComparison } from "~Utils/Utils";
+import { convertPenceToPounds, get2DJson } from "~Utils/Utils";
 import { ProductInterface, ProductStatuses, ProductApiResponse, ProductBrand } from "~Utils/Constants";
 import { useStorage } from "@plasmohq/storage/dist/hook";
 import { environmentArray, regionArray } from "~Utils/componentArrays";
@@ -109,7 +109,7 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 	const getPhaseId = async (): Promise<void> => {
 		const Json = await get2DJson();
 		if (Json) {
-			console.log(Json);
+			console.log("JSON: " + Json);
 			await setCampaignPhaseId(Json.lock.campaignPhaseId);
 		}
 	};
@@ -128,7 +128,7 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 		const result = await response.json();
 		if (result) {
 			setCurrentProduct(result);
-			console.log(result);
+			console.log("Result: " + result);
 			await getAllSameTypeProducts(result);
 		}
 
@@ -148,10 +148,10 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 		const hardRules = sortedRules.filter(([, ruleStatus]) => ruleStatus.isActive && ruleStatus.isHard);
 		const softRules = sortedRules.filter(([, ruleStatus]) => ruleStatus.isActive && !ruleStatus.isHard);
 
-		console.log("Hard Rules:", hardRules);
-		console.log("Soft Rules:", softRules);
+		console.log("Hard Rules: ", hardRules);
+		console.log("Soft Rules: ", softRules);
 
-		console.log("All Products Before Filtering:", allSameTypeProducts.items);
+		console.log("All Products Before Filtering: ", allSameTypeProducts.items);
 
 		let filteredProducts = allSameTypeProducts.items
 			.filter((product) => {
@@ -162,11 +162,11 @@ export default function SwitchAndSaveModal({ hidden, onHiddenChange }: Props): J
 				return rulesApply && isCheaperByPercentage(product, priceComparisonProduct, priceDifference);
 			});
 
-		console.log("Filtered Products After Hard Rules:", filteredProducts);
+		console.log("Filtered Products After Hard Rules: ", filteredProducts);
 
 		for (const [ruleName] of softRules) {
 			const intermediateFilteredProducts = filteredProducts.filter(product => rules[ruleName](product, currentProduct)); // Always compare with original product
-			console.log(`Filtered Products After Rule ${ruleName}:`, intermediateFilteredProducts);
+			console.log(`Filtered Products After Rule ${ruleName}: `, intermediateFilteredProducts);
 
 			// If this rule cannot be satisfied by any product, we keep the products
 			// that passed the last successful filtration and move on to the next rule.

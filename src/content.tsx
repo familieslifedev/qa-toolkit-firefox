@@ -17,10 +17,14 @@ export const getStyle = () => {
 	return style;
 };
 
-browser.runtime.onMessage.addListener((request: ContentRequest, sender, sendResponse: HandlerResponse) => {
+browser.runtime.onMessage.addListener(async (request: ContentRequest, sender, sendResponse: HandlerResponse) => {
 	const handler: BaseMessageHandler = MakeHandler(request);
-	handler.handle(request, sendResponse);
-
+	console.log("Handler: " + handler);
+	if (handler) {
+		await handler.handle(request, sendResponse);
+	} else {
+		console.error('Handler not found for request:', request);
+	}
 	return true;
 });
 

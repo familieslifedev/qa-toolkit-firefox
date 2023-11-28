@@ -58,7 +58,7 @@ export default function ProductQuery({ hidden, onHiddenChange }: Props): JSX.Ele
 	const getPhaseId = async (): Promise<void> => {
 		const Json = await get2DJson();
 		if (Json) {
-			console.log(Json);
+			console.log("JSON: " + Json);
 			setUserInputs({
 				...userInputs,
 				campaignPhaseId: Json.lock.campaignPhaseId

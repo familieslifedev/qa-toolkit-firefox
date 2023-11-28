@@ -9,7 +9,7 @@ function OptionsIndex() {
 	const [modifierKey, setModifierKey] = useStorage("modifierKey");
 
 	function saveTheme(event) {
-		setTheme(event.target.value).then(r => console.log("theme Updated"));
+		setTheme(event.target.value).then(r => console.log("Theme updated successfully."));
 	}
 
 	function saveModKey(event) {

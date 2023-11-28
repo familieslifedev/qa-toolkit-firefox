@@ -21,22 +21,41 @@ export class MainScriptExecutor extends BaseMessageHandler {
 		try {
 			await super.handle(request, sendResponse);
 
-			[this.result] = await Promise.all([browser.scripting.executeScript({
-				target: { tabId: this.currentTabId },
-				// @ts-ignore
-				world: browser.scripting.ExecutionWorld.MAIN,
-				args: request.arguments,
-				func: this.callback
-			})]);
-			if (!this.result) {
-				sendResponse(this.errorMessage);
-				throw new Error(this.errorMessage);
-			}
+			// Unique event name to avoid conflicts
+			const eventName = `customEvent-${Date.now()}`;
 
-			sendResponse(this.result[0].result);
+			// Listen for the custom event in the content script
+			document.addEventListener(eventName, (event) => {
+				const customEvent = event as CustomEvent;
+
+				if (customEvent.detail) {
+					sendResponse(customEvent.detail);
+				} else {
+					sendResponse(this.errorMessage);
+				}
+			}, { once: true });
+
+			// Convert the callback function and arguments to a string
+			const scriptContent = `
+            (${this.callback.toString()})(${JSON.stringify(request.arguments)})
+                .then(result => {
+                    document.dispatchEvent(new CustomEvent('${eventName}', { detail: result }));
+                })
+                .catch(error => {
+                    document.dispatchEvent(new CustomEvent('${eventName}', { detail: { error: error.message } }));
+                });`;
+
+			// Inject the script into the main page context
+			await browser.tabs.executeScript(this.currentTabId, {
+				code: `const script = document.createElement('script');
+                   script.textContent = ${JSON.stringify(scriptContent)};
+                   (document.head || document.documentElement).appendChild(script);
+                   script.remove();`
+			});
 
 		} catch (err) {
 			console.error(err);
+			sendResponse(this.errorMessage);
 		}
 	}
 }

@@ -21,7 +21,7 @@ export default function BoltFrontendTab(): JSX.Element {
 	async function frontendHandleNavigate(newTab: boolean) {
 		const envCode = environment ? `${environment.trim()}.` : "";
 		const currentUrl = `https://frontend.${envCode}wrenkitchens.${region.trim()}`;
-		console.log(currentUrl);
+		console.log("Current URL: " + currentUrl);
 
 		const request: BackgroundRequest = {
 			type: newTab ? RequestType.OpenInNewTab : RequestType.OpenInCurrentTab,

@@ -21,14 +21,21 @@ export abstract class BaseMessageHandler implements BackgroundMessageHandler {
 	}
 
 	public async handle(request: BackgroundRequest, sendResponse: HandlerResponse): Promise<void> {
-		console.log("Query Options:", this.queryOptions); // Debugging line
-		this.currentTab = await browser.tabs.query(this.queryOptions);
-		console.log("Current Tab:", this.currentTab); // Debugging line
-		this.currentTabId = this.currentTab[0]?.id;
-		if (this.currentTabId === undefined) {
-			console.log("Tab undefined!");
-		} else {
-			console.log("Current Tab ID:", this.currentTabId); // Debugging line
+		try {
+			console.log("Query Options: ", this.queryOptions); // Debugging line
+			this.currentTab = await browser.tabs.query(this.queryOptions);
+			console.log("Current Tab: ", this.currentTab); // Debugging line
+			this.currentTabId = this.currentTab[0]?.id;
+			if (this.currentTabId === undefined) {
+				console.error("Tab undefined!");
+				sendResponse({ error: "Tab undefined" });
+			} else {
+				console.log("Current Tab ID: ", this.currentTabId); // Debugging line
+				await this.execute(request, sendResponse); // Ensure this is implemented in derived classes
+			}
+		} catch (error) {
+			console.error("Error in handle method:", error);
+			sendResponse({ error: "Error occurred in handle method" });
 		}
 	}
 
