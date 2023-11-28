@@ -13,19 +13,34 @@ export default function BoltSurveyorTab(): JSX.Element {
 	const [isPlannerToggle, setIsPlannerToggle] = useState(false);
 
 	function handleEnvChange(event) {
-		setEnvironment(event.target.value);
+		setEnvironment(event.target.value).then(response => {
+			console.log("Response received:", response);
+		})
+			.catch(error => {
+				console.error("Error sending message:", error);
+			});
 	}
 
 	function handleRegionChange(event) {
-		setRegion(event.target.value);
+		setRegion(event.target.value).then(response => {
+			console.log("Response received:", response);
+		})
+			.catch(error => {
+				console.error("Error sending message:", error);
+			});
 	}
 
 	function handleRoomTypeChange(event) {
-		setRoomType(event.target.value);
+		setRoomType(event.target.value).then(response => {
+			console.log("Response received:", response);
+		})
+			.catch(error => {
+				console.error("Error sending message:", error);
+			});
 	}
 
 	function toggleEnv(event) {
-		setIsPlannerToggle(currentToggle => event.target.checked);
+		setIsPlannerToggle(() => event.target.checked);
 	}
 
 	async function plannerHandleNavigate(newTab: boolean) {

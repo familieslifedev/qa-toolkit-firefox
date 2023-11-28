@@ -11,11 +11,21 @@ export default function BoltFrontendTab(): JSX.Element {
 	const [region, setRegion] = useStorage("frontendRegion", regionArray[0].Code);
 
 	function handleEnvChange(event) {
-		setEnvironment(event.target.value);
+		setEnvironment(event.target.value).then(response => {
+			console.log("Response received:", response);
+		})
+			.catch(error => {
+				console.error("Error sending message:", error);
+			});
 	}
 
 	function handleRegionChange(event) {
-		setRegion(event.target.value);
+		setRegion(event.target.value).then(response => {
+			console.log("Response received:", response);
+		})
+			.catch(error => {
+				console.error("Error sending message:", error);
+			});
 	}
 
 	async function frontendHandleNavigate(newTab: boolean) {

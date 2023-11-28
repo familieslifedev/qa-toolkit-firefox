@@ -16,11 +16,21 @@ export default function BoltRundeck() {
 	};
 
 	function handleEnvChange(event) {
-		setRundeckJob(event.target.value);
+		setRundeckJob(event.target.value).then(response => {
+			console.log("Response received:", response);
+		})
+			.catch(error => {
+				console.error("Error sending message:", error);
+			});
 	}
 
 	function handleRegionChange(event) {
-		setRegion(event.target.value);
+		setRegion(event.target.value).then(response => {
+			console.log("Response received:", response);
+		})
+			.catch(error => {
+				console.error("Error sending message:", error);
+			});
 	}
 
 	async function rundeckHandleNavigate(newTab) {

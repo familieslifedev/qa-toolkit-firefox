@@ -4,23 +4,9 @@ import ToolSets from "~Components/JsonTools/ToolSets";
 import ColourPicker from "~Components/ColourPicker/ColourPicker";
 import Calc from "~Components/Calc/Calc";
 import DebugCommands from "~Components/DebugCommands/DebugCommands";
-import { Request as BackgroundRequest, RequestType } from "../../Services/Background/Request";
 import MiscTools from "~Components/MiscTools/MiscTools";
-import browser from "webextension-polyfill";
 
 const SidebarContent = (): JSX.Element => {
-
-	function openOptions(): void {
-
-		const request: BackgroundRequest = {
-			type: RequestType.OpenOptionsPage,
-			functionName: null,
-			arguments: null
-		};
-
-		browser.runtime.sendMessage(request);
-	}
-
 	return (
 		<div className="sidebarMainContentContainer">
 			<SidebarMenuItem displayName={"Bolt"} component={<Bolt />}></SidebarMenuItem>

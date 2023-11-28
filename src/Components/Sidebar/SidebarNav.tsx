@@ -8,7 +8,12 @@ const SidebarNav = (): JSX.Element => {
 			functionName: null,
 			arguments: null
 		};
-		browser.runtime.sendMessage(request);
+		browser.runtime.sendMessage(request).then(response => {
+			console.log("Response received:", response);
+		})
+			.catch(error => {
+				console.error("Error sending message:", error);
+			});
 	}
 
 	return (

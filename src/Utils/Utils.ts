@@ -14,7 +14,7 @@ export async function openURL(url: string, tabId: number, newTab: boolean): Prom
 				await browser.tabs.update(tabId, { url: url });
 			}
 		} else {
-			throw new Error(`Failed to fetch URL: ${url}`);
+			console.error(`Failed to fetch URL: ${url}`);
 		}
 	} catch (error) {
 		throw error;
@@ -29,7 +29,7 @@ export async function copyFromClipboard(): Promise<string> {
 //Write into clipboard, has to happen in a content script.
 export async function writeToClipboard(toWrite: string): Promise<void> {
 	if (!toWrite) {
-		console.log("Missing string to write to clipboard");
+		console.error("Missing string to write to clipboard");
 		return;
 	}
 
@@ -50,7 +50,6 @@ export const prettyPrintJson = {
 		const replacer = (match, p1, p2, p3, p4) => {
 			const part = { indent: p1, key: p2, value: p3, end: p4 };
 			const key = part.key && part.key.replace(/"([^"]+)":\s*/, "<span class=\"json-key\">\"$1\"</span>: ");
-			const val = part.value;
 			const isBool = ["true", "false"].includes(part.value);
 			const valSpan = /^"/.test(part.value) ? "<span class=\"json-string\">" : isBool ? "<span class=\"json-boolean\">" : "<span class=\"json-value\">";
 			const indentHtml = part.indent || "";
@@ -132,34 +131,11 @@ export async function load2DJson(arg: any): Promise<void> {
 export function convertPenceToPounds(int: number | null): string {
 	return int === null ? "" : (int / 100).toFixed(2);
 }
-
-export function trimAllWhitespace(str: string): string {
-	return str.replace(/\s/g, "");
-}
-
 export function isWithinRangeComparison(value: number, target: number, range: number): boolean {
 	const min = target - range;
 	const max = target + range;
 	return value >= min && value <= max;
 }
-
-
-export async function save2dJsonToFeeder(args: any) {
-	const request: BackgroundRequest = {
-		functionName: "SavePlanJson",
-		type: RequestType.SavePlanJson,
-		arguments: args
-	};
-
-	let res = await browser.runtime.sendMessage(request);
-	if (!res) {
-		throw new Error("save2dJsonToFeeder: Failed to save 2D JSON");
-	} else {
-		return res;
-	}
-
-}
-
 export const feederQuery = async (
 	queryType: FeederQueryType,
 	environment: projectTier,

@@ -7,13 +7,23 @@ export default function ColourPicker() {
 
 	const colorPickerChange = (color) => {
 		setUpdateColor(color.hex);
-		writeToClipboard(updateColor);
+		writeToClipboard(updateColor).then(response => {
+			console.log("Response received:", response);
+		})
+			.catch(error => {
+				console.error("Error sending message:", error);
+			});
 	};
 
 	function handleRandomColour() {
 		let randomColor = Math.floor(Math.random() * 16777215).toString(16);
 		setUpdateColor("#" + randomColor);
-		writeToClipboard("#" + randomColor);
+		writeToClipboard("#" + randomColor).then(response => {
+			console.log("Response received:", response);
+		})
+			.catch(error => {
+				console.error("Error sending message:", error);
+			});
 	}
 
 	return (

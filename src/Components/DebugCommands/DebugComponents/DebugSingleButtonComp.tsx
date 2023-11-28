@@ -16,10 +16,8 @@ async function sendDebugCommand(command?, argsArray?) {
 
 const DebugSingleButton: React.FC<DebugSingleButtonProps> = ({
 																 prettyName,
-																 commandName,
 																 hoverTip,
-																 onClickFunction,
-																 placeholder
+																 onClickFunction
 															 }) => {
 	return (
 		<button className="btn btn-xs btn-primary debugSingleButton" title={hoverTip}

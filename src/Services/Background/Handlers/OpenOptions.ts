@@ -8,7 +8,7 @@ export class OpenOptions extends BaseMessageHandler {
 		super(errorMessage);
 	}
 
-	public override async handle(_request: BackgroundRequest, sendResponse: HandlerResponse): Promise<void> {
+	public override async handle(request: BackgroundRequest, sendResponse: HandlerResponse): Promise<void> {
 		try {
 			await browser.runtime.openOptionsPage();
 			console.log("Options page opened successfully");

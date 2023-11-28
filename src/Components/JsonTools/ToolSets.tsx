@@ -1,7 +1,6 @@
 import { Request as BackgroundRequest, RequestType } from "~/Services/Background/Request";
-import { FeedbackContext } from "~Utils/sidebarContext";
 import JsonEditorModal from "~Components/JsonTools/JsonEditor/JsonEditorModal";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { JsonFixer } from "~/Services/JsonFixer";
 import SwitchAndSaveModal from "~Components/SwitchAndSave/SwitchAndSaveModal";
 import { ModalTypes } from "~Utils/Constants";
@@ -9,11 +8,10 @@ import ProductQuery from "~Components/ProductQuery/ProductQuery";
 import browser from "webextension-polyfill";
 
 export default function ToolSets(): JSX.Element {
-	const { setFeedbackText } = useContext(FeedbackContext);
 	const [isJsonEditorVisible, setIsJsonEditorVisible] = useState<boolean>(false);
 	const [isSNSVisible, setIsSNSVisible] = useState<boolean>(false);
 	const [isProductQueryVisible, setIsProductQueryVisible] = useState<boolean>(false);
-	const [jsonFixer, setJsonFixer] = useState<JsonFixer>(new JsonFixer());
+	const [jsonFixer] = useState<JsonFixer>(new JsonFixer());
 	const [leadNames, setLeadNames] = useState<Array<string>>(new Array<string>());
 	const [selectedLeadName, setSelectedLeadName] = useState<string>("");
 
@@ -43,15 +41,6 @@ export default function ToolSets(): JSX.Element {
 			document.removeEventListener("keydown", handleKeyDown);
 		};
 	}, [isJsonEditorVisible]);
-
-	function handleJsonEditorPanel(): void {
-		setIsJsonEditorVisible(!isJsonEditorVisible);
-	}
-
-	function handleSNSPanel(): void {
-		setIsSNSVisible(!isSNSVisible);
-	}
-
 	const getCurrentUrl = async (): Promise<string> => {
 		const request: BackgroundRequest = {
 			functionName: null,
