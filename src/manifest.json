@@ -50,7 +50,7 @@
     "contextMenus",
     "downloads"
   ],
-  "version": "0.0.3",
+  "version": "0.7.0",
   "web_accessible_resources": [
     "src/style.css"
   ]

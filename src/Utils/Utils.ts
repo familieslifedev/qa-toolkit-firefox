@@ -112,7 +112,6 @@ export async function get3DJson(): Promise<any> {
 }
 
 export async function load2DJson(arg: any): Promise<void> {
-	// TODO - handle arbitrary JSON type
 	let argsArray: unknown[] = [arg];
 
 	const command = arg?.startsWith("https://feeder") ?

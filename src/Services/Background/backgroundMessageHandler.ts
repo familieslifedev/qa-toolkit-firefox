@@ -4,6 +4,7 @@ import { SavePlanJson } from "./Handlers/SavePlanJson";
 import { OpenUrl } from "./Handlers/OpenUrl";
 import { OpenOptions } from "./Handlers/OpenOptions";
 import { GetCurrentUrl } from "./Handlers/GetCurrentUrl";
+import { DefaultHandler } from "./Handlers/DefaultHandler";
 
 export const MakeHandler = (request: BackgroundRequest): BaseMessageHandler => {
 	console.log("Request type: " + request.type);
@@ -32,6 +33,6 @@ export const MakeHandler = (request: BackgroundRequest): BaseMessageHandler => {
 
 		default:
 			console.error("request.type does not match any cases in the switch statement", request);
-			return null;
+			return new DefaultHandler("Unknown request type");
 	}
 };
